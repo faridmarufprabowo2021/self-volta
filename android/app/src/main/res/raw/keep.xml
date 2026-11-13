@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Nada dering notifikasi dipanggil dari Dart lewat
+  RawResourceAndroidNotificationSound('notif_ding'), jadi R8/resource shrinker
+  TIDAK bisa melihat referensinya dan akan menghapus ketiga WAV ini dari APK
+  release (akibatnya pilihan "Ding/Chime/Lembut" jatuh ke nada sistem).
+  tools:keep di bawah memaksa file tetap dibundel.
+-->
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/notif_ding,@raw/notif_chime,@raw/notif_lembut" />
