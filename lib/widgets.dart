@@ -1,0 +1,2017 @@
+import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'store.dart';
+import 'theme.dart';
+export 'data.dart' show rp;
+
+/// Getaran sentuh halus khas iOS. Dibungkus aman agar tidak pernah
+/// melempar di widget-test (tanpa plugin platform) maupun HP tanpa motor.
+void iosTapBuzz() {
+  Future(() async {
+    try {
+      await HapticFeedback.lightImpact();
+    } catch (_) {}
+  });
+}
+
+/// Getaran selebrasi (triumph) saat menyelesaikan target / streak.
+void triumphBuzz() {
+  Future(() async {
+    try {
+      await HapticFeedback.mediumImpact();
+      await Future.delayed(const Duration(milliseconds: 120));
+      await HapticFeedback.lightImpact();
+    } catch (_) {}
+  });
+}
+
+class AppIcon extends StatelessWidget {
+  final IconData icon;
+  final Color cat;
+  final double size;
+  const AppIcon(this.icon, this.cat, {super.key, this.size = 40});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        // iOS: tint datar, tanpa gradien/border.
+        color: cat.withValues(alpha: .10),
+        borderRadius: BorderRadius.circular(size * .28),
+      ),
+      child: Icon(icon, color: cat, size: size * .52),
+    );
+  }
+}
+
+/// Logo V SELF VOLTA: kotak putih + huruf V sea + glow lembut.
+/// Dipakai di AppBar & header drawer (satu glow per elemen).
+class VLogo extends StatelessWidget {
+  final double size;
+  final double fontSize;
+  const VLogo({super.key, this.size = 26, this.fontSize = 15});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(size / 3),
+        border: Border.all(color: Star.line),
+      ),
+      child: Text(
+        'V',
+        style: const TextStyle(
+          fontFamily: 'Inter',
+          fontWeight: FontWeight.w700,
+          height: 1.0,
+          color: Star.star,
+        ).copyWith(fontSize: fontSize),
+      ),
+    );
+  }
+}
+
+/// Pembungkus tap "menonjol" (StarChart: animate interactive moments).
+/// Ditekan → mengecil ke 0.94; dilepas → memantul balik melewati 1.0
+/// (elastic) lalu settle. Satu-satunya sumber onTap adalah InkWell di dalam
+/// (status highlight → animasi skala), jadi callback TIDAK pernah double-fire
+/// — aman untuk toggle seperti centang makan / favorit.
+class PopTap extends StatefulWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  final BorderRadius borderRadius;
+  const PopTap({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+  });
+  @override
+  State<PopTap> createState() => _PopTapState();
+}
+
+class _PopTapState extends State<PopTap> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+    vsync: this,
+    value: 1.0,
+    lowerBound: 0.9,
+    upperBound: 1.06,
+  );
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  void _down() => _c.animateTo(
+    0.98,
+    duration: const Duration(milliseconds: 80),
+    curve: Curves.easeOut,
+  );
+  void _up() => _c.animateTo(
+    1.0,
+    duration: const Duration(milliseconds: 120),
+    curve: Curves.easeOut,
+  );
+
+  void _handleTap() {
+    iosTapBuzz();
+    widget.onTap?.call();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _c,
+      builder: (_, child) => Transform.scale(scale: _c.value, child: child),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: widget.borderRadius,
+        child: InkWell(
+          onTap: _handleTap,
+          onHighlightChanged: (h) => h ? _down() : _up(),
+          borderRadius: widget.borderRadius,
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+}
+
+/// Judul halaman gaya iOS: tipis, kiri, tanpa kartu/glow.
+/// Murni visual — tidak ada aksi navigasi (ExcludeSemantics).
+class SecHead extends StatelessWidget {
+  final String page;
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Widget? action;
+  const SecHead(
+    this.page,
+    this.icon,
+    this.title,
+    this.subtitle, {
+    super.key,
+    this.action,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final c = accOf(page);
+    return ExcludeSemantics(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 3),
+              child: Icon(icon, size: 19, color: c),
+            ),
+            const SizedBox(width: 9),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppText.pageTitle),
+                  if (subtitle.isNotEmpty) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: AppText.secondary.copyWith(fontSize: 13),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            if (action != null) ...[const SizedBox(width: 8), action!],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SoftCard extends StatelessWidget {
+  final Widget child;
+  final EdgeInsets padding;
+  final Color? color;
+  const SoftCard({
+    super.key,
+    this.padding = const EdgeInsets.all(16),
+    this.color,
+    required this.child,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: padding,
+      decoration: BoxDecoration(
+        // iOS grouped list: satu permukaan putih, hairline, tanpa bayangan.
+        color: color ?? Star.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Star.lineSoft),
+      ),
+      child: child,
+    );
+  }
+}
+
+class HRow extends StatelessWidget {
+  final IconData icon;
+  final String page;
+  final String title;
+  final String subtitle;
+  const HRow(this.icon, this.page, this.title, this.subtitle, {super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        AppIcon(icon, accOf(page), size: 28),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                  height: 1.25,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11.5,
+                  height: 1.35,
+                  color: Star.mut,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class Pill extends StatelessWidget {
+  final String text;
+  final Color page;
+  final bool dark;
+  const Pill(
+    this.text, {
+    super.key,
+    this.page = Colors.transparent,
+    this.dark = false,
+  });
+  @override
+  Widget build(BuildContext context) {
+    // iOS status chip: tint datar, teks aksen, tanpa border.
+    final c = page == Colors.transparent ? Star.nebula : page;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      decoration: BoxDecoration(
+        color: dark ? c : c.withValues(alpha: .12),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 11.5,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.1,
+          color: dark ? Colors.white : c,
+        ),
+      ),
+    );
+  }
+}
+
+class GradBar extends StatelessWidget {
+  final double pct;
+  final Color c1;
+  final Color c2;
+  final double height;
+  const GradBar(this.pct, {super.key, Color? c1, Color? c2, this.height = 12})
+    : c1 = c1 ?? const Color(0xff16a34a),
+      c2 = c2 ?? const Color(0xff84cc16);
+  @override
+  Widget build(BuildContext context) {
+    // Satu warna aksen; gradien dihapus agar konsisten gaya iOS.
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(99),
+      child: Container(
+        height: height,
+        color: Star.fillStrong,
+        child: Stack(
+          children: [
+            FractionallySizedBox(
+              widthFactor: (pct.clamp(0, 100)) / 100,
+              alignment: Alignment.centerLeft,
+              child: Container(color: c1),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RowItem extends StatelessWidget {
+  final Widget leading;
+  final String title;
+  final String subtitle;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+
+  /// Override line-height (mis. Keuangan pakai 1.7). Default ikut global.
+  final double? lh;
+  const RowItem(
+    this.leading,
+    this.title,
+    this.subtitle, {
+    super.key,
+    this.trailing,
+    this.onTap,
+    this.lh,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return PopTap(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 12),
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Star.lineSoft)),
+        ),
+        child: Row(
+          children: [
+            leading,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      letterSpacing: -0.2,
+                    ),
+                  ),
+                  if (subtitle.isNotEmpty)
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12.5,
+                        height: lh ?? 1.45,
+                        color: CustomColors.mut,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            ?trailing,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BigStat extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color cat;
+  final Widget? icon;
+  const BigStat(this.label, this.value, this.cat, {super.key, this.icon});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Star.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Star.lineSoft),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              ?icon,
+              if (icon != null) const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: CustomColors.mut,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.5,
+              color: Star.ink,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DecoWave extends StatelessWidget {
+  final Color color;
+  const DecoWave(this.color, {super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 14,
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      child: CustomPaint(painter: _WavePainter(color)),
+    );
+  }
+}
+
+class _WavePainter extends CustomPainter {
+  final Color color;
+  _WavePainter(this.color);
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round;
+    final path = Path();
+    final n = 600.0;
+    for (double x = 0; x <= size.width; x += 1) {
+      final y =
+          size.height / 2 +
+          (size.height / 2) * 0.9 * (x % (n / 2) < n / 4 ? 1 : -1) * 0.6;
+      if (x == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+    canvas.drawPath(path, p);
+  }
+
+  @override
+  bool shouldRepaint(covariant _WavePainter oldDelegate) =>
+      oldDelegate.color != color;
+}
+
+class EmptyHint extends StatelessWidget {
+  final String text;
+  const EmptyHint(this.text, {super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: CustomColors.mut, fontSize: 13),
+      ),
+    );
+  }
+}
+
+/// Kartu info: ikon tinted + judul + isi lega (body 14/1.55).
+/// Standar baca nyaman untuk semua blok deskripsi aplikasi.
+class InfoCard extends StatelessWidget {
+  final IconData icon;
+  final String page;
+  final String title;
+  final String body;
+  final String? foot;
+  const InfoCard({
+    super.key,
+    required this.icon,
+    required this.page,
+    required this.title,
+    required this.body,
+    this.foot,
+  });
+  @override
+  Widget build(BuildContext context) {
+    final c = accOf(page);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Star.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Star.lineSoft),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppIcon(icon, c, size: 38),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppText.cardTitle.copyWith(color: CustomColors.ink),
+                ),
+                const SizedBox(height: 8),
+                Text(body, style: AppText.body),
+                if (foot != null && foot!.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(foot!, style: AppText.secondary),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Daftar poin rapi pengganti teks <br>-an: check + baris lega.
+class InfoList extends StatelessWidget {
+  final List<String> items;
+  final Color? check;
+  const InfoList(this.items, {super.key, this.check});
+  @override
+  Widget build(BuildContext context) {
+    final cc = check ?? Star.success;
+    return Column(
+      children: [
+        for (final t in items)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.check_circle_rounded, color: cc, size: 20),
+                const SizedBox(width: 8),
+                Expanded(child: Text(t, style: AppText.body)),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// Formatter untuk input angka nominal/rupiah dengan pemisah ribuan titik ('.')
+/// Mengubah input mentah secara otomatis saat diketik (contoh: 50000 -> 50.000).
+class ThousandsSeparatorInputFormatter extends TextInputFormatter {
+  static String format(String text) {
+    if (text.isEmpty) return '';
+    final clean = text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (clean.isEmpty) return '';
+    return clean.replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      (match) => '${match[1]}.',
+    );
+  }
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    final rawText = newValue.text;
+    final cleanDigits = rawText.replaceAll(RegExp(r'[^0-9]'), '');
+    if (cleanDigits.isEmpty) {
+      return const TextEditingValue(
+        text: '',
+        selection: TextSelection.collapsed(offset: 0),
+      );
+    }
+
+    final formatted = format(cleanDigits);
+
+    // Hitung posisi kursor yang presisi agar kursor tetap natural saat mengetik/menghapus
+    final cursorPosition = newValue.selection.end;
+    int digitsBeforeCursor = 0;
+    for (int i = 0; i < cursorPosition && i < rawText.length; i++) {
+      if (RegExp(r'[0-9]').hasMatch(rawText[i])) {
+        digitsBeforeCursor++;
+      }
+    }
+
+    int newCursorOffset = 0;
+    int digitsCount = 0;
+    for (int i = 0; i < formatted.length; i++) {
+      if (formatted[i] != '.') {
+        digitsCount++;
+      }
+      if (digitsCount == digitsBeforeCursor) {
+        newCursorOffset = i + 1;
+        break;
+      }
+    }
+
+    if (digitsBeforeCursor == 0) {
+      newCursorOffset = 0;
+    } else if (newCursorOffset == 0 || newCursorOffset > formatted.length) {
+      newCursorOffset = formatted.length;
+    }
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: newCursorOffset),
+    );
+  }
+}
+
+// ============================================================================
+// VISUAL DATA REPRESENTATION: CONCENTRIC 3-RING ACTIVITY & NUTRITION VISUALIZER
+// ============================================================================
+
+class ActivityTriRingWidget extends StatelessWidget {
+  final double workoutProgress;
+  final double nutritionProgress;
+  final double waterProgress;
+  final double size;
+
+  const ActivityTriRingWidget({
+    super.key,
+    required this.workoutProgress,
+    required this.nutritionProgress,
+    required this.waterProgress,
+    this.size = 136,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final avgPct =
+        (((workoutProgress + nutritionProgress + waterProgress) / 3.0) * 100)
+            .round();
+    return Row(
+      children: [
+        // Concentric Rings
+        SizedBox(
+          width: size,
+          height: size,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CustomPaint(
+                size: Size(size, size),
+                painter: _TriRingPainter(
+                  workoutProgress: workoutProgress,
+                  nutritionProgress: nutritionProgress,
+                  waterProgress: waterProgress,
+                ),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '$avgPct%',
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.4,
+                      color: Paper.ink,
+                      fontFeatures: [FontFeature.tabularFigures()],
+                    ),
+                  ),
+                  const Text(
+                    'Tuntas',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w600,
+                      color: Paper.sec,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 16),
+        // Legend List with Exact Metrics
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _legendItem(
+                color: Star.star,
+                label: 'Latihan',
+                pct: (workoutProgress * 100).round(),
+                icon: Icons.fitness_center_rounded,
+              ),
+              const SizedBox(height: 10),
+              _legendItem(
+                color: Paper.amber,
+                textColor: Paper.amberInk,
+                label: 'Nutrisi',
+                pct: (nutritionProgress * 100).round(),
+                icon: Icons.soup_kitchen_rounded,
+              ),
+              const SizedBox(height: 10),
+              _legendItem(
+                color: Paper.mint,
+                textColor: Paper.mintDeep,
+                label: 'Hidrasi',
+                pct: (waterProgress * 100).round(),
+                icon: Icons.water_drop_rounded,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _legendItem({
+    required Color color,
+    required String label,
+    required int pct,
+    required IconData icon,
+    Color? textColor,
+  }) {
+    return Row(
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: color, size: 12),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Paper.ink,
+            ),
+          ),
+        ),
+        Text(
+          '$pct%',
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: textColor ?? color,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _TriRingPainter extends CustomPainter {
+  final double workoutProgress;
+  final double nutritionProgress;
+  final double waterProgress;
+
+  const _TriRingPainter({
+    required this.workoutProgress,
+    required this.nutritionProgress,
+    required this.waterProgress,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cx = size.width / 2;
+    final cy = size.height / 2;
+    final center = Offset(cx, cy);
+
+    const strokeW = 8.5;
+    final r1 = (size.width / 2) - 8;
+    final r2 = (size.width / 2) - 21;
+    final r3 = (size.width / 2) - 34;
+
+    _drawRing(canvas, center, r1, strokeW, Star.star, workoutProgress);
+    _drawRing(canvas, center, r2, strokeW, Paper.amber, nutritionProgress);
+    _drawRing(canvas, center, r3, strokeW, Paper.mint, waterProgress);
+  }
+
+  void _drawRing(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    double strokeW,
+    Color color,
+    double progress,
+  ) {
+    final bgPaint = Paint()
+      ..color = color.withValues(alpha: 0.15)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeW;
+
+    canvas.drawCircle(center, radius, bgPaint);
+
+    if (progress > 0.01) {
+      final fgPaint = Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeW
+        ..strokeCap = StrokeCap.round;
+
+      final sweep = 2 * math.pi * progress.clamp(0.0, 1.0);
+      canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        -math.pi / 2,
+        sweep,
+        false,
+        fgPaint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _TriRingPainter oldDelegate) =>
+      oldDelegate.workoutProgress != workoutProgress ||
+      oldDelegate.nutritionProgress != nutritionProgress ||
+      oldDelegate.waterProgress != waterProgress;
+}
+
+// ============================================================================
+// EPIC GAMIFICATION: FULL-SCREEN CONFETTI & LEVEL-UP CELEBRATION
+// ============================================================================
+
+void showEpicCelebrationDialog({
+  required BuildContext context,
+  required String title,
+  required String message,
+  required int xpReward,
+}) {
+  triumphBuzz();
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: 'Celebration',
+    pageBuilder: (ctx, anim1, anim2) => _EpicCelebrationView(
+      title: title,
+      message: message,
+      xpReward: xpReward,
+    ),
+  );
+}
+
+class _EpicCelebrationView extends StatefulWidget {
+  final String title;
+  final String message;
+  final int xpReward;
+
+  const _EpicCelebrationView({
+    required this.title,
+    required this.message,
+    required this.xpReward,
+  });
+
+  @override
+  State<_EpicCelebrationView> createState() => _EpicCelebrationViewState();
+}
+
+class _EpicCelebrationViewState extends State<_EpicCelebrationView>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  final List<_ConfettiParticle> _particles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat();
+
+    final rng = math.Random();
+    const colors = [
+      Color(0xffE5A910),
+      Color(0xff0781D1),
+      Color(0xff00B074),
+      Color(0xff8A63B0),
+      Color(0xffD64545),
+      Color(0xff3EA9E8),
+    ];
+    for (var i = 0; i < 48; i++) {
+      _particles.add(
+        _ConfettiParticle(
+          x: rng.nextDouble(),
+          y: rng.nextDouble() * -0.5,
+          vx: (rng.nextDouble() - 0.5) * 0.4,
+          vy: 0.3 + rng.nextDouble() * 0.7,
+          size: 6 + rng.nextDouble() * 8,
+          rotation: rng.nextDouble() * math.pi * 2,
+          color: colors[rng.nextInt(colors.length)],
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final st = AppState.I;
+    final currentLevel = st.level;
+    final xpInLvl = st.xpInLevel;
+
+    return Scaffold(
+      backgroundColor: Colors.black.withValues(alpha: 0.65),
+      body: Stack(
+        children: [
+          // Confetti particles canvas
+          AnimatedBuilder(
+            animation: _ctrl,
+            builder: (context, _) => CustomPaint(
+              size: MediaQuery.of(context).size,
+              painter: _ConfettiPainter(
+                particles: _particles,
+                progress: _ctrl.value,
+              ),
+            ),
+          ),
+          // Celebration Card Center
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Container(
+                padding: const EdgeInsets.all(28),
+                decoration: BoxDecoration(
+                  color: Star.surface,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      blurRadius: 30,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Bouncing Glowing Trophy Icon
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: const RadialGradient(
+                          colors: [Color(0xffFFF2CC), Color(0xffFFE599)],
+                        ),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xffFFE599)
+                                .withValues(alpha: 0.8),
+                            blurRadius: 24,
+                          ),
+                        ],
+                      ),
+                      child: const Text('🏆', style: TextStyle(fontSize: 48)),
+                    ),
+                    const SizedBox(height: 18),
+                    // XP Reward Pill
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xffD97706),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Text(
+                        '+${widget.xpReward} XP EARNED!',
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: 0.6,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      widget.title,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 21,
+                        fontWeight: FontWeight.w700,
+                        color: Star.ink,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.message,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 13,
+                        color: Star.mut,
+                        height: 1.45,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Gamification Level & XP Progress Card
+                    Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Star.bg,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Star.lineSoft),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Lv. $currentLevel • ${st.levelTitle}',
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: Star.deepSpace,
+                                ),
+                              ),
+                              Text(
+                                '$xpInLvl / 100 XP',
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: Star.star,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: LinearProgressIndicator(
+                              value: (xpInLvl / 100.0).clamp(0.0, 1.0),
+                              minHeight: 8,
+                              backgroundColor: Star.sunken,
+                              valueColor: const AlwaysStoppedAnimation(
+                                Star.nebula,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              const Text('🔥', style: TextStyle(fontSize: 12)),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${st.streak} Hari Berturut-turut Aktif!',
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffA67C00),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 22),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Star.deepSpace,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        child: const Text(
+                          'Lanjutkan Konsistensi ⚡',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ConfettiParticle {
+  double x, y, vx, vy, size, rotation;
+  Color color;
+  _ConfettiParticle({
+    required this.x,
+    required this.y,
+    required this.vx,
+    required this.vy,
+    required this.size,
+    required this.rotation,
+    required this.color,
+  });
+}
+
+class _ConfettiPainter extends CustomPainter {
+  final List<_ConfettiParticle> particles;
+  final double progress;
+
+  const _ConfettiPainter({required this.particles, required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (final p in particles) {
+      final px = (p.x + (p.vx * progress)) % 1.0 * size.width;
+      final py = (p.y + (p.vy * progress)) % 1.0 * size.height;
+      final paint = Paint()..color = p.color;
+
+      canvas.save();
+      canvas.translate(px, py);
+      canvas.rotate(p.rotation + (progress * math.pi * 4));
+      canvas.drawRect(
+        Rect.fromCenter(
+          center: Offset.zero,
+          width: p.size,
+          height: p.size * 0.6,
+        ),
+        paint,
+      );
+      canvas.restore();
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ConfettiPainter oldDelegate) => true;
+}
+
+// ============================================================================
+// FOKUS TUBUH (TARGETED MUSCLE GROUPS) - REFERENSI HOMEPAGE/FITNESS APP
+// ============================================================================
+
+class MuscleFocusCard extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final String subtitle;
+  final VoidCallback onTap;
+  final String timeTag;
+  final String exerciseCount;
+  final String xpTag;
+
+  const MuscleFocusCard({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.subtitle,
+    required this.onTap,
+    this.timeTag = '12-15 Mnt',
+    this.exerciseCount = '4 Gerakan',
+    this.xpTag = '+50 XP',
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          iosTapBuzz();
+          onTap();
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Star.ink,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Star.star.withValues(alpha: 0.35),
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Row: Icon Glowing + XP Pill
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(9),
+                    decoration: BoxDecoration(
+                      color: Star.star,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(icon, color: Colors.white, size: 22),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffE5A910).withValues(alpha: 0.18),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color(0xffE5A910).withValues(alpha: 0.4),
+                      ),
+                    ),
+                    child: Text(
+                      xpTag,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xffFFE599),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // Title & Subtitle
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15.5,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white.withValues(alpha: 0.7),
+                ),
+              ),
+              const SizedBox(height: 6),
+
+              // Meta Badges: Exercise Count & Time
+              Row(
+                children: [
+                  Icon(
+                    Icons.fitness_center_rounded,
+                    size: 12,
+                    color: Colors.white.withValues(alpha: 0.5),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    exerciseCount,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 10.5,
+                      color: Colors.white.withValues(alpha: 0.6),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.timer_outlined,
+                    size: 12,
+                    color: Colors.white.withValues(alpha: 0.5),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    timeTag,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 10.5,
+                      color: Colors.white.withValues(alpha: 0.6),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // UNMISTAKABLE BUTTON AFFORDANCE (USER PASTI NOTICE TOMBOL INI!)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  color: Star.star,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.play_circle_fill_rounded,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    SizedBox(width: 6),
+                    Text(
+                      'Mulai Sesi',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// SISTEM PANDUAN & TUTORIAL INTERAKTIF BERBASIS SPOTLIGHT & ANIMATED ARROW
+// ============================================================================
+
+class TutorialStepItem {
+  final String title;
+  final String category;
+  final String description;
+  final String tip;
+  final IconData icon;
+  final Color accentColor;
+  final String? featureTag;
+
+  const TutorialStepItem({
+    required this.title,
+    required this.category,
+    required this.description,
+    required this.tip,
+    required this.icon,
+    this.accentColor = const Color(0xff0781D1),
+    this.featureTag,
+  });
+}
+
+void showInteractiveSpotlightTutorial(
+  BuildContext context, {
+  required String tutorialTitle,
+  required List<TutorialStepItem> steps,
+  VoidCallback? onComplete,
+}) {
+  iosTapBuzz();
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: 'InteractiveTutorial',
+    barrierColor: Colors.black.withValues(alpha: 0.82),
+    transitionDuration: const Duration(milliseconds: 280),
+    pageBuilder: (ctx, anim1, anim2) => _InteractiveSpotlightDialog(
+      tutorialTitle: tutorialTitle,
+      steps: steps,
+      onComplete: onComplete,
+    ),
+    transitionBuilder: (ctx, anim, _, child) {
+      return FadeTransition(
+        opacity: CurvedAnimation(parent: anim, curve: Curves.easeOut),
+        child: child,
+      );
+    },
+  );
+}
+
+class TutorialPillButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final String label;
+  final Color color;
+
+  const TutorialPillButton({
+    super.key,
+    required this.onTap,
+    this.label = 'Tutorial',
+    this.color = const Color(0xff0781D1),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          iosTapBuzz();
+          onTap();
+        },
+        borderRadius: BorderRadius.circular(100),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(color: color.withValues(alpha: 0.4), width: 1.2),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.lightbulb_rounded, size: 14, color: color),
+              const SizedBox(width: 5),
+              Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: color,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _InteractiveSpotlightDialog extends StatefulWidget {
+  final String tutorialTitle;
+  final List<TutorialStepItem> steps;
+  final VoidCallback? onComplete;
+
+  const _InteractiveSpotlightDialog({
+    required this.tutorialTitle,
+    required this.steps,
+    this.onComplete,
+  });
+
+  @override
+  State<_InteractiveSpotlightDialog> createState() =>
+      _InteractiveSpotlightDialogState();
+}
+
+class _InteractiveSpotlightDialogState
+    extends State<_InteractiveSpotlightDialog>
+    with TickerProviderStateMixin {
+  late final AnimationController _pulseCtrl;
+  late final AnimationController _arrowCtrl;
+  int _currentStep = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    )..repeat(reverse: true);
+
+    _arrowCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _pulseCtrl.dispose();
+    _arrowCtrl.dispose();
+    super.dispose();
+  }
+
+  void _nextStep() {
+    iosTapBuzz();
+    if (_currentStep < widget.steps.length - 1) {
+      setState(() => _currentStep++);
+    } else {
+      triumphBuzz();
+      Navigator.of(context, rootNavigator: true).pop();
+      widget.onComplete?.call();
+    }
+  }
+
+  void _prevStep() {
+    iosTapBuzz();
+    if (_currentStep > 0) {
+      setState(() => _currentStep--);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.steps.isEmpty) return const SizedBox.shrink();
+    final step = widget.steps[_currentStep];
+    final progress = (_currentStep + 1) / widget.steps.length;
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Konten Tengah dan Bawah
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+              child: Column(
+                children: [
+                  // Header Atas: Badge Judul & Tombol Tutup
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: step.accentColor.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            color: step.accentColor.withValues(alpha: 0.5),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.auto_awesome_rounded,
+                              color: step.accentColor,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              widget.tutorialTitle.toUpperCase(),
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w700,
+                                color: step.accentColor,
+                                letterSpacing: 0.8,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.close_rounded,
+                          color: Colors.white70,
+                          size: 22,
+                        ),
+                        onPressed: () =>
+                            Navigator.of(context, rootNavigator: true).pop(),
+                      ),
+                    ],
+                  ),
+
+                  const Spacer(),
+
+                  // SPOTLIGHT PULSING FRAME DENGAN ANIMATED POINTER ARROW
+                  AnimatedBuilder(
+                    animation: Listenable.merge([_pulseCtrl, _arrowCtrl]),
+                    builder: (context, _) {
+                      final pulseVal = _pulseCtrl.value;
+                      final arrowVal = _arrowCtrl.value;
+
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Bouncing Pointer Arrow
+                          Transform.translate(
+                            offset: Offset(0, arrowVal * 12),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: step.accentColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: step.accentColor.withValues(
+                                          alpha: 0.6,
+                                        ),
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Text(
+                                    'PERHATIKAN BAGIAN INI',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                      letterSpacing: 0.6,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Icon(
+                                  Icons.arrow_downward_rounded,
+                                  color: step.accentColor,
+                                  size: 34,
+                                  shadows: [
+                                    Shadow(
+                                      color: step.accentColor.withValues(
+                                        alpha: 0.8,
+                                      ),
+                                      blurRadius: 12,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+
+                          // Glowing Spotlight Showcase Container
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff0F172A),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: step.accentColor.withValues(
+                                  alpha: 0.6 + (0.4 * pulseVal),
+                                ),
+                                width: 2.2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: step.accentColor.withValues(
+                                    alpha: 0.25 + (0.35 * pulseVal),
+                                  ),
+                                  blurRadius: 20 + (10 * pulseVal),
+                                  spreadRadius: 2 + (2 * pulseVal),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 52,
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                    color: step.accentColor.withValues(
+                                      alpha: 0.18,
+                                    ),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: step.accentColor.withValues(
+                                        alpha: 0.4,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    step.icon,
+                                    color: step.accentColor,
+                                    size: 28,
+                                  ),
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      if (step.featureTag != null)
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            bottom: 4,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 7,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: step.accentColor.withValues(
+                                              alpha: 0.2,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              6,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            step.featureTag!,
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              fontSize: 9.5,
+                                              fontWeight: FontWeight.w700,
+                                              color: step.accentColor,
+                                            ),
+                                          ),
+                                        ),
+                                      Text(
+                                        step.title,
+                                        style: const TextStyle(
+                                          fontFamily: 'Inter',
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        step.category,
+                                        style: const TextStyle(
+                                          fontFamily: 'Inter',
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xff94A3B8),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+
+                  const Spacer(),
+
+                  // GUIDANCE CARD DENGAN PENJELASAN LENGKAP & STEP CONTROLLER
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff1E293B),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: const Color(0xff334155)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.4),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Progress Bar & Step Counter
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Langkah  dari ',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: step.accentColor,
+                              ),
+                            ),
+                            Text(
+                              '% Selesai',
+                              style: const TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff94A3B8),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: LinearProgressIndicator(
+                            value: progress,
+                            minHeight: 5,
+                            backgroundColor: const Color(0xff334155),
+                            valueColor: AlwaysStoppedAnimation(
+                              step.accentColor,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        // Title & Detail Description
+                        Text(
+                          step.title,
+                          style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          step.description,
+                          style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12.5,
+                            color: Color(0xffCBD5E1),
+                            height: 1.45,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Tips Praktis Box
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xff0F172A),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: step.accentColor.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.tips_and_updates_rounded,
+                                color: step.accentColor,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  step.tip,
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: step.accentColor,
+                                    height: 1.35,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Action Buttons: Lewati, Sebelumnya, Lanjut
+                        Row(
+                          children: [
+                            if (_currentStep > 0)
+                              OutlinedButton(
+                                onPressed: _prevStep,
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: const Color(0xffCBD5E1),
+                                  side: const BorderSide(
+                                    color: Color(0xff475569),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 12,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Kembali',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )
+                            else
+                              TextButton(
+                                onPressed: () => Navigator.of(
+                                  context,
+                                  rootNavigator: true,
+                                ).pop(),
+                                child: const Text(
+                                  'Lewati',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 12,
+                                    color: Color(0xff94A3B8),
+                                  ),
+                                ),
+                              ),
+                            const Spacer(),
+                            ElevatedButton(
+                              onPressed: _nextStep,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: step.accentColor,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                                elevation: 4,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    _currentStep == widget.steps.length - 1
+                                        ? 'Paham & Selesai!'
+                                        : 'Lanjut',
+                                    style: const TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 12.5,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Icon(
+                                    _currentStep == widget.steps.length - 1
+                                        ? Icons.check_circle_rounded
+                                        : Icons.arrow_forward_rounded,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
