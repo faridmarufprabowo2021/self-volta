@@ -1,0 +1,186 @@
+{
+  "pola": [
+    {
+      "k": "A",
+      "t": "A | Telur + Tempe + Bening Bayam (otot)",
+      "b": 22500,
+      "belanja": "Telur 5 (10rb) + Tempe 1/2 (2,5rb) + Bayam 1 (3rb) + Wortel (4rb) + Labu 1 (3rb) + bumbu stok: bawang merah 3 siung + bawang putih 2 siung + garam 2 sdt + gula 1 sdt (dari stok, Rp0)",
+      "cara": "[MC] Nasi + telur utuh 12 mnt + tempe di atas nasi sampai matang. [PL] Didihkan air, wortel+labu 5 mnt, bayam+bawang+garam stok 3 mnt."
+    },
+    {
+      "k": "B",
+      "t": "B | Tahu + Telur + Sawi (otot)",
+      "b": 21000,
+      "belanja": "Tahu 5 (5rb) + Telur 3 (6rb) + Sawi putih (4rb) + Wortel (4rb) + Timun 2 (2rb) + bumbu stok: bawang merah 3 siung + bawang putih 2 siung + garam 2 sdt + gula 1 sdt (dari stok, Rp0)",
+      "cara": "[PL] Rebus tahu 8 mnt angkat. Air sama buat wortel+sawi 6 mnt + timun 3 mnt. [MC] Telur rebus bareng nasi."
+    },
+    {
+      "k": "C",
+      "t": "C | Tempe + Telur + Sup Labu (otot)",
+      "b": 19000,
+      "belanja": "Tempe 1 (5rb) + Telur 2 (4rb) + Labu 1 (3rb) + Wortel (4rb) + Sawi hijau (3rb) + bumbu stok: bawang merah 3 siung + bawang putih 2 siung + garam 2 sdt + gula 1 sdt (dari stok, Rp0)",
+      "cara": "[MC] Tempe di atas nasi sampai matang. [PL] Sup labu+wortel 7 mnt, sawi 3 mnt. Telur ceplok air: pecah di air mendidih 4 mnt."
+    },
+    {
+      "k": "D",
+      "t": "D | Ayam + Tahu Bening (mingguan otot)",
+      "b": 22000,
+      "belanja": "Ayam dada 1/4 tanpa kulit (9rb) + Tahu 2 (2rb) + Kentang (4rb) + Wortel (4rb) + Bayam (3rb) + bumbu stok: bawang merah 3 siung + bawang putih 2 siung + garam 2 sdt + gula 1 sdt (dari stok, Rp0)",
+      "cara": "[PL] Rebus ayam+bawang putih+garam stok 20 mnt, buang busa. Masuk kentang+wortel 10 mnt, tahu+bayam 3 mnt. [MC] Nasi seperti biasa."
+    },
+    {
+      "k": "E",
+      "t": "E | Lele + Tempe + Kelor (otot)",
+      "b": 19500,
+      "belanja": "Lele 2 kecil (7rb) + Tempe 1/2 (2,5rb) + Kelor 1 (3rb) + Labu 1 (3rb) + Wortel (4rb) + bumbu stok: bawang merah 3 siung + bawang putih 2 siung + garam 2 sdt + gula 1 sdt (dari stok, Rp0)",
+      "cara": "[PL] Rebus air+bawang stok, masuk lele 12 mnt jangan diaduk. Masuk labu+wortel 6 mnt, kelor 2 mnt. [MC] Tempe kukus di atas nasi."
+    },
+    {
+      "k": "F",
+      "t": "F | Nila + Tahu + Oyong (otot)",
+      "b": 19000,
+      "belanja": "Nila 2 kecil (8rb) + Tahu 3 (3rb) + Oyong 1 buah sedang +/- 300g (4rb) + Wortel (4rb) + bumbu stok: bawang merah 3 siung + bawang putih 2 siung + garam 2 sdt + gula 1 sdt (dari stok, Rp0)",
+      "cara": "[MC] Nasi setengah matang, taruh mangkok nila+bawang+garam stok di atas beras sampai jeglek. [PL] Bening oyong+wortel+tahu 8 mnt. Oyong pasar +/- Rp13rb/kg."
+    },
+    {
+      "k": "G",
+      "t": "G | Telur + Tempe + Kentang (otot)",
+      "b": 21500,
+      "belanja": "Telur 4 (8rb) + Tempe 1/2 (2,5rb) + Sawi hijau/putih (3rb) + Kentang (4rb) + Wortel (4rb) + bumbu stok: bawang merah 3 siung + bawang putih 2 siung + garam 2 sdt + gula 1 sdt (dari stok, Rp0)",
+      "cara": "[MC] Kocok telur+air 1:1+garam stok di mangkok, kukus di atas nasi 15 mnt + tempe. [PL] Sup kentang+wortel 10 mnt, sawi 3 mnt."
+    }
+  ],
+  "macro": {
+    "A": {
+      "k": 790,
+      "p": 61,
+      "c": 55,
+      "l": 40,
+      "s": 12
+    },
+    "B": {
+      "k": 630,
+      "p": 58,
+      "c": 40,
+      "l": 32,
+      "s": 9
+    },
+    "C": {
+      "k": 800,
+      "p": 62,
+      "c": 70,
+      "l": 36,
+      "s": 10
+    },
+    "D": {
+      "k": 750,
+      "p": 84,
+      "c": 78,
+      "l": 14,
+      "s": 8
+    },
+    "E": {
+      "k": 610,
+      "p": 65,
+      "c": 49,
+      "l": 20,
+      "s": 8
+    },
+    "F": {
+      "k": 510,
+      "p": 60,
+      "c": 34,
+      "l": 15,
+      "s": 7
+    },
+    "G": {
+      "k": 890,
+      "p": 56,
+      "c": 97,
+      "l": 34,
+      "s": 10
+    }
+  },
+  "booster": [
+    {
+      "lb": "Nasi +200g (1 piring ekstra)",
+      "k": 260,
+      "p": 5,
+      "bi": 1400
+    },
+    {
+      "lb": "Tempe 100g (kukus MC)",
+      "k": 150,
+      "p": 16,
+      "bi": 1000
+    },
+    {
+      "lb": "Telur 1 butir (rebus/kukus)",
+      "k": 75,
+      "p": 6,
+      "bi": 2000
+    },
+    {
+      "lb": "Pisang 200g (1-2 buah)",
+      "k": 190,
+      "p": 1,
+      "bi": 2800
+    },
+    {
+      "lb": "Ubi 150g (kukus)",
+      "k": 135,
+      "p": 1,
+      "bi": 2000
+    }
+  ],
+  "combos": [
+    {
+      "id": 1,
+      "name": "Termurah A+B+C",
+      "polas": [
+        "A",
+        "B",
+        "C"
+      ],
+      "note": "6 hari hemat, tanpa ayam/ikan. Cocok awal bulan."
+    },
+    {
+      "id": 2,
+      "name": "Ayam D+G",
+      "polas": [
+        "D",
+        "G"
+      ],
+      "note": "4 hari protein ayam + telur, tetap 1 panci PL/MC."
+    },
+    {
+      "id": 3,
+      "name": "Ikan E+F",
+      "polas": [
+        "E",
+        "F"
+      ],
+      "note": "4 hari ikan, kukus MC + bening PL, ramah lambung."
+    },
+    {
+      "id": 4,
+      "name": "Gampang A+G",
+      "polas": [
+        "A",
+        "G"
+      ],
+      "note": "4 hari telur saja, paling simpel pisau+MC/PL."
+    },
+    {
+      "id": 5,
+      "name": "Mix 8 Hari",
+      "polas": [
+        "A",
+        "D",
+        "E",
+        "F"
+      ],
+      "note": "8 hari bervariasi, rolling mingguan."
+    }
+  ]
+}
