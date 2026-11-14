@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../data.dart';
 import '../store.dart';
-import '../theme.dart';
 import '../widgets.dart';
 
 // Palet "Kertas & Tinta" untuk halaman Uang: kanvas terang, kartu putih
@@ -124,22 +123,21 @@ class _KSectionHead extends StatelessWidget {
 class _KIconBox extends StatelessWidget {
   final IconData icon;
   final Color color;
-  final double size;
 
-  const _KIconBox({required this.icon, this.color = _kNavy, this.size = 36});
+  const _KIconBox({required this.icon, this.color = _kNavy});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size,
-      height: size,
+      width: 36,
+      height: 36,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: _kCanvas,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: _kBorder),
       ),
-      child: Icon(icon, size: size * 0.48, color: color),
+      child: Icon(icon, size: 17, color: color),
     );
   }
 }
@@ -154,70 +152,67 @@ class KeuanganPage extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (ctx) => Container(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          color: _kCanvas,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 44,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Star.lineSoft,
-                  borderRadius: BorderRadius.circular(10),
+        child: SafeArea(
+          top: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: _kBorder,
+                    borderRadius: BorderRadius.circular(99),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF0D9488).withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  const _KIconBox(
+                    icon: Icons.calculate_outlined,
+                    color: _kNavy,
                   ),
-                  child: const Icon(
-                    Icons.calculate_rounded,
-                    color: Color(0xFF0D9488),
-                    size: 22,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Kalkulator Pengeluaran Cepat',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                          color: Star.ink,
+                  const SizedBox(width: 10),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Kalkulator',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            letterSpacing: -0.3,
+                            color: _kNavy,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Hitung simulasi belanja & estimasi harga per porsi',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 11,
-                          color: Star.mut,
+                        SizedBox(height: 1),
+                        Text(
+                          'Hitung belanja & harga per porsi',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 11.5,
+                            color: _kSlate,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            const _Calc(),
-          ],
+                ],
+              ),
+              const SizedBox(height: 14),
+              const _Calc(),
+            ],
+          ),
         ),
       ),
     );
@@ -232,7 +227,7 @@ class KeuanganPage extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Row(
           children: [
-            Icon(Icons.piano_rounded, color: Color(0xFFD97706)),
+            Icon(Icons.piano_rounded, color: _kAmberDark),
             SizedBox(width: 8),
             Text(
               'Setor Tabungan Piano',
@@ -250,7 +245,7 @@ class KeuanganPage extends StatelessWidget {
           children: [
             const Text(
               'Target Rp1.500.000 untuk keyboard/piano impian.',
-              style: TextStyle(fontSize: 12, color: Star.mut),
+              style: TextStyle(fontSize: 12, color: _kSlate),
             ),
             const SizedBox(height: 14),
             TextField(
@@ -297,7 +292,7 @@ class KeuanganPage extends StatelessWidget {
                 Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: const Color(0xFFD97706),
+                    backgroundColor: _kAmberDark,
                     content: Text(
                       'Berhasil menyetor Rp$raw ke Target Piano! (+20 XP)',
                     ),
@@ -306,7 +301,7 @@ class KeuanganPage extends StatelessWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD97706),
+              backgroundColor: _kAmberDark,
               foregroundColor: Colors.white,
             ),
             child: const Text('Simpan Setoran'),
@@ -501,8 +496,7 @@ class KeuanganPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      'Terpakai $pctUsed% · ${rp(totalOut)} dari ${rp(budget)}'
-                      ' · jatah ${rp(jatahHarian)}/hari',
+                      '$pctUsed% terpakai · jatah ${rp(jatahHarian)}/hari',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -751,45 +745,29 @@ class KeuanganPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'LAPORAN BULAN INI',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.1,
-              color: _kSlate,
-            ),
-          ),
-          const SizedBox(height: 5),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Expanded(
                 child: Text(
-                  'Laporan & Keuangan',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  'LAPORAN BULAN INI',
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 25,
-                    height: 1.15,
+                    fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    letterSpacing: -0.7,
-                    color: _kNavy,
+                    letterSpacing: 1.1,
+                    color: _kSlate,
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
               SizedBox(
-                height: 34,
+                height: 32,
                 child: OutlinedButton.icon(
                   onPressed: () => _showKeuanganTutorial(context),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: _kNavy,
                     side: const BorderSide(color: _kBorder),
-                    minimumSize: const Size(0, 34),
-                    padding: const EdgeInsets.symmetric(horizontal: 11),
+                    minimumSize: const Size(0, 32),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(999),
@@ -800,11 +778,25 @@ class KeuanganPage extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  icon: const Icon(Icons.menu_book_outlined, size: 15),
+                  icon: const Icon(Icons.menu_book_outlined, size: 14),
                   label: const Text('Panduan'),
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Laporan & Keuangan',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 25,
+              height: 1.15,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.7,
+              color: _kNavy,
+            ),
           ),
           const SizedBox(height: 4),
           const Text(
@@ -1193,51 +1185,52 @@ class _CalcState extends State<_Calc> {
 
   @override
   Widget build(BuildContext context) {
-    final c = Themes.keuangan;
+    final ops = ['+', '-', '×', '÷', '(', ')'];
     return Column(
       children: [
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
-            color: Star.sunken,
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.4),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-            border: Border.all(color: c.acc, width: 2),
+            color: _kCard,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: _kBorder),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                'Kalkulator',
+              const Text(
+                'HASIL',
                 style: TextStyle(
-                  color: Star.mut,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Inter',
+                  fontSize: 9.5,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.1,
+                  color: _kSlate,
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                expr.isEmpty ? '0' : expr,
-                style: const TextStyle(
-                  color: Star.star,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -1,
+              const SizedBox(height: 3),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  expr.isEmpty ? '0' : expr,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 30,
+                    height: 1.1,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.8,
+                    color: _kNavy,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
         for (final row in [
           ['C', '(', ')', 'DEL'],
           ['7', '8', '9', '÷'],
@@ -1250,33 +1243,43 @@ class _CalcState extends State<_Calc> {
               for (final k in row)
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(3),
                     child: AspectRatio(
-                      aspectRatio: 1.0,
+                      aspectRatio: 1.45,
                       child: FilledButton(
                         onPressed: () => press(k),
                         style: FilledButton.styleFrom(
                           backgroundColor: k == '='
-                              ? Star.star
+                              ? _kNavy
                               : k == 'C' || k == 'DEL'
-                              ? Star.error.withValues(alpha: .18)
-                              : (['+', '-', '×', '÷', '(', ')'].contains(k)
-                                    ? Star.nebula.withValues(alpha: .22)
-                                    : Star.surface2),
+                              ? _kAmberDark.withValues(alpha: 0.10)
+                              : ops.contains(k)
+                              ? _kCyanPill
+                              : _kCard,
                           foregroundColor: k == '='
                               ? Colors.white
                               : k == 'C' || k == 'DEL'
-                              ? Star.error
-                              : Star.ink,
+                              ? _kAmberDark
+                              : _kNavy,
                           padding: EdgeInsets.zero,
-                          shape: const CircleBorder(),
-                          elevation: k == '=' ? 4 : 0,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(
+                              color: k == '='
+                                  ? _kNavy
+                                  : k == 'C' || k == 'DEL'
+                                  ? _kAmberDark.withValues(alpha: 0.22)
+                                  : _kBorder,
+                            ),
+                          ),
                         ),
                         child: Text(
                           k,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: k == 'DEL' ? 12 : 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
@@ -1480,11 +1483,7 @@ class _TxnInputState extends State<_TxnInput> {
         const SizedBox(height: 8),
         const Text(
           'Tersimpan otomatis di perangkat ini.',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 10.5,
-            color: _kSlate,
-          ),
+          style: TextStyle(fontFamily: 'Inter', fontSize: 10.5, color: _kSlate),
         ),
       ],
     );
@@ -1523,8 +1522,7 @@ class _TxnTable extends StatelessWidget {
       children: [
         for (var i = 0; i < rows.length; i++) ...[
           _row(rows[i]),
-          if (i != rows.length - 1)
-            const Divider(height: 1, color: _kBorder),
+          if (i != rows.length - 1) const Divider(height: 1, color: _kBorder),
         ],
       ],
     );
@@ -1547,9 +1545,7 @@ class _TxnTable extends StatelessWidget {
               border: Border.all(color: _kBorder),
             ),
             child: Icon(
-              masuk
-                  ? Icons.south_west_rounded
-                  : Icons.north_east_rounded,
+              masuk ? Icons.south_west_rounded : Icons.north_east_rounded,
               size: 15,
               color: accent,
             ),
@@ -1663,11 +1659,7 @@ class _DayGrid extends StatelessWidget {
                 color: _kSlate,
               ),
             ),
-            children: const [
-              _Chart(),
-              SizedBox(height: 10),
-              _TrendLine(),
-            ],
+            children: const [_Chart(), SizedBox(height: 10), _TrendLine()],
           ),
         ),
       ],
@@ -1677,7 +1669,8 @@ class _DayGrid extends StatelessWidget {
   Widget _day(int h, AppState st) {
     final out = st.txnByDay(h);
     final over = out > 25000;
-    final today = DateTime.now().day == h &&
+    final today =
+        DateTime.now().day == h &&
         st.calMonth == DateTime.now().month &&
         st.calYear == DateTime.now().year;
     final accent = over ? _kAmberDark : _kNavy;
@@ -1956,43 +1949,60 @@ class _MoneyCalendar extends StatelessWidget {
         final blanks = DateTime(st.calYear, st.calMonth, 1).weekday - 1;
         final now = DateTime.now();
         final isThis = st.calYear == now.year && st.calMonth == now.month;
-        return SoftCard(
+        return _KCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HRow(
-                Icons.calendar_month_rounded,
-                'keuangan',
-                'Kalender Uang',
-                'Tap tanggal: pemasukan & pengeluaran hari itu',
+              const _KSectionHead(
+                eyebrow: 'Kalender',
+                title: 'Kalender Uang',
+                subtitle:
+                    'Tap tanggal untuk lihat pemasukan & pengeluaran hari itu.',
               ),
               const SizedBox(height: 12),
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () => st.goMonth(st.calYear, st.calMonth - 1),
-                    icon: const Icon(Icons.chevron_left_rounded),
-                    tooltip: 'Bulan lalu',
+                  _navButton(
+                    Icons.chevron_left_rounded,
+                    'Bulan lalu',
+                    () => st.goMonth(st.calYear, st.calMonth - 1),
                   ),
                   Expanded(
                     child: Text(
                       '${BULAN_ID[st.calMonth]} ${st.calYear}',
                       textAlign: TextAlign.center,
-                      style: AppText.cardTitle,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w700,
+                        color: _kNavy,
+                      ),
                     ),
                   ),
+                  _navButton(
+                    Icons.chevron_right_rounded,
+                    'Bulan depan',
+                    () => st.goMonth(st.calYear, st.calMonth + 1),
+                  ),
+                  const SizedBox(width: 2),
                   TextButton(
                     onPressed: () => st.goToday(),
+                    style: TextButton.styleFrom(
+                      foregroundColor: _kNavy,
+                      minimumSize: const Size(0, 32),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      textStyle: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     child: const Text('Hari ini'),
-                  ),
-                  IconButton(
-                    onPressed: () => st.goMonth(st.calYear, st.calMonth + 1),
-                    icon: const Icon(Icons.chevron_right_rounded),
-                    tooltip: 'Bulan depan',
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   for (final d in const [
@@ -2008,21 +2018,24 @@ class _MoneyCalendar extends StatelessWidget {
                       child: Text(
                         d,
                         textAlign: TextAlign.center,
-                        style: AppText.secondary.copyWith(
-                          fontWeight: FontWeight.w700,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: _kSlate,
                         ),
                       ),
                     ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 7,
-                mainAxisSpacing: 6,
-                crossAxisSpacing: 6,
-                childAspectRatio: 0.82,
+                mainAxisSpacing: 2,
+                crossAxisSpacing: 2,
+                childAspectRatio: 0.92,
                 children: [
                   for (var i = 0; i < blanks; i++) const SizedBox.shrink(),
                   for (var d = 1; d <= dim; d++)
@@ -2034,37 +2047,63 @@ class _MoneyCalendar extends StatelessWidget {
                     ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 8,
-                    height: 8,
+                    width: 6,
+                    height: 6,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Star.success,
+                      color: _kNavy,
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  const Text('Masuk', style: AppText.secondary),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 5),
+                  const Text(
+                    'Masuk',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 10.5,
+                      color: _kSlate,
+                    ),
+                  ),
+                  const SizedBox(width: 14),
                   Container(
-                    width: 8,
-                    height: 8,
+                    width: 6,
+                    height: 6,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Star.error,
+                      color: _kAmberDark,
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  const Text('Keluar', style: AppText.secondary),
+                  const SizedBox(width: 5),
+                  const Text(
+                    'Keluar',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 10.5,
+                      color: _kSlate,
+                    ),
+                  ),
                 ],
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _navButton(IconData icon, String tooltip, VoidCallback onTap) {
+    return IconButton(
+      onPressed: onTap,
+      icon: Icon(icon, size: 19),
+      color: _kNavy,
+      tooltip: tooltip,
+      padding: EdgeInsets.zero,
+      visualDensity: VisualDensity.compact,
+      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
     );
   }
 }
@@ -2078,57 +2117,63 @@ class _MoneyDay extends StatelessWidget {
     required this.hasIn,
     required this.hasOut,
   });
+
   @override
   Widget build(BuildContext context) {
     return PopTap(
       onTap: () => showMoneyDay(context, day),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        decoration: BoxDecoration(
-          color: isToday ? Themes.keuangan.accBg : Star.surface2,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isToday ? Themes.keuangan.acc : Star.overlay,
-            width: isToday ? 2 : 1,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
+      borderRadius: BorderRadius.circular(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 28,
+            height: 28,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isToday ? _kNavy : Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+            child: Text(
               '$day',
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
-                fontWeight: FontWeight.w700,
-                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                fontSize: 12.5,
+                color: isToday ? Colors.white : _kNavy,
               ),
             ),
-            const SizedBox(height: 4),
-            Row(
+          ),
+          const SizedBox(height: 3),
+          SizedBox(
+            height: 5,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 6,
-                  height: 6,
-                  margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: hasIn ? Star.success : Star.overlay,
+                if (hasIn)
+                  Container(
+                    width: 5,
+                    height: 5,
+                    margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _kNavy,
+                    ),
                   ),
-                ),
-                Container(
-                  width: 6,
-                  height: 6,
-                  margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: hasOut ? Star.error : Star.overlay,
+                if (hasOut)
+                  Container(
+                    width: 5,
+                    height: 5,
+                    margin: const EdgeInsets.symmetric(horizontal: 1.5),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _kAmberDark,
+                    ),
                   ),
-                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -2140,9 +2185,9 @@ void showMoneyDay(BuildContext context, int day) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: Star.surface,
+    backgroundColor: _kCanvas,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (_) => DraggableScrollableSheet(
       expand: false,
@@ -2159,128 +2204,114 @@ void showMoneyDay(BuildContext context, int day) {
           final dayTxns = st.txnsSel.where((t) => t.hari == day).toList();
           return ListView(
             controller: scrollCtrl,
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
             children: [
               Center(
                 child: Container(
-                  width: 44,
+                  width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Star.overlay,
+                    color: _kBorder,
                     borderRadius: BorderRadius.circular(99),
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               Text(
-                '${HARI_ID[DateTime(st.calYear, st.calMonth, day).weekday]}, $day ${BULAN_ID[st.calMonth]} ${st.calYear}',
+                '${HARI_ID[DateTime(st.calYear, st.calMonth, day).weekday]}, '
+                '$day ${BULAN_ID[st.calMonth]} ${st.calYear}',
                 style: const TextStyle(
+                  fontFamily: 'Inter',
                   fontWeight: FontWeight.w700,
-                  fontSize: 17,
+                  fontSize: 18,
+                  letterSpacing: -0.4,
+                  color: _kNavy,
                 ),
               ),
               const SizedBox(height: 12),
               // WAJIB: ringkasan pemasukan + pengeluaran hari itu.
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
                 decoration: BoxDecoration(
-                  color: Themes.keuangan.accBg,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Themes.keuangan.acc.withValues(alpha: .4),
-                  ),
+                  color: _kCard,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: _kBorder),
                 ),
                 child: Column(
                   children: [
                     _MoneyRow(
                       'Pemasukan',
                       '+${rp(inc)}',
-                      Star.success,
-                      Icons.arrow_downward_rounded,
+                      _kNavy,
+                      Icons.south_west_rounded,
                     ),
                     const SizedBox(height: 8),
                     _MoneyRow(
                       'Pengeluaran',
-                      '-${rp(out)}',
-                      Star.error,
-                      Icons.arrow_upward_rounded,
+                      '−${rp(out)}',
+                      _kAmberDark,
+                      Icons.north_east_rounded,
                     ),
-                    const Divider(height: 20),
+                    const Divider(height: 20, color: _kBorder),
                     _MoneyRow(
                       'Sisa hari itu',
                       rp(inc - out),
-                      Star.star,
-                      Icons.account_balance_wallet_rounded,
+                      _kNavy,
+                      Icons.account_balance_wallet_outlined,
                       bold: true,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               // CAL_DAY_INPUT: catat pemasukan/pengeluaran langsung di
               // tanggal terpilih (hari TERKUNCI, tak perlu isi manual).
               _MoneyDayInput(day: day),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Text(
                 'Transaksi hari ini (${dayTxns.length})',
-                style: AppText.cardTitle.copyWith(fontSize: 14),
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.5,
+                  color: _kNavy,
+                ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               if (dayTxns.isEmpty)
-                Text(
+                const Text(
                   'Belum ada — catat lewat form di atas.',
-                  style: AppText.secondary.copyWith(height: 1.7),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11.5,
+                    height: 1.5,
+                    color: _kSlate,
+                  ),
                 )
               else
-                for (final t in dayTxns)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: RowItem(
-                      Icon(
-                        t.kat == 'masuk'
-                            ? Icons.arrow_downward_rounded
-                            : Icons.arrow_upward_rounded,
-                        size: 14,
-                        color: t.kat == 'masuk' ? Star.success : Star.error,
-                      ),
-                      t.kat,
-                      t.ket,
-                      lh: 1.7,
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '${t.kat == 'masuk' ? '+' : '-'}${rp(t.jml)}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 13,
-                              height: 1.7,
-                              color: t.kat == 'masuk'
-                                  ? Star.success
-                                  : Star.error,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          IconButton(
-                            icon: const Icon(Icons.close_rounded, size: 18),
-                            onPressed: () => st.delTxn(t.id),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              const SizedBox(height: 12),
+                for (final t in dayTxns) _DayTxnRow(t: t, st: st),
+              const SizedBox(height: 14),
               // OPSIONAL 1: toggle paket makan hari itu.
-              Text(
+              const Text(
                 'Paket hari ini (opsional)',
-                style: AppText.cardTitle.copyWith(fontSize: 14),
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.5,
+                  color: _kNavy,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 bebas
                     ? 'Tanggal 31 = Hari Bebas (di luar template).'
                     : 'Paket ${(day - 1) ~/ 2 + 1} · ${POLA[k]!.t.replaceAll(' (otot)', '')}',
-                style: AppText.secondary.copyWith(height: 1.7),
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11.5,
+                  height: 1.5,
+                  color: _kSlate,
+                ),
               ),
               const SizedBox(height: 8),
               if (!bebas)
@@ -2288,14 +2319,24 @@ void showMoneyDay(BuildContext context, int day) {
                   _MoneyMealToggle(day: day, slot: m),
               // OPSIONAL 2: catatan menu lain di luar template (bebas >3).
               const SizedBox(height: 12),
-              Text(
+              const Text(
                 'Menu lain hari ini (opsional)',
-                style: AppText.cardTitle.copyWith(fontSize: 14),
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.5,
+                  color: _kNavy,
+                ),
               ),
               const SizedBox(height: 4),
-              Text(
+              const Text(
                 'Makanan di luar template? Catat di sini, boleh lebih dari 3.',
-                style: AppText.secondary.copyWith(height: 1.7),
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11.5,
+                  height: 1.5,
+                  color: _kSlate,
+                ),
               ),
               const SizedBox(height: 8),
               _MoneyNotes(day: day),
@@ -2308,6 +2349,77 @@ void showMoneyDay(BuildContext context, int day) {
       ),
     ),
   );
+}
+
+class _DayTxnRow extends StatelessWidget {
+  final Txn t;
+  final AppState st;
+  const _DayTxnRow({required this.t, required this.st});
+
+  @override
+  Widget build(BuildContext context) {
+    final masuk = t.kat == 'masuk';
+    final accent = masuk ? _kNavy : _kAmberDark;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Icon(
+            masuk ? Icons.south_west_rounded : Icons.north_east_rounded,
+            size: 15,
+            color: accent,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  t.ket,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: _kNavy,
+                  ),
+                ),
+                Text(
+                  t.kat,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 10.5,
+                    color: _kSlate,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            '${masuk ? '+' : '−'}${rp(t.jml)}',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+              color: accent,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+          const SizedBox(width: 2),
+          IconButton(
+            onPressed: () => st.delTxn(t.id),
+            icon: const Icon(Icons.close_rounded, size: 15),
+            color: _kSlate,
+            tooltip: 'Hapus transaksi',
+            padding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// Form catat cepat di sheet tanggal (CAL_DAY_INPUT): hari TERKUNCI =
@@ -2356,95 +2468,143 @@ class _MoneyDayInputState extends State<_MoneyDayInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Catat tgl ${widget.day}',
-          style: AppText.cardTitle.copyWith(fontSize: 14),
+    InputDecoration deco(String label, {String? prefix}) {
+      return InputDecoration(
+        labelText: label,
+        prefixText: prefix,
+        filled: true,
+        fillColor: _kCanvas,
+        labelStyle: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 13,
+          color: _kSlate,
         ),
-        const SizedBox(height: 8),
-        SizedBox(
-          width: double.infinity,
-          child: CupertinoSlidingSegmentedControl<int>(
-            groupValue: isMasuk ? 1 : 0,
-            backgroundColor: Star.sunken,
-            thumbColor: Colors.white,
-            padding: const EdgeInsets.all(4),
-            children: const {
-              0: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  'Keluar',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+        prefixStyle: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 14,
+          color: _kSlate,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 13,
+          vertical: 14,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: _kBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: _kNavy, width: 1.4),
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: _kCard,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: _kBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Catat tgl ${widget.day}',
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w700,
+              fontSize: 13.5,
+              color: _kNavy,
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: CupertinoSlidingSegmentedControl<int>(
+              groupValue: isMasuk ? 1 : 0,
+              backgroundColor: _kCanvas,
+              thumbColor: Colors.white,
+              padding: const EdgeInsets.all(4),
+              children: const {
+                0: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    'Keluar',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: _kNavy,
+                    ),
+                  ),
                 ),
-              ),
-              1: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  'Masuk',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                1: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    'Masuk',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: _kNavy,
+                    ),
+                  ),
                 ),
-              ),
-            },
-            onValueChanged: (v) => setState(() => isMasuk = (v ?? 0) == 1),
+              },
+              onValueChanged: (v) => setState(() => isMasuk = (v ?? 0) == 1),
+            ),
           ),
-        ),
-        const SizedBox(height: 12),
-        TextField(
-          controller: ket,
-          decoration: const InputDecoration(
-            labelText: 'Keterangan',
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-          ),
-        ),
-        const SizedBox(height: 12),
-        TextField(
-          controller: jml,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            ThousandsSeparatorInputFormatter(),
-          ],
-          decoration: const InputDecoration(
-            labelText: 'Jumlah Rp',
-            prefixText: 'Rp ',
-            border: OutlineInputBorder(),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-          ),
-        ),
-        if (!isMasuk) ...[
           const SizedBox(height: 12),
-          DropdownButtonFormField<String>(
-            initialValue: kat,
-            items: const [
-              DropdownMenuItem(value: 'protein', child: Text('protein')),
-              DropdownMenuItem(value: 'sayur', child: Text('sayur')),
-              DropdownMenuItem(value: 'beras', child: Text('beras')),
-              DropdownMenuItem(value: 'lain', child: Text('lain')),
+          TextField(controller: ket, decoration: deco('Keterangan')),
+          const SizedBox(height: 10),
+          TextField(
+            controller: jml,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              ThousandsSeparatorInputFormatter(),
             ],
-            onChanged: (v) => setState(() => kat = v ?? 'lain'),
-            decoration: const InputDecoration(
-              labelText: 'Kategori',
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 16,
+            decoration: deco('Jumlah Rp', prefix: 'Rp '),
+          ),
+          if (!isMasuk) ...[
+            const SizedBox(height: 10),
+            DropdownButtonFormField<String>(
+              initialValue: kat,
+              items: const [
+                DropdownMenuItem(value: 'protein', child: Text('Protein')),
+                DropdownMenuItem(value: 'sayur', child: Text('Sayur')),
+                DropdownMenuItem(value: 'beras', child: Text('Beras')),
+                DropdownMenuItem(value: 'lain', child: Text('Lainnya')),
+              ],
+              onChanged: (v) => setState(() => kat = v ?? 'lain'),
+              decoration: deco('Kategori'),
+            ),
+          ],
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: FilledButton.icon(
+              onPressed: add,
+              style: FilledButton.styleFrom(
+                backgroundColor: _kNavy,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                textStyle: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+              icon: const Icon(Icons.add_rounded, size: 18),
+              label: Text('Simpan ke tgl ${widget.day}'),
             ),
           ),
         ],
-        const SizedBox(height: 12),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton.icon(
-            onPressed: add,
-            icon: const Icon(Icons.add_rounded),
-            label: Text('Simpan ke tgl ${widget.day}'),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -2465,15 +2625,16 @@ class _MoneyRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 18, color: color),
+        Icon(icon, size: 16, color: color),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             label,
             style: TextStyle(
+              fontFamily: 'Inter',
               fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
-              fontSize: 13,
-              height: 1.7,
+              fontSize: 12.5,
+              color: _kNavy,
             ),
           ),
         ),
@@ -2482,9 +2643,9 @@ class _MoneyRow extends StatelessWidget {
           style: TextStyle(
             fontFamily: 'Inter',
             fontWeight: FontWeight.w700,
-            fontSize: 14,
-            height: 1.6,
+            fontSize: 13.5,
             color: color,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
         ),
       ],
@@ -2503,25 +2664,34 @@ class _MoneyMealToggle extends StatelessWidget {
     final on = AppState.I.eaten[id] == true;
     const labels = ['', 'Pagi', 'Siang', 'Malam'];
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 6),
       child: PopTap(
         onTap: () => AppState.I.toggleEat(id),
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
-            color: on ? Star.success.withValues(alpha: .14) : Star.sunken,
+            color: on ? _kCyanPill : _kCard,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: on ? Star.success.withValues(alpha: .5) : Star.overlay,
-            ),
+            border: Border.all(color: on ? _kNavy : _kBorder),
           ),
           child: Row(
             children: [
-              Icon(
-                on ? Icons.check_circle_rounded : Icons.circle_outlined,
-                color: on ? Star.success : Star.faint,
-                size: 22,
+              Container(
+                width: 20,
+                height: 20,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: on ? _kAmber : Colors.transparent,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: on ? _kAmber : _kBorder,
+                    width: 1.5,
+                  ),
+                ),
+                child: on
+                    ? const Icon(Icons.check_rounded, size: 14, color: _kNavy)
+                    : null,
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -2529,10 +2699,18 @@ class _MoneyMealToggle extends StatelessWidget {
                   labels[slot],
                   style: const TextStyle(
                     fontFamily: 'Inter',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                    height: 1.6,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                    color: _kNavy,
                   ),
+                ),
+              ),
+              Text(
+                on ? 'Tercatat' : 'Belum',
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 10.5,
+                  color: _kSlate,
                 ),
               ),
             ],
@@ -2569,46 +2747,116 @@ class _MoneyNotesState extends State<_MoneyNotes> {
             Expanded(
               child: TextField(
                 controller: note,
-                decoration: const InputDecoration(
-                  labelText: 'Mis. sate 5 tusuk, es teh...',
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 16,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 13,
+                  color: _kNavy,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Mis. sate 5 tusuk, es teh...',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12.5,
+                    color: _kSlate,
+                  ),
+                  filled: true,
+                  fillColor: _kCanvas,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 13,
+                    vertical: 13,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: _kBorder),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: _kNavy, width: 1.4),
                   ),
                 ),
               ),
             ),
             const SizedBox(width: 8),
-            FilledButton.icon(
-              onPressed: () {
-                AppState.I.addNote(widget.day, note.text);
-                note.clear();
-              },
-              icon: const Icon(Icons.add_rounded, size: 18),
-              label: const Text('Tambah'),
+            SizedBox(
+              height: 44,
+              child: FilledButton(
+                onPressed: () {
+                  AppState.I.addNote(widget.day, note.text);
+                  note.clear();
+                },
+                style: FilledButton.styleFrom(
+                  backgroundColor: _kNavy,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  textStyle: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                child: const Text('Tambah'),
+              ),
             ),
           ],
         ),
         const SizedBox(height: 8),
         if (notes.isEmpty)
-          Text(
-            'Belum ada catatan hari ini.',
-            style: AppText.secondary.copyWith(height: 1.7),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Belum ada catatan hari ini.',
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 11.5,
+                height: 1.5,
+                color: _kSlate,
+              ),
+            ),
           )
         else
           for (final n in notes)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: RowItem(
-                const Icon(Icons.restaurant_rounded, size: 18, color: Star.mut),
-                n.text,
-                'Menu luar template',
-                lh: 1.7,
-                trailing: IconButton(
-                  icon: const Icon(Icons.close_rounded, size: 18),
-                  onPressed: () => AppState.I.delNote(n.id),
-                ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 6),
+              padding: const EdgeInsets.fromLTRB(10, 8, 4, 8),
+              decoration: BoxDecoration(
+                color: _kCard,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: _kBorder),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.restaurant_outlined,
+                    size: 15,
+                    color: _kSlate,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      n.text,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12.5,
+                        color: _kNavy,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded, size: 15),
+                    color: _kSlate,
+                    onPressed: () => AppState.I.delNote(n.id),
+                    tooltip: 'Hapus catatan',
+                    padding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.compact,
+                    constraints: const BoxConstraints(
+                      minWidth: 30,
+                      minHeight: 30,
+                    ),
+                  ),
+                ],
               ),
             ),
       ],
@@ -2624,53 +2872,52 @@ class _MoneyBooster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final on = AppState.I.hasBoosterDay(day);
-    return PopTap(
-      onTap: () => AppState.I.toggleBoosterDay(day),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: on ? Themes.booster.accBg : Star.sunken,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: on ? Themes.booster.acc.withValues(alpha: .5) : Star.overlay,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: on ? _kCyanPill : _kCard,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: on ? _kNavy : _kBorder),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            on ? Icons.bolt_rounded : Icons.bolt_outlined,
+            color: on ? _kCyan : _kSlate,
+            size: 19,
           ),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              on ? Icons.check_circle_rounded : Icons.circle_outlined,
-              color: on ? Themes.booster.acc : Star.faint,
-              size: 22,
-            ),
-            const SizedBox(width: 10),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Booster hari ini (opsional)',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      height: 1.6,
-                    ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Booster hari ini',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                    color: _kNavy,
                   ),
-                  Text(
-                    '±1.110 kkal · Protein 33gr · ±Rp10.900',
-                    style: AppText.secondary,
+                ),
+                Text(
+                  '±1.110 kkal · Protein 33gr · ±Rp10.900',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 10.5,
+                    height: 1.45,
+                    color: on ? _kNavy : _kSlate,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Switch.adaptive(
-              value: on,
-              activeThumbColor: Themes.booster.acc,
-              onChanged: (_) => AppState.I.toggleBoosterDay(day),
-            ),
-          ],
-        ),
+          ),
+          Switch.adaptive(
+            value: on,
+            activeTrackColor: _kNavy,
+            onChanged: (_) => AppState.I.toggleBoosterDay(day),
+          ),
+        ],
       ),
     );
   }
