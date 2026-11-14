@@ -480,12 +480,13 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Otot mengandung 75% air. Hidrasi optimal melipatgandakan kekuatan repetisi push-up & mencegah nyeri sendi.',
+                                'Otot mengandung 75% air. Hidrasi optimal menjaga kekuatan repetisi push-up dan mencegah nyeri sendi.',
                                 style: TextStyle(
                                   fontFamily: 'Manrope',
-                                  fontSize: 10,
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w500,
                                   color: Star.mut,
-                                  height: 1.35,
+                                  height: 1.5,
                                 ),
                               ),
                             ],
@@ -722,11 +723,12 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Hemat Rp 417.500/bulan! Uang hemat ini cukup untuk 8 papan telur (240 butir protein).',
+                              'Hemat Rp 417.500/bulan! Cukup untuk 8 papan telur (240 butir protein).',
                               style: TextStyle(
                                 fontFamily: 'Manrope',
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w700,
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w600,
+                                height: 1.45,
                                 color: Star.star,
                               ),
                             ),
@@ -973,7 +975,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                 time,
                 style: TextStyle(
                   fontFamily: 'Manrope',
-                  fontSize: 9.5,
+                  fontSize: 10.5,
                   fontWeight: FontWeight.w700,
                   color: checked ? Star.success : Star.star,
                 ),
@@ -991,7 +993,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                           title,
                           style: TextStyle(
                             fontFamily: 'Manrope',
-                            fontSize: 10.5,
+                            fontSize: 12.5,
                             fontWeight: FontWeight.w700,
                             color: checked ? Star.success : Star.ink,
                             decoration: checked
@@ -1024,10 +1026,12 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                   ),
                   Text(
                     desc,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 9,
-                      color: Star.mut,
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w500,
+                      height: 1.4,
+                      color: Star.ink.withValues(alpha: 0.7),
                     ),
                   ),
                 ],

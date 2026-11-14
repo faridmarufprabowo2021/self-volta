@@ -557,6 +557,314 @@ class InfoCard extends StatelessWidget {
   }
 }
 
+/// Label kecil uppercase dengan garis rambut horizontal di kanan.
+class _RuleLabel extends StatelessWidget {
+  final String text;
+  const _RuleLabel(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          text.toUpperCase(),
+          style: const TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 10.5,
+            fontWeight: FontWeight.w700,
+            height: 1.2,
+            letterSpacing: 0.9,
+            color: Star.star,
+          ),
+        ),
+        const SizedBox(width: 8),
+        const Expanded(
+          child: Divider(height: 1, thickness: 1, color: Star.line),
+        ),
+      ],
+    );
+  }
+}
+
+/// Catatan pinggir: penjelas yang menempel pada konten — datar, tanpa kartu,
+/// tanpa ikon hias, tanpa bayangan. Label uppercase ditutup garis rambut
+/// horizontal; body rata dengan konten, bukan menjorok seperti kutipan.
+class MarginNote extends StatelessWidget {
+  final String body;
+  final String? label;
+  final Widget? child;
+
+  const MarginNote(this.body, {super.key, this.label, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label != null) ...[_RuleLabel(label!), const SizedBox(height: 6)],
+          Text(
+            body,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 12.5,
+              fontWeight: FontWeight.w500,
+              height: 1.55,
+              color: Star.ink.withValues(alpha: 0.78),
+            ),
+          ),
+          if (child != null) ...[const SizedBox(height: 8), child!],
+        ],
+      ),
+    );
+  }
+}
+
+class _RecipeStep {
+  final String? section;
+  final String text;
+  const _RecipeStep(this.section, this.text);
+}
+
+/// Langkah masak sebagai daftar bernomor — bukan paragraf. Tag [MC] / [PL]
+/// di data lama dipakai sebagai label metode (Magic Com / Panci listrik).
+class RecipeSteps extends StatelessWidget {
+  final String text;
+  final String? label;
+
+  const RecipeSteps(this.text, {super.key, this.label = 'Langkah masak'});
+
+  @override
+  Widget build(BuildContext context) {
+    final steps = _parseRecipeSteps(text);
+    if (steps.isEmpty) return const SizedBox.shrink();
+
+    final children = <Widget>[];
+    for (var i = 0; i < steps.length; i++) {
+      final step = steps[i];
+      final section = step.section;
+      final isNewSection =
+          section != null && (i == 0 || steps[i - 1].section != section);
+      if (isNewSection) {
+        if (i > 0) children.add(const SizedBox(height: 10));
+        children.add(
+          Text(
+            section.toUpperCase(),
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 9,
+              fontWeight: FontWeight.w700,
+              height: 1.2,
+              letterSpacing: 0.9,
+              color: Star.mut,
+            ),
+          ),
+        );
+        children.add(const SizedBox(height: 6));
+      }
+      children.add(_RecipeStepRow(index: i + 1, text: step.text));
+      if (i < steps.length - 1) children.add(const SizedBox(height: 8));
+    }
+
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label != null) ...[_RuleLabel(label!), const SizedBox(height: 8)],
+          ...children,
+        ],
+      ),
+    );
+  }
+}
+
+class _RecipeStepRow extends StatelessWidget {
+  final int index;
+  final String text;
+
+  const _RecipeStepRow({required this.index, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 24,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 1.5),
+            child: Text(
+              index.toString().padLeft(2, '0'),
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+                height: 1.2,
+                letterSpacing: 0.2,
+                color: Star.star,
+                fontFeatures: [FontFeature.tabularFigures()],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 12.5,
+              fontWeight: FontWeight.w500,
+              height: 1.5,
+              color: Star.ink.withValues(alpha: 0.82),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+List<_RecipeStep> _parseRecipeSteps(String raw) {
+  final steps = <_RecipeStep>[];
+  final marker = RegExp(r'\[(MC|PL)\]');
+  final matches = marker.allMatches(raw).toList();
+
+  if (matches.isEmpty) {
+    _appendRecipeSteps(steps, null, raw);
+    return steps;
+  }
+
+  if (matches.first.start > 0) {
+    _appendRecipeSteps(steps, null, raw.substring(0, matches.first.start));
+  }
+  for (var i = 0; i < matches.length; i++) {
+    final start = matches[i].end;
+    final end = i + 1 < matches.length ? matches[i + 1].start : raw.length;
+    final section = matches[i].group(1) == 'MC' ? 'Magic Com' : 'Panci listrik';
+    _appendRecipeSteps(steps, section, raw.substring(start, end));
+  }
+  return steps;
+}
+
+void _appendRecipeSteps(List<_RecipeStep> out, String? section, String chunk) {
+  var text = chunk.trim();
+  if (text.isEmpty) return;
+
+  if (section == null) {
+    final colon = text.indexOf(':');
+    if (colon > 0 && colon <= 48) {
+      final head = text.substring(0, colon).trim();
+      if (head.isNotEmpty && !head.contains('.')) {
+        section = head;
+        text = text.substring(colon + 1).trim();
+      }
+    }
+  }
+
+  for (final sentence in _splitRecipeSentences(text)) {
+    final s = sentence.trim();
+    if (s.isEmpty) continue;
+    // Catatan harga di akhir resep bukan langkah masak.
+    if (s.contains('Rp') && !RegExp(r'\d+\s*(mnt|menit)').hasMatch(s)) {
+      continue;
+    }
+    out.add(_RecipeStep(section, s));
+  }
+}
+
+List<String> _splitRecipeSentences(String text) {
+  final out = <String>[];
+  final buffer = StringBuffer();
+  for (var i = 0; i < text.length; i++) {
+    final ch = text[i];
+    buffer.write(ch);
+    if (ch == '.' || ch == '!' || ch == '?') {
+      final hasNext = i + 1 < text.length;
+      final next = hasNext ? text[i + 1] : ' ';
+      if (!hasNext || next == ' ' || next == '\n') {
+        final sentence = buffer.toString().trim();
+        if (sentence.isNotEmpty) out.add(sentence);
+        buffer.clear();
+      }
+    }
+  }
+  final rest = buffer.toString().trim();
+  if (rest.isNotEmpty) out.add(rest);
+  return out;
+}
+
+/// Poin fakta ringkas: tanda pisah kecil sebagai penanda, bukan ikon centang.
+/// Dipakai untuk isi yang bukan urutan langkah — spesifikasi, patokan, isi rak.
+class FactList extends StatelessWidget {
+  final List<String> items;
+  final String? label;
+
+  const FactList(this.items, {super.key, this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.isEmpty) return const SizedBox.shrink();
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label != null) ...[_RuleLabel(label!), const SizedBox(height: 8)],
+          for (var i = 0; i < items.length; i++) ...[
+            if (i > 0) const SizedBox(height: 6),
+            _FactRow(items[i]),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _FactRow extends StatelessWidget {
+  final String text;
+
+  const _FactRow(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          width: 16,
+          child: Padding(
+            padding: EdgeInsets.only(top: 0.5),
+            child: Text(
+              '—',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                height: 1.55,
+                color: Star.star,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 12.5,
+              fontWeight: FontWeight.w500,
+              height: 1.5,
+              color: Star.ink.withValues(alpha: 0.82),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 /// Daftar poin rapi pengganti teks <br>-an: check + baris lega.
 class InfoList extends StatelessWidget {
   final List<String> items;
@@ -1270,49 +1578,17 @@ class MuscleFocusCard extends StatelessWidget {
               ),
               const SizedBox(height: 6),
 
-              // Meta Badges: Exercise Count & Time
-              Row(
-                children: [
-                  Icon(
-                    Icons.fitness_center_rounded,
-                    size: 12,
-                    color: Star.ink.withValues(alpha: 0.5),
-                  ),
-                  const SizedBox(width: 4),
-                  Flexible(
-                    child: Text(
-                      exerciseCount,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 10.5,
-                        color: Star.ink.withValues(alpha: 0.6),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Icon(
-                    Icons.timer_outlined,
-                    size: 12,
-                    color: Star.ink.withValues(alpha: 0.5),
-                  ),
-                  const SizedBox(width: 4),
-                  Flexible(
-                    child: Text(
-                      timeTag,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 10.5,
-                        color: Star.ink.withValues(alpha: 0.6),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
+              // Meta ringkas: satu baris, tanpa ikon hias.
+              Text(
+                '${exerciseCount.toLowerCase()} · ${timeTag.toLowerCase()}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 10.5,
+                  color: Star.ink.withValues(alpha: 0.6),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 12),
 
@@ -1357,6 +1633,109 @@ class MuscleFocusCard extends StatelessWidget {
 // ============================================================================
 // SISTEM PANDUAN & TUTORIAL INTERAKTIF BERBASIS SPOTLIGHT & ANIMATED ARROW
 // ============================================================================
+
+/// Slot aksi bergaris putus-putus di akhir sebuah daftar (pola agenda):
+/// satu-satunya tempat "menambah" tanpa membuat kartu baru di dalam kartu.
+///
+/// Tinggi dipatok supaya ritme baris tidak bergeser saat label berubah,
+/// dan teks di dalamnya di-FittedBox agar tetap utuh pada font scale 1.3.
+class DashedSlot extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback? onTap;
+  final double height;
+
+  const DashedSlot({
+    super.key,
+    required this.label,
+    this.icon = Icons.add_rounded,
+    this.onTap,
+    this.height = 44,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const radius = 10.0;
+    return Semantics(
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(radius),
+        child: SizedBox(
+          height: height,
+          width: double.infinity,
+          child: CustomPaint(
+            painter: const _DashedBorderPainter(
+              radius: radius,
+              color: Star.overlay,
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(icon, size: 15, color: Star.mut),
+                      const SizedBox(width: 5),
+                      Text(
+                        label,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 11.5,
+                          height: 1.2,
+                          fontWeight: FontWeight.w700,
+                          color: Star.mut,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DashedBorderPainter extends CustomPainter {
+  final double radius;
+  final Color color;
+
+  const _DashedBorderPainter({required this.radius, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const dash = 5.0;
+    const gap = 4.0;
+    final path = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(radius)),
+      );
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+    for (final metric in path.computeMetrics()) {
+      var distance = 0.0;
+      while (distance < metric.length) {
+        final end = math.min(distance + dash, metric.length);
+        canvas.drawPath(metric.extractPath(distance, end), paint);
+        distance = end + gap;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DashedBorderPainter old) =>
+      old.radius != radius || old.color != color;
+}
 
 class TutorialStepItem {
   final String title;
@@ -1784,7 +2163,7 @@ class _InteractiveSpotlightDialogState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Langkah  dari ',
+                              'Langkah ${_currentStep + 1} dari ${widget.steps.length}',
                               style: TextStyle(
                                 fontFamily: 'Manrope',
                                 fontSize: 11,
@@ -1793,7 +2172,7 @@ class _InteractiveSpotlightDialogState
                               ),
                             ),
                             Text(
-                              '% Selesai',
+                              '${(progress * 100).round()}% Selesai',
                               style: const TextStyle(
                                 fontFamily: 'Manrope',
                                 fontSize: 11,
@@ -1839,40 +2218,8 @@ class _InteractiveSpotlightDialogState
                         ),
                         const SizedBox(height: 12),
 
-                        // Tips Praktis Box
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Star.sunken,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: step.accentColor.withValues(alpha: 0.3),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.tips_and_updates_rounded,
-                                color: step.accentColor,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  step.tip,
-                                  style: TextStyle(
-                                    fontFamily: 'Manrope',
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                    color: step.accentColor,
-                                    height: 1.35,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Tips praktis: catatan pinggir, bukan kotak berikon.
+                        MarginNote(step.tip, label: 'Tips praktis'),
                         const SizedBox(height: 16),
 
                         // Action Buttons: Lewati, Sebelumnya, Lanjut

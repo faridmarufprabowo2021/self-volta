@@ -431,7 +431,7 @@ class BoosterPage extends StatelessWidget {
                 cal: '520 kkal',
                 protein: '22g Protein',
                 cost: 'Rp 5.500',
-                desc: 'Blender atau haluskan 2 pisang sunpride dengan garpu. Campur 1 kotak susu kedelai/UHT dingin & 2 sdm oatmeal instan. Cepat diserap pasca latihan!',
+                desc: 'Haluskan 2 pisang sunpride dengan garpu. Campur 1 kotak susu kedelai atau UHT dingin dan 2 sdm oatmeal instan. Aduk rata, minum setelah latihan.',
                 ingredients: [
                   '2 Pisang Sunpride',
                   'Susu UHT / Kedelai',
@@ -449,7 +449,7 @@ class BoosterPage extends StatelessWidget {
                 cal: '320 kkal',
                 protein: '14g Protein',
                 cost: 'Rp 4.500',
-                desc: 'Rebus 2 butir telur ayam di panci listrik selama 8 menit. Makan bersama 2 pisang sebagai camilan sore sebelum jam 5.',
+                desc: 'Rebus 2 butir telur ayam di panci listrik selama 8 menit. Angkat dan kupas. Makan bersama 2 pisang sebagai camilan sore.',
                 ingredients: ['2 Butir Telur Ayam', '2 Buah Pisang'],
                 accentColor: Star.star,
                 groceryKey: 'gro_booster_egg_banana',
@@ -625,15 +625,8 @@ class BoosterPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            desc,
-            style: const TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 10.5,
-              color: Star.ink,
-              height: 1.4,
-            ),
-          ),
+          // Resep sebagai langkah bernomor, bukan paragraf kecil.
+          RecipeSteps(desc, label: 'Cara buat'),
           const SizedBox(height: 10),
           SizedBox(
             width: double.infinity,

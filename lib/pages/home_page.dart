@@ -537,13 +537,16 @@ class _HomePageState extends State<HomePage> {
   }) {
     final ratio = total == 0 ? 0.0 : (done / total).clamp(0.0, 1.0);
     final nowMin = now.hour * 60 + now.minute;
+    final doneTasks = tasks.where((t) => t.done).length;
+    final visibleTasks = tasks.take(4).toList();
+
     return Container(
       decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 10, 10),
+            padding: const EdgeInsets.fromLTRB(16, 6, 8, 0),
             child: Row(
               children: [
                 const Text(
@@ -556,36 +559,27 @@ class _HomePageState extends State<HomePage> {
                     color: _slate,
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 Text(
-                  '$done / $total',
+                  '$done/$total',
                   style: const TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 13,
+                    fontSize: 11.5,
                     fontWeight: FontWeight.w700,
-                    color: _navy,
+                    color: _slate,
                     fontFeatures: [FontFeature.tabularFigures()],
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    iosTapBuzz();
-                    showTodoEditor(context);
-                  },
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(
-                    minWidth: 32,
-                    minHeight: 32,
-                  ),
-                  tooltip: 'Tambah tugas',
-                  icon: const Icon(Icons.add_rounded, size: 20, color: _navy),
-                ),
+                const Spacer(),
+                _textLink('Lihat semua', () {
+                  iosTapBuzz();
+                  widget.onNavigate('todo');
+                }),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
               child: LinearProgressIndicator(
@@ -596,20 +590,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 4, 16, 2),
-            child: Text(
-              'KEBIASAAN',
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 10.5,
-                letterSpacing: 0.7,
-                fontWeight: FontWeight.w600,
-                color: _slate,
-              ),
-            ),
-          ),
+          const SizedBox(height: 4),
           for (final h in habits)
             _todayRow(
               title: h.title,
@@ -618,79 +599,59 @@ class _HomePageState extends State<HomePage> {
               done: h.done,
               onTap: h.onTap,
             ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 2),
-            child: Divider(height: 16, color: _border),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 2),
-            child: Text(
-              'TUGAS & TO-DO',
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 10.5,
-                letterSpacing: 0.7,
-                fontWeight: FontWeight.w600,
-                color: _slate,
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
+            child: Row(
+              children: [
+                const Text(
+                  'TUGAS',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 10.5,
+                    letterSpacing: 0.7,
+                    fontWeight: FontWeight.w600,
+                    color: _slate,
+                  ),
+                ),
+                if (tasks.isNotEmpty) ...[
+                  const SizedBox(width: 6),
+                  Text(
+                    '$doneTasks/${tasks.length}',
+                    style: const TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: Star.faint,
+                      fontFeatures: [FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
           if (tasks.isEmpty)
             const Padding(
-              padding: EdgeInsets.fromLTRB(16, 8, 16, 6),
+              padding: EdgeInsets.fromLTRB(16, 4, 16, 4),
               child: Text(
                 'Belum ada tugas hari ini.',
                 style: TextStyle(
                   fontFamily: 'Manrope',
-                  fontSize: 13,
+                  fontSize: 11.5,
+                  height: 1.4,
                   color: _slate,
                 ),
               ),
             )
           else
-            for (final t in tasks.take(6)) _taskRow(t, nowMin),
-          InkWell(
-            onTap: () {
-              iosTapBuzz();
-              widget.onNavigate('todo');
-            },
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 14,
-                    color: _navy,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    tasks.length > 6
-                        ? 'Lihat semua tugas (${tasks.length})'
-                        : 'Kelola semua tugas',
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w700,
-                      color: _navy,
-                    ),
-                  ),
-                  const Spacer(),
-                  if (tasks.isEmpty)
-                    const Text(
-                      'Tambah tugas',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w600,
-                        color: _slate,
-                      ),
-                    ),
-                ],
-              ),
+            for (final t in visibleTasks) _taskRow(t, nowMin),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 14),
+            child: DashedSlot(
+              label: 'Tambah tugas',
+              onTap: () {
+                iosTapBuzz();
+                showTodoEditor(context);
+              },
             ),
           ),
         ],
@@ -705,58 +666,143 @@ class _HomePageState extends State<HomePage> {
     required bool done,
     required VoidCallback onTap,
   }) {
+    return MergeSemantics(
+      child: InkWell(
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 52),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+            child: Row(
+              children: [
+                _habitMark(icon, done),
+                const SizedBox(width: 11),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 13.5,
+                          height: 1.25,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.1,
+                          color: done ? _slate : _navy,
+                        ),
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 11.5,
+                          height: 1.3,
+                          color: _slate,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                _statusPill(done),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _habitMark(IconData icon, bool done) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        color: done ? _amber : _canvas,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: done ? _amber : _border),
+      ),
+      child: Icon(
+        done ? Icons.check_rounded : icon,
+        size: 16,
+        color: done ? _navy : _slate,
+      ),
+    );
+  }
+
+  Widget _statusPill(bool done) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: done ? Paper.mintSoft : Colors.transparent,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: done ? Paper.mint.withValues(alpha: 0.35) : Star.overlay,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!done) ...[
+            Container(
+              width: 4,
+              height: 4,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Star.faint,
+              ),
+            ),
+            const SizedBox(width: 4),
+          ],
+          Text(
+            done ? 'Selesai' : 'Belum',
+            maxLines: 1,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 10,
+              height: 1.15,
+              fontWeight: FontWeight.w700,
+              color: done ? Paper.mintDeep : _slate,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _textLink(String label, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          children: [
-            _checkCircle(done),
-            const SizedBox(width: 11),
-            Container(
-              width: 30,
-              height: 30,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: _canvas,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: _border),
+      borderRadius: BorderRadius.circular(8),
+      child: SizedBox(
+        height: 40,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                maxLines: 1,
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w700,
+                  color: _navy,
+                ),
               ),
-              child: Icon(icon, size: 16, color: _slate),
-            ),
-            const SizedBox(width: 9),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.2,
-                      color: done ? _slate : _navy,
-                      decoration: done ? TextDecoration.lineThrough : null,
-                    ),
-                  ),
-                  const SizedBox(height: 1),
-                  Text(
-                    subtitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 13,
-                      color: _slate,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+              const SizedBox(width: 1),
+              const Icon(Icons.chevron_right_rounded, size: 16, color: _navy),
+            ],
+          ),
         ),
       ),
     );
@@ -770,101 +816,107 @@ class _HomePageState extends State<HomePage> {
       if (t.repeat.isNotEmpty) _repeatLabel(t.repeat),
       if (t.note.isNotEmpty) t.note,
     ].join(' · ');
+    final hasMeta = overdue || sub.isNotEmpty;
+
     return InkWell(
       onTap: () {
         iosTapBuzz();
         AppState.I.toggleTodo(t.id);
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 1),
-              child: _checkCircle(t.done),
-            ),
-            const SizedBox(width: 11),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    t.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.2,
-                      color: t.done ? _slate : _navy,
-                      decoration: t.done ? TextDecoration.lineThrough : null,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    sub,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 13,
-                      color: _slate,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (time.isNotEmpty)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        time,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 54),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 42,
+                child: time.isEmpty
+                    ? const Text(
+                        '—',
                         style: TextStyle(
                           fontFamily: 'Manrope',
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.w600,
-                          color: t.done ? _slate : _amberDark,
-                          fontFeatures: const [FontFeature.tabularFigures()],
+                          fontSize: 11,
+                          color: Star.faint,
                         ),
-                      ),
-                      if (t.reminder)
-                        InkWell(
-                          onTap: () {
-                            iosTapBuzz();
-                            showTodoEditor(context, existing: t);
-                          },
-                          borderRadius: BorderRadius.circular(999),
-                          child: const Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Icon(
-                              Icons.alarm_rounded,
-                              size: 15,
-                              color: _slate,
-                            ),
+                      )
+                    : FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          time,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: overdue
+                                ? Paper.coralInk
+                                : (t.done ? _slate : _amberDark),
+                            fontFeatures: const [FontFeature.tabularFigures()],
                           ),
                         ),
-                    ],
-                  ),
-                if (overdue)
-                  const Text(
-                    'Terlewat',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: _amberDark,
+                      ),
+              ),
+              const SizedBox(width: 6),
+              _checkCircle(t.done),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      t.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 13.5,
+                        height: 1.25,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -0.1,
+                        color: t.done ? _slate : _navy,
+                        decoration: t.done
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                        decorationColor: _slate,
+                      ),
                     ),
-                  ),
-              ],
-            ),
-          ],
+                    if (hasMeta)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              if (overdue)
+                                const TextSpan(
+                                  text: 'Terlewat',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Paper.coralInk,
+                                  ),
+                                ),
+                              if (overdue && sub.isNotEmpty)
+                                const TextSpan(text: ' · '),
+                              if (sub.isNotEmpty) TextSpan(text: sub),
+                            ],
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 11,
+                            height: 1.3,
+                            color: _slate,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -1038,7 +1090,8 @@ class _HomePageState extends State<HomePage> {
     };
     final pola = POLA[key];
     final macro = MACRO_PAKET[key];
-    final menu = pola?.t ?? 'Menu harian';
+    final title = _menuTitle(pola?.t ?? 'Menu harian');
+    final snippet = _menuSnippet(pola?.cara ?? '');
     final kcal = macro?.k ?? TARGET_KKAL;
     final protein = macro?.p ?? TARGET_P;
     final budget = pola?.b ?? 20000;
@@ -1050,61 +1103,63 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 6, 8, 0),
             child: Row(
               children: [
                 const Expanded(
                   child: Text(
                     'MENU MAKANAN',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 10.5,
+                      fontSize: 12,
                       letterSpacing: 0.8,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: _slate,
                     ),
                   ),
                 ),
-                Text(
-                  'Paket $key',
-                  style: const TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 10.5,
-                    fontWeight: FontWeight.w700,
-                    color: _navy,
-                  ),
-                ),
+                _textLink('Lihat semua', () {
+                  iosTapBuzz();
+                  widget.onNavigate('planning');
+                }),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: [
-                for (final c in const {
-                  'semua': 'Hari ini',
-                  'protein': 'Protein',
-                  'hemat': 'Telur & tempe',
-                  'sayur': 'Sayur',
-                  'booster': 'Booster',
-                }.entries)
-                  _mealPill(c.key, c.value),
-              ],
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                children: [
+                  for (final c in const {
+                    'semua': 'Hari ini',
+                    'protein': 'Protein',
+                    'hemat': 'Telur & tempe',
+                    'sayur': 'Sayur',
+                    'booster': 'Booster',
+                  }.entries)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: _mealPill(c.key, c.value),
+                    ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: Neu.raised(r: 12, d: 3),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    width: 104,
+                    height: 104,
+                    color: Star.surface2,
                     child: Image.asset(
                       image,
                       fit: BoxFit.contain,
@@ -1116,33 +1171,62 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 11),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        menu,
+                        'PAKET $key · MENU HARIAN',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 10.5,
+                          letterSpacing: 0.7,
+                          fontWeight: FontWeight.w700,
+                          color: Star.faint,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Manrope',
-                          fontSize: 14,
-                          height: 1.25,
+                          fontSize: 15,
+                          height: 1.22,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.2,
                           color: _navy,
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      if (snippet.isNotEmpty) ...[
+                        const SizedBox(height: 3),
+                        Text(
+                          snippet,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 11.5,
+                            height: 1.45,
+                            color: _slate,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: 5),
                       Text(
-                        '${rp(budget)} · $kcal kkal · $protein g protein',
+                        '$kcal kkal · $protein g protein',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Manrope',
                           fontSize: 11,
+                          fontWeight: FontWeight.w600,
                           color: _slate,
+                          fontFeatures: [FontFeature.tabularFigures()],
                         ),
                       ),
                     ],
@@ -1152,37 +1236,97 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const Divider(height: 1, color: _border),
-          InkWell(
-            onTap: () {
-              iosTapBuzz();
-              widget.onNavigate('planning');
-            },
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(16),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 11),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Buka resep & bahan',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w700,
-                      color: _navy,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 2, 8, 2),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: rp(budget),
+                          style: const TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w700,
+                            color: _navy,
+                            fontFeatures: [FontFeature.tabularFigures()],
+                          ),
+                        ),
+                        const TextSpan(
+                          text: ' /hari',
+                          style: TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                            color: _slate,
+                          ),
+                        ),
+                      ],
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    iosTapBuzz();
+                    widget.onNavigate('planning');
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: const SizedBox(
+                    height: 40,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Lihat resep',
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w700,
+                              color: _navy,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 14,
+                            color: _navy,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(width: 4),
-                  Icon(Icons.arrow_forward_rounded, size: 14, color: _navy),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  /// Judul paket disimpan dengan prefiks "F | ..." dan tag "(otot)".
+  /// Kartu Beranda hanya butuh nama menunya.
+  String _menuTitle(String raw) {
+    var text = raw;
+    final bar = text.indexOf('|');
+    if (bar >= 0) text = text.substring(bar + 1);
+    text = text.replaceAll(RegExp(r'\s*\([^)]*\)\s*$'), '');
+    return text.trim();
+  }
+
+  /// Cuplikan 2 baris: langkah masak pertama tanpa penanda [MC]/[PL].
+  String _menuSnippet(String cara) {
+    final clean = cara.replaceAll('[MC]', '').replaceAll('[PL]', '').trim();
+    if (clean.isEmpty) return '';
+    final dot = clean.indexOf('. ');
+    return (dot > 0 ? clean.substring(0, dot) : clean).trim();
   }
 
   Widget _mealPill(String key, String label) {
@@ -1946,11 +2090,11 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                 ),
               const SizedBox(height: 6),
               const Text(
-                'Aktifkan "Rutinitas bulanan" di editor tugas, atau alarm layar penuh otomatis mencatat saat kamu menyelesaikannya.',
+                'Rutinitas bulanan: aktifkan di editor tugas. Alarm layar penuh otomatis mencatatnya saat tugas selesai.',
                 style: TextStyle(
                   fontFamily: 'Manrope',
-                  fontSize: 10.5,
-                  height: 1.4,
+                  fontSize: 11.5,
+                  height: 1.5,
                   color: _slate,
                 ),
               ),

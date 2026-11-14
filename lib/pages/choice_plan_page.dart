@@ -901,47 +901,11 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           ),
           const SizedBox(height: 10),
 
-          // Panduan Nutrisi Pre & Post Workout Praktis (Anti-Slop AI, Berdasarkan Bahan Nyata)
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: Neu.well(r: 12),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Icon(
-                  Icons.restaurant_rounded,
-                  size: 16,
-                  color: Star.star,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 11,
-                        color: Star.ink,
-                        height: 1.35,
-                      ),
-                      children: [
-                        const TextSpan(
-                          text: 'Menu Disarankan: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Star.star,
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              'Pra-latihan pisang/oat. Konsumsi ~${st.mealTargetProtein}g protein & ~${st.mealTargetCarbs}g karbohidrat pasca latihan ini untuk memacu sintesis hipertrofi otot dan pemulihan energi optimal kost.',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Panduan nutrisi pre & post workout — poin, bukan paragraf.
+          FactList([
+            'Pra-latihan: pisang atau oat.',
+            'Pasca-latihan: ~${st.mealTargetProtein}g protein & ~${st.mealTargetCarbs}g karbohidrat untuk sintesis otot dan pemulihan energi.',
+          ], label: 'Menu disarankan'),
         ],
       ),
     );

@@ -924,114 +924,116 @@ class _BudgetSheetState extends State<_BudgetSheet> {
         top: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: _kBorder,
-                    borderRadius: BorderRadius.circular(99),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: _kBorder,
+                      borderRadius: BorderRadius.circular(99),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 18),
-              const Text(
-                'Atur anggaran',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 19,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.4,
-                  color: _kNavy,
+                const SizedBox(height: 18),
+                const Text(
+                  'Atur anggaran',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 19,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.4,
+                    color: _kNavy,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Budget dipakai untuk menghitung sisa dan jatah harian.',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 12,
-                  height: 1.45,
-                  color: _kSlate,
+                const SizedBox(height: 4),
+                const Text(
+                  'Budget dipakai untuk menghitung sisa dan jatah harian.',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 12,
+                    height: 1.45,
+                    color: _kSlate,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 18),
-              const Text(
-                'Budget bulanan',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w600,
-                  color: _kSlate,
+                const SizedBox(height: 18),
+                const Text(
+                  'Budget bulanan',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                    color: _kSlate,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              _field(_budget, '750.000'),
-              const SizedBox(height: 14),
-              const Text(
-                'Uang pegangan',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w600,
-                  color: _kSlate,
+                const SizedBox(height: 6),
+                _field(_budget, '750.000'),
+                const SizedBox(height: 14),
+                const Text(
+                  'Uang pegangan',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                    color: _kSlate,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              _field(_income, '900.000'),
-              const SizedBox(height: 14),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: _kCyanPill,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.info_outline_rounded, size: 16, color: _kCyan),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Uang pegangan adalah saldo awal sebelum pengeluaran. '
-                        'Sisa budget dipakai untuk jatah harian.',
-                        style: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 11,
-                          height: 1.45,
-                          color: _kNavy,
+                const SizedBox(height: 6),
+                _field(_income, '900.000'),
+                const SizedBox(height: 14),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: _kCyanPill,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.info_outline_rounded, size: 16, color: _kCyan),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Uang pegangan adalah saldo awal sebelum pengeluaran. '
+                          'Sisa budget dipakai untuk jatah harian.',
+                          style: TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 11,
+                            height: 1.45,
+                            color: _kNavy,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 18),
-              SizedBox(
-                width: double.infinity,
-                height: 46,
-                child: FilledButton(
-                  onPressed: _save,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: _kNavyFill,
-                    foregroundColor: Star.onAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    textStyle: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    ],
                   ),
-                  child: const Text('Simpan pengaturan'),
                 ),
-              ),
-            ],
+                const SizedBox(height: 18),
+                SizedBox(
+                  width: double.infinity,
+                  height: 46,
+                  child: FilledButton(
+                    onPressed: _save,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: _kNavyFill,
+                      foregroundColor: Star.onAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      textStyle: const TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: const Text('Simpan pengaturan'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

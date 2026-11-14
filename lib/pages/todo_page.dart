@@ -2252,8 +2252,8 @@ class _TodoEditorState extends State<_TodoEditor> {
                     subtitle,
                     style: const TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 10.5,
-                      height: 1.3,
+                      fontSize: 11.5,
+                      height: 1.4,
                       color: TodoPal.ter,
                     ),
                   ),

@@ -376,9 +376,9 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                   'seperti pengingat tugas; kunci layar setelah menekannya.',
                   style: TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 10.5,
-                    height: 1.4,
-                    color: Star.faint,
+                    fontSize: 11.5,
+                    height: 1.45,
+                    color: Star.mut,
                   ),
                 ),
                 const SizedBox(height: 8),

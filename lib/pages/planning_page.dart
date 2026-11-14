@@ -147,7 +147,6 @@ class _PlanningPageState extends State<PlanningPage> {
               ),
               content: Text(
                 'Waktu memasak $_timerTitle telah selesai. Segera matikan kompor atau panci listrik dan hidangkan selagi hangat untuk menjaga nutrisi.',
-                textAlign: TextAlign.justify,
                 style: const TextStyle(
                   fontFamily: 'Manrope',
                   fontSize: 12.5,
@@ -312,16 +311,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      activePola.cara,
-                      textAlign: TextAlign.justify,
-                      style: const TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 12,
-                        color: Star.ink,
-                        height: 1.45,
-                      ),
-                    ),
+                    RecipeSteps(activePola.cara, label: null),
                   ],
                 ),
               ),
@@ -1850,16 +1840,11 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Panci listrik multifungsi sangat efisien untuk merebus sayur berkuah bening, sup labu siam, dan telur ceplok air tanpa setetes minyak pun. Menghemat waktu sarapan anak kost hingga 15 menit.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
-            ),
+            const FactList([
+              'Rebus sayur berkuah bening, sup labu siam, telur ceplok air.',
+              'Tanpa minyak — cukup air mendidih.',
+              'Hemat hingga 15 menit dibanding kompor.',
+            ], label: 'Cocok untuk'),
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
@@ -1945,15 +1930,9 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Gunakan api sedang dan 1 sendok teh minyak kelapa/zaitun saja (atau cukup percikan air untuk teknik water sauté). Tumis buncis, wortel, dan tahu dengan cepat agar tekstur tetap renyah dan kadar antioksidan terjaga maksimal.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
+            const RecipeSteps(
+              'Pakai api sedang dan 1 sdt minyak kelapa atau zaitun — percikan air saja cukup untuk water sauté. Tumis buncis, wortel, dan tahu dengan cepat. Angkat saat masih renyah agar antioksidan terjaga.',
+              label: 'Cara pakai',
             ),
             const SizedBox(height: 12),
             SizedBox(
@@ -2036,16 +2015,12 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Sesuaikan konsumsi daya dengan batas MCB kamar kost: Gunakan 200W untuk merebus santai dan menjaga kehangatan sup, 400W untuk menumis sayuran, dan 600W saat mendidihkan air cepat di pagi hari.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
-            ),
+            const FactList([
+              '200W — rebus santai, jaga sup tetap hangat.',
+              '400W — tumis sayur dengan api sedang.',
+              '600W — didihkan air cepat di pagi hari.',
+              'Cek batas MCB kamar sebelum memakai daya tertinggi.',
+            ], label: 'Mode daya'),
             const SizedBox(height: 12),
             Row(
               children: [
@@ -2182,15 +2157,9 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Trik anak kost: Taruh wadah kukusan plastik di atas beras saat menanak nasi. Masukkan telur utuh dan potongan tempe. Begitu tombol jeglek ke posisi Warm, nasi pulen dan lauk matang sempurna bersamaan tanpa kompor tambahan.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
+            const RecipeSteps(
+              'Taruh wadah kukusan plastik di atas beras saat menanak nasi. Masukkan telur utuh dan potongan tempe. Saat tombol jeglek ke Warm, nasi pulen dan lauk matang bersamaan tanpa kompor tambahan.',
+              label: 'Cara pakai',
             ),
             const SizedBox(height: 12),
             SizedBox(
@@ -2255,15 +2224,9 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             SizedBox(height: 8),
-            Text(
-              'Alasi kain lap basah di bawah telenan kayu agar tidak licin bergeser di atas keramik marmer. Potong dadu tempe ukuran 2 cm agar matang merata saat dikukus dan iris tipis bawang untuk aroma masakan.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
+            RecipeSteps(
+              'Alasi kain lap basah di bawah telenan kayu agar tidak licin di keramik. Potong dadu tempe 2 cm agar matang merata saat dikukus. Iris tipis bawang supaya aromanya keluar saat ditumis.',
+              label: 'Cara pakai',
             ),
           ],
         ),
@@ -2295,16 +2258,11 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             SizedBox(height: 8),
-            Text(
-              'Komposisi standar piring Volta: 1 centong nasi pulen (~150g karbohidrat), 2 butir telur atau 1/2 papan tempe (sumber protein pembentuk massa otot), dan semangkok kuah sayur bening segar untuk mikronutrisi harian.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
-            ),
+            FactList([
+              '1 centong nasi pulen — sekitar 150g karbohidrat.',
+              '2 butir telur atau ½ papan tempe — protein pembentuk otot.',
+              '1 mangkuk kuah sayur bening — mikronutrisi harian.',
+            ], label: 'Komposisi piring'),
           ],
         ),
       );
@@ -2504,16 +2462,12 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Kebutuhan harian: 3 butir telur ayam per hari (menyumbang 18g protein murni). Satu papan telur ayam berharga sekitar Rp55.000 dan mencukupi kebutuhan 10 hari program kalistenik. Simpan telur di wadah berventilasi suhu ruang (tahan 2 minggu). Jangan cuci telur sebelum dimasak agar lapisan pelindung cangkang tetap utuh.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
-            ),
+            const FactList([
+              '3 butir per hari — sekitar 18g protein.',
+              '1 papan Rp55.000 — cukup untuk 10 hari program.',
+              'Simpan di wadah berventilasi, suhu ruang — tahan 2 minggu.',
+              'Jangan dicuci sebelum dimasak — lapisan pelindung cangkang tetap utuh.',
+            ], label: 'Patokan harian'),
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
@@ -2598,16 +2552,12 @@ class _PlanningPageState extends State<PlanningPage> {
               ],
             ),
             SizedBox(height: 8),
-            Text(
-              'Bumbu dapur esensial Volta: Garam beriodium, bawang merah & bawang putih cincang, lada bubuk, serta kecap manis secukupnya. Bumbu-bumbu ini membuat masakan rebusan dan kukusan terasa sedap dan gurih tanpa MSG berlebihan.',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 11,
-                color: Star.ink,
-                height: 1.45,
-              ),
-            ),
+            FactList([
+              'Garam beriodium.',
+              'Bawang merah & bawang putih cincang.',
+              'Lada bubuk.',
+              'Kecap manis secukupnya — gurih tanpa MSG berlebihan.',
+            ], label: 'Isi rak'),
           ],
         ),
       );
@@ -3255,16 +3205,7 @@ class _PlanningPageState extends State<PlanningPage> {
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            activePola.cara,
-            textAlign: TextAlign.justify,
-            style: const TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 11.5,
-              color: Star.ink,
-              height: 1.45,
-            ),
-          ),
+          RecipeSteps(activePola.cara),
           const SizedBox(height: 12),
           // Quick Presets Timer Masak Langsung di Tab Menu Hari Ini
           Container(
@@ -3421,8 +3362,9 @@ class _PlanningPageState extends State<PlanningPage> {
                     'Porsi makan terencana 4 sesi hari ${dayInfo.dayName} dengan langkah masak & timer instan',
                     style: const TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 10.5,
+                      fontSize: 11.5,
                       color: Star.mut,
+                      height: 1.45,
                     ),
                   ),
                 ],
@@ -3508,21 +3450,8 @@ class _PlanningPageState extends State<PlanningPage> {
                 ),
                 const SizedBox(height: 8),
 
-                // Langkah Masak (Justified)
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: Neu.raised(r: 12, d: 3),
-                  child: Text(
-                    session.langkah,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 11,
-                      color: Star.ink,
-                      height: 1.45,
-                    ),
-                  ),
-                ),
+                // Langkah masak sebagai daftar bernomor, bukan paragraf.
+                RecipeSteps(session.langkah),
                 const SizedBox(height: 10),
 
                 // Action Button: Pasang Timer Masak
@@ -3594,8 +3523,9 @@ class _PlanningPageState extends State<PlanningPage> {
                 'Pilih variasi paket makanan murah untuk mengganti lauk utama siang & malam:',
                 style: TextStyle(
                   fontFamily: 'Manrope',
-                  fontSize: 10.5,
+                  fontSize: 11.5,
                   color: Star.mut,
+                  height: 1.45,
                 ),
               ),
               const SizedBox(height: 10),
@@ -3712,27 +3642,26 @@ class _PlanningPageState extends State<PlanningPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Row(
-                children: [
-                  Icon(
-                    Icons.shopping_cart_outlined,
-                    color: Star.star,
-                    size: 18,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Daftar Belanja Pasar Mingguan',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w700,
-                      color: Star.ink,
-                    ),
-                  ),
-                ],
+              const Icon(
+                Icons.shopping_cart_outlined,
+                color: Star.star,
+                size: 18,
               ),
+              const SizedBox(width: 8),
+              const Expanded(
+                child: Text(
+                  'Belanja Pasar Mingguan',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w700,
+                    color: Star.ink,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
@@ -3754,12 +3683,11 @@ class _PlanningPageState extends State<PlanningPage> {
           const SizedBox(height: 6),
           const Text(
             'Centang barang yang sudah Anda beli di pasar. Seluruh data belanjaan otomatis tersimpan di memori aplikasi.',
-            textAlign: TextAlign.justify,
             style: TextStyle(
               fontFamily: 'Manrope',
-              fontSize: 10.5,
+              fontSize: 11.5,
               color: Star.mut,
-              height: 1.35,
+              height: 1.45,
             ),
           ),
           const SizedBox(height: 12),
@@ -3910,7 +3838,7 @@ class _PlanningPageState extends State<PlanningPage> {
                   '• ${cm.kalori} kkal • ${cm.protein}g Protein • ${cm.karbo}g Karbo${cm.bahan.isNotEmpty ? ' • ${cm.bahan.length} Bahan' : ''}',
                   style: const TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 10,
+                    fontSize: 10.5,
                     fontWeight: FontWeight.w600,
                     color: Star.star,
                   ),
@@ -3923,7 +3851,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 9.5,
+                      fontSize: 10.5,
                       color: Star.mut,
                     ),
                   ),
@@ -4441,29 +4369,13 @@ class _PlanningPageState extends State<PlanningPage> {
                       // DYNAMIC LIVE NOTICE EVALUATOR (SESUAI PERMINTAAN USER!)
                       // ============================================================
                       if (proVal <= 0)
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.all(10),
-                          decoration: Neu.raised(r: 12, d: 3),
-                          child: const Row(
-                            children: [
-                              Icon(
-                                Icons.info_outline_rounded,
-                                size: 16,
-                                color: Star.mut,
-                              ),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  'Isi jumlah protein, kalori, dan karbohidrat di atas untuk melihat perbandingan dengan target gizi porsi makanmu.',
-                                  style: TextStyle(
-                                    fontFamily: 'Manrope',
-                                    fontSize: 10.5,
-                                    color: Star.mut,
-                                  ),
-                                ),
-                              ),
-                            ],
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 8),
+                          child: MarginNote(
+                            'Isi jumlah protein, kalori, dan karbohidrat di atas '
+                            'untuk melihat perbandingan dengan target gizi '
+                            'porsi makanmu.',
+                            label: 'Catatan',
                           ),
                         )
                       else if (proVal < (targetPro * 0.75))
@@ -4521,23 +4433,35 @@ class _PlanningPageState extends State<PlanningPage> {
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                'OH TERNYATA AKU BUTUH PROTEIN ${targetPro}g DAN INI TERNYATA KURANG?',
+                                'Kurang ${targetPro - proVal}g protein dari target porsi.',
                                 style: const TextStyle(
                                   fontFamily: 'Manrope',
-                                  fontSize: 12,
+                                  fontSize: 12.5,
                                   fontWeight: FontWeight.w700,
                                   color: Paper.amberInk,
-                                  height: 1.25,
+                                  height: 1.3,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Menu ini baru menyumbang ${proVal}g protein (masih kurang ${targetPro - proVal}g dari acuan sekali makan Anda).\nSaran Cepat: Tambahkan 2 butir telur rebus (+12g), 1 potong tempe goreng (+8g), atau dada ayam (+20g) agar regenerasi serat otot tidak terhambat!',
+                                'Menu ini menyumbang ${proVal}g dari ${targetPro}g acuan sekali makan.',
                                 style: const TextStyle(
                                   fontFamily: 'Manrope',
-                                  fontSize: 10.5,
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w500,
                                   color: Paper.amberInk,
-                                  height: 1.35,
+                                  height: 1.5,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              const Text(
+                                'Saran: 2 telur rebus (+12g) · tempe (+8g) · dada ayam (+20g).',
+                                style: TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: Paper.amberInk,
+                                  height: 1.5,
                                 ),
                               ),
                             ],
@@ -4598,23 +4522,24 @@ class _PlanningPageState extends State<PlanningPage> {
                               ),
                               const SizedBox(height: 6),
                               const Text(
-                                'OHH UDAH CUKUP, AKU TAHU!',
+                                'Protein sudah memenuhi target porsi.',
                                 style: TextStyle(
                                   fontFamily: 'Manrope',
-                                  fontSize: 12,
+                                  fontSize: 12.5,
                                   fontWeight: FontWeight.w700,
                                   color: Paper.mintDeep,
-                                  height: 1.25,
+                                  height: 1.3,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Asupan protein ${proVal}g ini pas banget dan sudah mencukupi target 1 kali makan Anda (${proVal}g / ${targetPro}g target). Sangat ideal untuk mendukung pembentukan fisik atletis kost!',
+                                '${proVal}g dari ${targetPro}g acuan — cukup untuk mendukung pembentukan otot.',
                                 style: const TextStyle(
                                   fontFamily: 'Manrope',
-                                  fontSize: 10.5,
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w500,
                                   color: Paper.mintDeep,
-                                  height: 1.35,
+                                  height: 1.5,
                                 ),
                               ),
                             ],
@@ -4675,23 +4600,24 @@ class _PlanningPageState extends State<PlanningPage> {
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                'SUPER HIGH PROTEIN! ${proVal}g Sangat Melimpah!',
+                                'Protein sangat tinggi: ${proVal}g per porsi.',
                                 style: const TextStyle(
                                   fontFamily: 'Manrope',
-                                  fontSize: 12,
+                                  fontSize: 12.5,
                                   fontWeight: FontWeight.w700,
                                   color: Star.star,
-                                  height: 1.25,
+                                  height: 1.3,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Porsi protein ini sangat tinggi ($proPct% dari acuan 1x makan). Cocok sebagai menu pasca latihan intensif untuk mempercepat pemulihan dan penambahan massa otot!',
+                                '$proPct% dari acuan sekali makan. Cocok setelah latihan intensif untuk pemulihan otot.',
                                 style: const TextStyle(
                                   fontFamily: 'Manrope',
-                                  fontSize: 10.5,
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w500,
                                   color: Star.star,
-                                  height: 1.35,
+                                  height: 1.5,
                                 ),
                               ),
                             ],

@@ -265,7 +265,7 @@ class _PanduanPageState extends State<PanduanPage> {
         ),
         (
           title: 'Navbar Bawah 5 Tombol',
-          desc: '1. Latihan (Gym/Kalistenik)\n2. Makan (Menu 4 Waktu & Katalog)\n3. Beranda (Dashboard Utama)\n4. Uang (Catatan Keuangan & Kalkulator)\n5. Menu (Buka Drawer samping)',
+          desc: 'Lima tombol tetap: Latihan, Makan, Beranda, Uang, dan Menu untuk membuka drawer samping.',
         ),
         (
           title: 'Grid 8 Akses Cepat di Beranda',
@@ -346,9 +346,10 @@ class _PanduanPageState extends State<PanduanPage> {
                       'Trik 15 menit makan enak, hemat & tinggi protein di kamar kos',
                       style: TextStyle(
                         fontFamily: 'Manrope',
-                        fontSize: 10,
+                        fontSize: 11.5,
                         color: Star.mut,
                         fontWeight: FontWeight.w500,
+                        height: 1.4,
                       ),
                     ),
                   ],
@@ -363,7 +364,7 @@ class _PanduanPageState extends State<PanduanPage> {
             'Alur 3 Langkah Memasak Praktis (15 Menit):',
             style: TextStyle(
               fontFamily: 'Manrope',
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w700,
               color: Star.star,
             ),
@@ -401,7 +402,7 @@ class _PanduanPageState extends State<PanduanPage> {
                       '3 Lifehacks Dapur Kost Hemat:',
                       style: TextStyle(
                         fontFamily: 'Manrope',
-                        fontSize: 11,
+                        fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: Star.star,
                       ),
@@ -457,29 +458,28 @@ class _PanduanPageState extends State<PanduanPage> {
 
   Widget _stepTimelineRow(String stepNum, String title, String desc) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 22,
-            height: 22,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Star.star,
-              shape: BoxShape.circle,
-            ),
-            child: Text(
-              stepNum,
-              style: const TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-                color: Star.onAccent,
+          SizedBox(
+            width: 26,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 1.5),
+              child: Text(
+                stepNum.padLeft(2, '0'),
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  height: 1.2,
+                  letterSpacing: 0.2,
+                  color: Star.star,
+                  fontFeatures: [FontFeature.tabularFigures()],
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -488,19 +488,21 @@ class _PanduanPageState extends State<PanduanPage> {
                   title,
                   style: const TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 11,
+                    fontSize: 12.5,
                     fontWeight: FontWeight.w700,
+                    height: 1.3,
                     color: Star.ink,
                   ),
                 ),
-                const SizedBox(height: 1),
+                const SizedBox(height: 3),
                 Text(
                   desc,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 10,
-                    color: Star.mut,
-                    height: 1.35,
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w500,
+                    color: Star.ink.withValues(alpha: 0.72),
+                    height: 1.5,
                   ),
                 ),
               ],
@@ -513,7 +515,7 @@ class _PanduanPageState extends State<PanduanPage> {
 
   Widget _hackItem(String title, String desc) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -521,18 +523,20 @@ class _PanduanPageState extends State<PanduanPage> {
             title,
             style: const TextStyle(
               fontFamily: 'Manrope',
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: FontWeight.w700,
               color: Star.ink,
             ),
           ),
+          const SizedBox(height: 2),
           Text(
             desc,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Manrope',
-              fontSize: 9.5,
-              color: Star.mut,
-              height: 1.3,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w500,
+              color: Star.ink.withValues(alpha: 0.72),
+              height: 1.5,
             ),
           ),
         ],
@@ -840,59 +844,68 @@ class _PanduanPageState extends State<PanduanPage> {
           ...steps.asMap().entries.map((e) {
             final idx = e.key;
             final item = e.value;
-            return Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              padding: const EdgeInsets.all(12),
-              decoration: Neu.raised(r: 14, d: 4),
-              child: Row(
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 14),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 22,
-                    height: 22,
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.12),
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${idx + 1}',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: color,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 28,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 1.5),
+                          child: Text(
+                            '${idx + 1}'.padLeft(2, '0'),
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                              height: 1.2,
+                              letterSpacing: 0.2,
+                              color: color,
+                              fontFeatures: const [
+                                FontFeature.tabularFigures(),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.title,
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w700,
-                            color: Star.ink,
-                          ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.title,
+                              style: const TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w700,
+                                height: 1.3,
+                                color: Star.ink,
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              item.desc,
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w500,
+                                height: 1.5,
+                                color: Star.ink.withValues(alpha: 0.72),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          item.desc,
-                          textAlign: TextAlign.justify,
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 11.5,
-                            color: Star.mut,
-                            height: 1.4,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                  if (idx < steps.length - 1) ...[
+                    const SizedBox(height: 12),
+                    const Divider(height: 1, thickness: 1, color: Star.line),
+                  ],
                 ],
               ),
             );

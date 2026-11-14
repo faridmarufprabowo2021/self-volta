@@ -225,21 +225,15 @@ class WorkoutPage extends StatelessWidget {
                     'Kusen beton, handuk tebal, deload teratur',
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Latihan sore 16.30–17.15, minimal 2 jam setelah makan besar. Handuk wajib di kusen beton, turun pelan 3 detik, jangan kip. Volume rendah, progresi tiap 10–14 hari, deload minggu ke-4.',
-                    style: AppText.body,
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: c.accBg.withValues(alpha: .5),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Text(
-                      'Hari latihan: tambah telur 1 + pisang 100g (±170 kkal) di atas booster harian. Target hari latihan ±2.500 kkal.',
-                      style: AppText.secondary,
-                    ),
+                  const FactList([
+                    'Latihan sore 16.30–17.15, minimal 2 jam setelah makan besar.',
+                    'Handuk wajib di kusen beton; turun pelan 3 detik, jangan kip.',
+                    'Volume rendah, progresi tiap 10–14 hari, deload minggu ke-4.',
+                  ]),
+                  const SizedBox(height: 12),
+                  const MarginNote(
+                    'Hari latihan: tambah telur 1 + pisang 100g (±170 kkal) di atas booster harian. Target hari latihan ±2.500 kkal.',
+                    label: 'Nutrisi hari latihan',
                   ),
                 ],
               ),

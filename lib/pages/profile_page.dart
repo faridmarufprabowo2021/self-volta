@@ -1157,7 +1157,6 @@ class ProfilePage extends StatelessWidget {
         ),
         content: const Text(
           'Tindakan ini akan mengembalikan level, XP, riwayat centang makan/workout, dan catatan keuangan ke kondisi awal (Fresh Start).\n\nApakah Anda yakin ingin memulai ulang program dari nol?',
-          textAlign: TextAlign.justify,
           style: TextStyle(fontFamily: 'Manrope', fontSize: 12.5, height: 1.45),
         ),
         actions: [
@@ -1483,18 +1482,23 @@ class ProfilePage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: Neu.raised(r: 14, d: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 13.5,
-              fontWeight: FontWeight.w700,
-              color: Star.ink,
+          Expanded(
+            child: Text(
+              label,
+              maxLines: 2,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 13.5,
+                fontWeight: FontWeight.w700,
+                height: 1.2,
+                color: Star.ink,
+              ),
             ),
           ),
+          const SizedBox(width: 8),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               IconButton.filledTonal(
                 icon: const Icon(Icons.remove, size: 18),
@@ -1502,21 +1506,25 @@ class ProfilePage extends StatelessWidget {
                 constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
                 padding: EdgeInsets.zero,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               SizedBox(
                 width: 75,
-                child: Text(
-                  valueStr,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Star.ink,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    valueStr,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Star.ink,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               IconButton.filledTonal(
                 icon: const Icon(Icons.add, size: 18),
                 onPressed: onPlus,
@@ -1900,14 +1908,9 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                const MarginNote(
                   'Acuan ini otomatis disinkronkan ke Planning Makan saat Anda meracik menu kustom, lengkap dengan notice interaktif apakah protein Anda sudah cukup atau masih kurang.',
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 10.5,
-                    color: Star.mut,
-                    height: 1.35,
-                  ),
+                  label: 'Sinkronisasi otomatis',
                 ),
               ],
             ),
@@ -2125,11 +2128,12 @@ class ProfilePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     const Text(
-                      'Data ini digunakan untuk menghitung BMR, TDEE, serta acuan nutrisi saat meracik menu di Planning Makan.',
+                      'Data ini dipakai untuk menghitung BMR, TDEE, dan acuan nutrisi saat meracik menu di Planning Makan.',
                       style: TextStyle(
                         fontFamily: 'Manrope',
-                        fontSize: 11,
+                        fontSize: 11.5,
                         color: Star.mut,
+                        height: 1.45,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -2223,7 +2227,8 @@ class ProfilePage extends StatelessWidget {
                             'BMI: ${previewBmi.toStringAsFixed(1)} • BMR: $prevBmr kkal • TDEE: $prevTdee kkal',
                             style: const TextStyle(
                               fontFamily: 'Manrope',
-                              fontSize: 10.5,
+                              fontSize: 11.5,
+                              height: 1.4,
                               color: Star.mut,
                               fontWeight: FontWeight.w600,
                             ),
@@ -2488,23 +2493,25 @@ class ProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Insight Asupan Harian Kamu:',
+                                  'Insight asupan harian',
                                   style: TextStyle(
                                     fontFamily: 'Manrope',
-                                    fontSize: 11.5,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: Paper.amberInk,
                                   ),
                                 ),
-                                const SizedBox(height: 3),
+                                const SizedBox(height: 4),
                                 Text(
-                                  '“OHH TERNYATA AKU BUTUH PROTEIN \${prevPro}g & \${prevCal} kkal! Satu porsi makan minimal butuh ~\${prevMealPro}g protein (misal: 2 butir telur + 50g tempe/ayam). Sekarang aku paham target nutrisiku!”',
-                                  style: const TextStyle(
+                                  'Target harianmu $prevCal kkal dan ${prevPro}g protein. '
+                                  'Satu porsi makan minimal ~${prevMealPro}g protein — '
+                                  'misalnya 2 butir telur + 50g tempe atau ayam.',
+                                  style: TextStyle(
                                     fontFamily: 'Manrope',
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: Star.star,
-                                    height: 1.35,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Star.ink.withValues(alpha: 0.82),
+                                    height: 1.5,
                                   ),
                                 ),
                               ],
