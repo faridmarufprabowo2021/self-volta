@@ -147,7 +147,7 @@ class _BuatPageState extends State<BuatPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    '📝 Daftar Kombinasi',
+                    'Daftar Kombinasi',
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                   ),
                   const SizedBox(height: 8),
@@ -250,13 +250,7 @@ void showComboSheet(BuildContext context, Combo c) {
                 const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Star.warning.withValues(alpha: .1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Star.warning.withValues(alpha: .4),
-                    ),
-                  ),
+                  decoration: Neu.well(r: 12),
                   child: Text(
                     c.note.isEmpty ? '-' : c.note,
                     style: AppText.body.copyWith(fontSize: 13),

@@ -133,16 +133,12 @@ class _PlanningPageState extends State<PlanningPage> {
               ),
               title: const Row(
                 children: [
-                  Icon(
-                    Icons.check_circle_rounded,
-                    color: Color(0xff0D9488),
-                    size: 24,
-                  ),
+                  Icon(Icons.check_circle_rounded, color: Star.star, size: 24),
                   SizedBox(width: 8),
                   Text(
                     'Masakan Matang!',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                     ),
@@ -153,7 +149,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 'Waktu memasak $_timerTitle telah selesai. Segera matikan kompor atau panci listrik dan hidangkan selagi hangat untuk menjaga nutrisi.',
                 textAlign: TextAlign.justify,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12.5,
                   height: 1.45,
                 ),
@@ -161,9 +157,7 @@ class _PlanningPageState extends State<PlanningPage> {
               actions: [
                 FilledButton(
                   onPressed: () => Navigator.pop(ctx),
-                  style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xff0D9488),
-                  ),
+                  style: FilledButton.styleFrom(backgroundColor: Star.star),
                   child: const Text('Siap, Matikan'),
                 ),
               ],
@@ -252,12 +246,12 @@ class _PlanningPageState extends State<PlanningPage> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xffEA580C).withValues(alpha: 0.12),
+                      color: Star.star.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: const Icon(
                       Icons.restaurant_menu_rounded,
-                      color: Color(0xffEA580C),
+                      color: Star.star,
                       size: 24,
                     ),
                   ),
@@ -269,7 +263,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         const Text(
                           'Panduan Masak 15 Menit',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                             color: Star.mut,
@@ -280,7 +274,7 @@ class _PlanningPageState extends State<PlanningPage> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: Star.ink,
@@ -294,11 +288,7 @@ class _PlanningPageState extends State<PlanningPage> {
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: Star.bg,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Star.lineSoft),
-                ),
+                decoration: Neu.raised(r: 16, d: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -307,16 +297,16 @@ class _PlanningPageState extends State<PlanningPage> {
                         Icon(
                           Icons.format_list_numbered_rounded,
                           size: 16,
-                          color: Color(0xff004E71),
+                          color: Star.star,
                         ),
                         SizedBox(width: 6),
                         Text(
                           'Langkah Eksekusi Memasak:',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 12.5,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xff004E71),
+                            color: Star.star,
                           ),
                         ),
                       ],
@@ -326,7 +316,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       activePola.cara,
                       textAlign: TextAlign.justify,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12,
                         color: Star.ink,
                         height: 1.45,
@@ -355,13 +345,13 @@ class _PlanningPageState extends State<PlanningPage> {
                   label: const Text(
                     'Pasang Timer Masak 10 Menit Sekarang',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
                     ),
                   ),
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xffEA580C),
+                    backgroundColor: Star.star,
                     padding: const EdgeInsets.symmetric(vertical: 13),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -388,7 +378,7 @@ class _PlanningPageState extends State<PlanningPage> {
           description: 'Dapur dibagi menjadi 3 stasiun bersih: Menu Hari Ini untuk racikan jadwal makan, Dapur Panoramik untuk visualisasi meja kompor 48:9, dan Belanja Pasar untuk daftar bahan kost.',
           tip: 'Geser layar ke kiri atau kanan, atau ketuk tombol stasiun di bagian atas untuk berpindah seketika.',
           icon: Icons.kitchen_rounded,
-          accentColor: Color(0xff0D9488),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Timer Masak Universal Lintas Halaman',
@@ -397,7 +387,7 @@ class _PlanningPageState extends State<PlanningPage> {
           description: 'Nyalakan timer saat merebus telur, menanak nasi, atau marinasi ayam. Timer tetap berjalan dan terlihat di stasiun mana pun kamu berada tanpa perlu bolak-balik.',
           tip: 'Alarm audio akan berbunyi otomatis saat waktu masak selesai agar masakan kost tidak gosong.',
           icon: Icons.timer_rounded,
-          accentColor: Color(0xffD97706),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Kalkulator Gizi & Target 80g Protein',
@@ -406,7 +396,7 @@ class _PlanningPageState extends State<PlanningPage> {
           description: 'Aplikasi memonitor asupan protein dan kalori dari menu sarapan, makan siang, makan malam, dan booster telur rebus/madu harian.',
           tip: 'Pastikan indikator protein mendekati target harian untuk mempercepat sintesis protein otot pasca latihan.',
           icon: Icons.fitness_center_rounded,
-          accentColor: Color(0xff0781D1),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Input Menu Kustom Kost Sendiri',
@@ -415,7 +405,7 @@ class _PlanningPageState extends State<PlanningPage> {
           description: 'Punya resep favorit kost sendiri? Ketuk tombol + Tambah Menu Sendiri. Bahan belanja otomatis masuk ke tab Belanja Pasar dengan proteksi nilai kalori aman.',
           tip: 'Pisahkan nama bahan dengan tanda koma agar otomatis terbagi menjadi daftar checklist belanja.',
           icon: Icons.add_circle_outline_rounded,
-          accentColor: Color(0xff10B981),
+          accentColor: Star.success,
         ),
       ],
     );
@@ -484,7 +474,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         children: [
                           Icon(
                             Icons.soup_kitchen_rounded,
-                            color: Color(0xff0D9488),
+                            color: Star.star,
                             size: 20,
                           ),
                           SizedBox(width: 8),
@@ -494,7 +484,7 @@ class _PlanningPageState extends State<PlanningPage> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
                                 color: Star.ink,
@@ -508,7 +498,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     TutorialPillButton(
                       onTap: () => _showPlanningTutorial(context),
                       label: 'Panduan',
-                      color: const Color(0xff0D9488),
+                      color: Star.star,
                     ),
                   ],
                 ),
@@ -519,18 +509,7 @@ class _PlanningPageState extends State<PlanningPage> {
               Container(
                 margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Star.surface,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Star.lineSoft),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
+                decoration: Neu.raised(r: 16, d: 5),
                 child: Row(
                   children: [
                     Expanded(
@@ -540,7 +519,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         label: 'Menu Hari Ini',
                         badge: 'Jadwal & Racik',
                         isActive: _activePlanningTab == 0,
-                        accentColor: const Color(0xff0D9488),
+                        accentColor: Star.star,
                       ),
                     ),
                     const SizedBox(width: 4),
@@ -551,7 +530,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         label: 'Dapur 48:9',
                         badge: 'Meja & Panduan',
                         isActive: _activePlanningTab == 1,
-                        accentColor: const Color(0xff004E71),
+                        accentColor: Star.star,
                       ),
                     ),
                     const SizedBox(width: 4),
@@ -562,7 +541,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         label: 'Belanja Pasar',
                         badge: '7 Paket Hemat',
                         isActive: _activePlanningTab == 2,
-                        accentColor: const Color(0xffEA580C),
+                        accentColor: Star.star,
                       ),
                     ),
                   ],
@@ -593,7 +572,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       _buildQuickTimerBar(
                         activePola,
                         title: 'Timer Masak Cepat Hari Ini',
-                        accentColor: const Color(0xff0D9488),
+                        accentColor: Star.star,
                       ),
                       const SizedBox(height: 12),
 
@@ -645,7 +624,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       _buildQuickTimerBar(
                         activePola,
                         title: 'Timer Persiapan Belanja & Masak',
-                        accentColor: const Color(0xffEA580C),
+                        accentColor: Star.star,
                       ),
                       const SizedBox(height: 12),
 
@@ -679,11 +658,7 @@ class _PlanningPageState extends State<PlanningPage> {
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: accentColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: accentColor.withValues(alpha: 0.25)),
-      ),
+      decoration: Neu.well(r: 16),
       child: Row(
         children: [
           Icon(Icons.timer_rounded, color: accentColor, size: 20),
@@ -695,7 +670,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 Text(
                   title,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,
                     color: accentColor,
@@ -704,7 +679,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 const Text(
                   'Pasang timer langsung di halaman ini',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10,
                     color: Star.mut,
                   ),
@@ -750,16 +725,14 @@ class _PlanningPageState extends State<PlanningPage> {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: Star.surface.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       isRunning
                           ? Icons.local_fire_department_rounded
                           : Icons.timer_outlined,
-                      color: isRunning
-                          ? const Color(0xffFBBF24)
-                          : Colors.white70,
+                      color: isRunning ? Star.star : Star.onAccent70,
                       size: 16,
                     ),
                   ),
@@ -767,10 +740,10 @@ class _PlanningPageState extends State<PlanningPage> {
                   Text(
                     isRunning ? 'TIMER MEMASAK AKTIF' : 'TIMER MASAK DAPUR',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: Star.onAccent,
                       letterSpacing: 0.6,
                     ),
                   ),
@@ -788,7 +761,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.18),
+                        color: Star.surface.withValues(alpha: 0.18),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Row(
@@ -796,17 +769,17 @@ class _PlanningPageState extends State<PlanningPage> {
                         children: [
                           Icon(
                             Icons.menu_book_rounded,
-                            color: Colors.white,
+                            color: Star.onAccent,
                             size: 12,
                           ),
                           SizedBox(width: 4),
                           Text(
                             'Panduan',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white,
+                              color: Star.onAccent,
                             ),
                           ),
                         ],
@@ -823,12 +796,12 @@ class _PlanningPageState extends State<PlanningPage> {
                     child: Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.18),
+                        color: Star.surface.withValues(alpha: 0.18),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
                         Icons.close_rounded,
-                        color: Colors.white,
+                        color: Star.onAccent,
                         size: 16,
                       ),
                     ),
@@ -846,10 +819,10 @@ class _PlanningPageState extends State<PlanningPage> {
               Text(
                 timeStr,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 34,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: Star.onAccent,
                   letterSpacing: 1.5,
                   height: 1.0,
                 ),
@@ -864,10 +837,10 @@ class _PlanningPageState extends State<PlanningPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: Star.onAccent,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -880,9 +853,9 @@ class _PlanningPageState extends State<PlanningPage> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 9.5,
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: Star.onAccent.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -898,10 +871,8 @@ class _PlanningPageState extends State<PlanningPage> {
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 5,
-                backgroundColor: Colors.white.withValues(alpha: 0.2),
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  Color(0xffFBBF24),
-                ),
+                backgroundColor: Star.surface.withValues(alpha: 0.2),
+                valueColor: const AlwaysStoppedAnimation<Color>(Star.star),
               ),
             ),
           ],
@@ -939,16 +910,14 @@ class _PlanningPageState extends State<PlanningPage> {
                     label: Text(
                       isRunning ? 'Jeda Timer' : 'Lanjut Timer',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     style: FilledButton.styleFrom(
-                      backgroundColor: isRunning
-                          ? const Color(0xffF59E0B)
-                          : const Color(0xff10B981),
-                      foregroundColor: Colors.white,
+                      backgroundColor: isRunning ? Star.star : Star.success,
+                      foregroundColor: Star.onAccent,
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -969,7 +938,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 _timerBtn(
                   label: 'Stop',
                   icon: Icons.stop_rounded,
-                  color: const Color(0xffEF4444),
+                  color: Star.error,
                   onTap: () {
                     iosTapBuzz();
                     _stopTimer();
@@ -1006,21 +975,21 @@ class _PlanningPageState extends State<PlanningPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
-          color: (color ?? Colors.white).withValues(alpha: 0.18),
+          color: (color ?? Star.surface).withValues(alpha: 0.18),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 13, color: color ?? Colors.white),
+            Icon(icon, size: 13, color: color ?? Star.onAccent),
             const SizedBox(width: 4),
             Text(
               label,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
                 fontWeight: FontWeight.w700,
-                color: color ?? Colors.white,
+                color: color ?? Star.onAccent,
               ),
             ),
           ],
@@ -1040,18 +1009,18 @@ class _PlanningPageState extends State<PlanningPage> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 7),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.15),
+            color: Star.surface.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            border: Border.all(color: Star.line.withValues(alpha: 0.2)),
           ),
           child: Center(
             child: Text(
               label,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
+                color: Star.onAccent,
               ),
             ),
           ),
@@ -1069,11 +1038,7 @@ class _PlanningPageState extends State<PlanningPage> {
     required bool sayuranSudahDimasak,
     required int currentDayNumber,
   }) {
-    final categories = [
-      '🔥 1. Area Masak',
-      '🔪 2. Meja Prep',
-      '🥬 3. Kulkas & Stok',
-    ];
+    final categories = ['1. Area Masak', '2. Meja Prep', '3. Kulkas & Stok'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1083,16 +1048,12 @@ class _PlanningPageState extends State<PlanningPage> {
           padding: const EdgeInsets.only(bottom: 10),
           child: Row(
             children: [
-              const Icon(
-                Icons.kitchen_rounded,
-                color: Color(0xff004E71),
-                size: 18,
-              ),
+              const Icon(Icons.kitchen_rounded, color: Star.star, size: 18),
               const SizedBox(width: 8),
               const Text(
                 'Meja Bar Dapur Keramik',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 13.5,
                   fontWeight: FontWeight.w700,
                   color: Star.ink,
@@ -1102,16 +1063,16 @@ class _PlanningPageState extends State<PlanningPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xff004E71).withValues(alpha: 0.1),
+                  color: Star.star.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   'Slide ${_activeKitchenSlide + 1}/3',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff004E71),
+                    color: Star.star,
                   ),
                 ),
               ),
@@ -1168,16 +1129,15 @@ class _PlanningPageState extends State<PlanningPage> {
                     duration: const Duration(milliseconds: 180),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: isSel ? const Color(0xff004E71) : Star.surface,
+                      color: isSel ? Star.star : Star.surface,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: isSel ? const Color(0xff004E71) : Star.sunken,
+                        color: isSel ? Star.star : Star.sunken,
                       ),
                       boxShadow: [
                         if (isSel)
                           BoxShadow(
-                            color: const Color(0xff004E71)
-                                .withValues(alpha: 0.22),
+                            color: Star.star.withValues(alpha: 0.22),
                             blurRadius: 6,
                             offset: const Offset(0, 2),
                           ),
@@ -1189,10 +1149,10 @@ class _PlanningPageState extends State<PlanningPage> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 10.5,
                           fontWeight: FontWeight.w700,
-                          color: isSel ? Colors.white : Star.ink,
+                          color: isSel ? Star.onAccent : Star.ink,
                         ),
                       ),
                     ),
@@ -1212,7 +1172,7 @@ class _PlanningPageState extends State<PlanningPage> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: const Color(0xffCBD5E1), width: 1.5),
+              border: Border.all(color: Paper.hair, width: 1.5),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.12),
@@ -1282,7 +1242,7 @@ class _PlanningPageState extends State<PlanningPage> {
                             color: Colors.black.withValues(alpha: 0.65),
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.2),
+                              color: Star.surface.withValues(alpha: 0.2),
                             ),
                           ),
                           child: Row(
@@ -1291,7 +1251,7 @@ class _PlanningPageState extends State<PlanningPage> {
                               const Icon(
                                 Icons.touch_app_rounded,
                                 size: 12,
-                                color: Color(0xffFFE599),
+                                color: Paper.amberInk,
                               ),
                               const SizedBox(width: 5),
                               Text(
@@ -1301,10 +1261,10 @@ class _PlanningPageState extends State<PlanningPage> {
                                     ? 'Stasiun 2: Meja Prep'
                                     : 'Stasiun 3: Keranjang Sayur & Buah Kost',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: Star.onAccent,
                                 ),
                               ),
                             ],
@@ -1417,7 +1377,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.outdoor_grill_rounded,
             label: 'Kompor Wajan',
             isSelected: _selectedCookingItem == 'wajan',
-            accentColor: const Color(0xffEA580C),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedCookingItem = 'wajan');
@@ -1431,7 +1391,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.tune_rounded,
             label: 'Daya Suhu',
             isSelected: _selectedCookingItem == 'kompor',
-            accentColor: const Color(0xff0284C7),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedCookingItem = 'kompor');
@@ -1445,7 +1405,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.soup_kitchen_rounded,
             label: 'Panci Listrik',
             isSelected: _selectedCookingItem == 'panci',
-            accentColor: const Color(0xff0D9488),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedCookingItem = 'panci');
@@ -1489,7 +1449,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.rice_bowl_rounded,
             label: 'Magic Com',
             isSelected: _selectedPrepItem == 'magic_com',
-            accentColor: const Color(0xff004E71),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedPrepItem = 'magic_com');
@@ -1503,7 +1463,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.content_cut_rounded,
             label: 'Telenan Kayu',
             isSelected: _selectedPrepItem == 'telenan',
-            accentColor: const Color(0xffD97706),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedPrepItem = 'telenan');
@@ -1517,7 +1477,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.dinner_dining_rounded,
             label: 'Piring Saji',
             isSelected: _selectedPrepItem == 'piring',
-            accentColor: const Color(0xff8B5CF6),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedPrepItem = 'piring');
@@ -1545,12 +1505,12 @@ class _PlanningPageState extends State<PlanningPage> {
               'assets/images/kitchen_panoramic_full.jpg',
               fit: BoxFit.cover,
               errorBuilder: (ctx, err, stack) => Container(
-                color: const Color(0xff002538),
+                color: Star.star,
                 child: const Center(
                   child: Icon(
                     Icons.shopping_basket_rounded,
                     size: 48,
-                    color: Colors.white54,
+                    color: Star.onAccent54,
                   ),
                 ),
               ),
@@ -1578,7 +1538,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.shopping_basket_rounded,
             label: 'Keranjang Sayur & Buah',
             isSelected: _selectedPantryItem == 'kulkas',
-            accentColor: const Color(0xff06B6D4),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedPantryItem = 'kulkas');
@@ -1592,7 +1552,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.egg_rounded,
             label: 'Rak Telur',
             isSelected: _selectedPantryItem == 'telur',
-            accentColor: const Color(0xffE5A910),
+            accentColor: Star.star,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedPantryItem = 'telur');
@@ -1606,7 +1566,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: Icons.shelves,
             label: 'Rak Bumbu',
             isSelected: _selectedPantryItem == 'bumbu',
-            accentColor: const Color(0xff10B981),
+            accentColor: Star.success,
             onTap: () {
               iosTapBuzz();
               setState(() => _selectedPantryItem = 'bumbu');
@@ -1640,8 +1600,8 @@ class _PlanningPageState extends State<PlanningPage> {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected
-                ? Colors.white
-                : Colors.white.withValues(alpha: 0.45),
+                ? Star.surface
+                : Star.surface.withValues(alpha: 0.45),
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
@@ -1662,15 +1622,15 @@ class _PlanningPageState extends State<PlanningPage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.white, size: 13),
+            Icon(icon, color: Star.onAccent, size: 13),
             const SizedBox(width: 4),
             Text(
               label,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 9.5,
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
+                color: Star.onAccent,
               ),
             ),
             if (isSelected) ...[
@@ -1679,7 +1639,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 width: 5,
                 height: 5,
                 decoration: const BoxDecoration(
-                  color: Color(0xffFFE599),
+                  color: Paper.amberInk,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -1702,7 +1662,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.soup_kitchen_rounded,
               label: 'Panci Listrik',
               isSelected: _selectedCookingItem == 'panci',
-              accentColor: const Color(0xff0D9488),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedCookingItem = 'panci');
@@ -1714,7 +1674,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.outdoor_grill_rounded,
               label: 'Kompor Wajan',
               isSelected: _selectedCookingItem == 'wajan',
-              accentColor: const Color(0xffEA580C),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedCookingItem = 'wajan');
@@ -1726,7 +1686,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.tune_rounded,
               label: 'Daya Suhu',
               isSelected: _selectedCookingItem == 'kompor',
-              accentColor: const Color(0xff0284C7),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedCookingItem = 'kompor');
@@ -1743,7 +1703,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.rice_bowl_rounded,
               label: 'Magic Com',
               isSelected: _selectedPrepItem == 'magic_com',
-              accentColor: const Color(0xff004E71),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedPrepItem = 'magic_com');
@@ -1755,7 +1715,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.content_cut_rounded,
               label: 'Telenan Kayu',
               isSelected: _selectedPrepItem == 'telenan',
-              accentColor: const Color(0xffD97706),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedPrepItem = 'telenan');
@@ -1767,7 +1727,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.dinner_dining_rounded,
               label: 'Piring Saji',
               isSelected: _selectedPrepItem == 'piring',
-              accentColor: const Color(0xff8B5CF6),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedPrepItem = 'piring');
@@ -1784,7 +1744,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.shopping_basket_rounded,
               label: 'Keranjang Sayur & Buah',
               isSelected: _selectedPantryItem == 'kulkas',
-              accentColor: const Color(0xff06B6D4),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedPantryItem = 'kulkas');
@@ -1796,7 +1756,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.egg_rounded,
               label: 'Rak Telur',
               isSelected: _selectedPantryItem == 'telur',
-              accentColor: const Color(0xffE5A910),
+              accentColor: Star.star,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedPantryItem = 'telur');
@@ -1808,7 +1768,7 @@ class _PlanningPageState extends State<PlanningPage> {
               icon: Icons.shelves,
               label: 'Rak Bumbu',
               isSelected: _selectedPantryItem == 'bumbu',
-              accentColor: const Color(0xff10B981),
+              accentColor: Star.success,
               onTap: () {
                 iosTapBuzz();
                 setState(() => _selectedPantryItem = 'bumbu');
@@ -1844,13 +1804,7 @@ class _PlanningPageState extends State<PlanningPage> {
     if (_selectedCookingItem == 'panci') {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xff0D9488).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xff0D9488).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1859,7 +1813,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 const Icon(
                   Icons.soup_kitchen_rounded,
                   size: 16,
-                  color: Color(0xff0D9488),
+                  color: Star.star,
                 ),
                 const SizedBox(width: 6),
                 const Expanded(
@@ -1868,10 +1822,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff0D9488),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -1881,7 +1835,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xff0D9488).withValues(alpha: 0.15),
+                    color: Star.star.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: const Text(
@@ -1889,7 +1843,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     style: TextStyle(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff0D9488),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -1900,7 +1854,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Panci listrik multifungsi sangat efisien untuk merebus sayur berkuah bening, sup labu siam, dan telur ceplok air tanpa setetes minyak pun. Menghemat waktu sarapan anak kost hingga 15 menit.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -1925,13 +1879,13 @@ class _PlanningPageState extends State<PlanningPage> {
                 label: const Text(
                   'Mulai Timer Rebus Kilat (8 Menit)',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xff0D9488),
+                  backgroundColor: Star.star,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -1945,13 +1899,7 @@ class _PlanningPageState extends State<PlanningPage> {
     } else if (_selectedCookingItem == 'wajan') {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xffEA580C).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xffEA580C).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1960,7 +1908,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 const Icon(
                   Icons.outdoor_grill_rounded,
                   size: 16,
-                  color: Color(0xffEA580C),
+                  color: Star.star,
                 ),
                 const SizedBox(width: 6),
                 const Expanded(
@@ -1969,10 +1917,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xffEA580C),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -1982,7 +1930,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xffEA580C).withValues(alpha: 0.15),
+                    color: Star.star.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: const Text(
@@ -1990,7 +1938,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     style: TextStyle(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xffEA580C),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2001,7 +1949,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Gunakan api sedang dan 1 sendok teh minyak kelapa/zaitun saja (atau cukup percikan air untuk teknik water sauté). Tumis buncis, wortel, dan tahu dengan cepat agar tekstur tetap renyah dan kadar antioksidan terjaga maksimal.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -2026,13 +1974,13 @@ class _PlanningPageState extends State<PlanningPage> {
                 label: const Text(
                   'Mulai Timer Tumis Cepat (5 Menit)',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xffEA580C),
+                  backgroundColor: Star.star,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -2046,23 +1994,13 @@ class _PlanningPageState extends State<PlanningPage> {
     } else {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xff0284C7).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xff0284C7).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(
-                  Icons.tune_rounded,
-                  size: 16,
-                  color: Color(0xff0284C7),
-                ),
+                const Icon(Icons.tune_rounded, size: 16, color: Star.star),
                 const SizedBox(width: 6),
                 const Expanded(
                   child: Text(
@@ -2070,10 +2008,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff0284C7),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2083,7 +2021,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xff0284C7).withValues(alpha: 0.15),
+                    color: Star.star.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: const Text(
@@ -2091,7 +2029,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     style: TextStyle(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff0284C7),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2102,7 +2040,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Sesuaikan konsumsi daya dengan batas MCB kamar kost: Gunakan 200W untuk merebus santai dan menjaga kehangatan sup, 400W untuk menumis sayuran, dan 600W saat mendidihkan air cepat di pagi hari.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -2125,8 +2063,8 @@ class _PlanningPageState extends State<PlanningPage> {
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xff0284C7),
-                      side: const BorderSide(color: Color(0xff0284C7)),
+                      foregroundColor: Star.star,
+                      side: const BorderSide(color: Star.star),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -2135,7 +2073,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     child: const Text(
                       '200W (Kecil)',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2157,8 +2095,8 @@ class _PlanningPageState extends State<PlanningPage> {
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xff0284C7),
-                      side: const BorderSide(color: Color(0xff0284C7)),
+                      foregroundColor: Star.star,
+                      side: const BorderSide(color: Star.star),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -2167,7 +2105,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     child: const Text(
                       '400W (Sedang)',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2189,7 +2127,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       );
                     },
                     style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xff0284C7),
+                      backgroundColor: Star.star,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -2198,7 +2136,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     child: const Text(
                       '600W (Penuh)',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2220,23 +2158,13 @@ class _PlanningPageState extends State<PlanningPage> {
     if (_selectedPrepItem == 'magic_com') {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xff004E71).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xff004E71).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Row(
               children: [
-                Icon(
-                  Icons.rice_bowl_rounded,
-                  size: 16,
-                  color: Color(0xff004E71),
-                ),
+                Icon(Icons.rice_bowl_rounded, size: 16, color: Star.star),
                 SizedBox(width: 6),
                 Expanded(
                   child: Text(
@@ -2244,10 +2172,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff004E71),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2258,7 +2186,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Trik anak kost: Taruh wadah kukusan plastik di atas beras saat menanak nasi. Masukkan telur utuh dan potongan tempe. Begitu tombol jeglek ke posisi Warm, nasi pulen dan lauk matang sempurna bersamaan tanpa kompor tambahan.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -2283,13 +2211,13 @@ class _PlanningPageState extends State<PlanningPage> {
                 label: const Text(
                   'Mulai Timer Kukus Nasi & Lauk (15 Menit)',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xff004E71),
+                  backgroundColor: Star.star,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -2303,23 +2231,13 @@ class _PlanningPageState extends State<PlanningPage> {
     } else if (_selectedPrepItem == 'telenan') {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xffD97706).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xffD97706).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.content_cut_rounded,
-                  size: 16,
-                  color: Color(0xffD97706),
-                ),
+                Icon(Icons.content_cut_rounded, size: 16, color: Star.star),
                 SizedBox(width: 6),
                 Expanded(
                   child: Text(
@@ -2327,10 +2245,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xffD97706),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2341,7 +2259,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Alasi kain lap basah di bawah telenan kayu agar tidak licin bergeser di atas keramik marmer. Potong dadu tempe ukuran 2 cm agar matang merata saat dikukus dan iris tipis bawang untuk aroma masakan.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -2353,23 +2271,13 @@ class _PlanningPageState extends State<PlanningPage> {
     } else {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xff8B5CF6).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xff8B5CF6).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.dinner_dining_rounded,
-                  size: 16,
-                  color: Color(0xff8B5CF6),
-                ),
+                Icon(Icons.dinner_dining_rounded, size: 16, color: Star.star),
                 SizedBox(width: 6),
                 Expanded(
                   child: Text(
@@ -2377,10 +2285,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff8B5CF6),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2391,7 +2299,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Komposisi standar piring Volta: 1 centong nasi pulen (~150g karbohidrat), 2 butir telur atau 1/2 papan tempe (sumber protein pembentuk massa otot), dan semangkok kuah sayur bening segar untuk mikronutrisi harian.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -2414,23 +2322,13 @@ class _PlanningPageState extends State<PlanningPage> {
     if (_selectedPantryItem == 'kulkas') {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xff06B6D4).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xff06B6D4).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(
-                  Icons.kitchen_rounded,
-                  size: 16,
-                  color: Color(0xff06B6D4),
-                ),
+                const Icon(Icons.kitchen_rounded, size: 16, color: Star.star),
                 const SizedBox(width: 6),
                 const Expanded(
                   child: Text(
@@ -2438,10 +2336,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff0891B2),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2451,7 +2349,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xff06B6D4).withValues(alpha: 0.15),
+                    color: Star.star.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -2459,7 +2357,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     style: const TextStyle(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff06B6D4),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2470,36 +2368,24 @@ class _PlanningPageState extends State<PlanningPage> {
             // Daftar 4 Sayuran Segar (Interaktif Checklist)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Star.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Star.lineSoft),
-              ),
+              decoration: Neu.raised(r: 12, d: 3),
               child: Column(
                 children: [
-                  _vegInventoryTile(
-                    '🥕 Wortel Segar (2 buah)',
-                    'gro_wortel',
-                    st,
-                  ),
+                  _vegInventoryTile('Wortel Segar (2 buah)', 'gro_wortel', st),
                   const Divider(height: 6, thickness: 0.5),
                   _vegInventoryTile(
-                    '🥦 Brokoli Hijau (1 bonggol)',
+                    'Brokoli Hijau (1 bonggol)',
                     'gro_brokoli',
                     st,
                   ),
                   const Divider(height: 6, thickness: 0.5),
                   _vegInventoryTile(
-                    '🍈 Labu Siam Bening (1 buah)',
+                    'Labu Siam Bening (1 buah)',
                     'gro_labu',
                     st,
                   ),
                   const Divider(height: 6, thickness: 0.5),
-                  _vegInventoryTile(
-                    '🥬 Bayam / Sawi (1 ikat)',
-                    'gro_bayam',
-                    st,
-                  ),
+                  _vegInventoryTile('Bayam / Sawi (1 ikat)', 'gro_bayam', st),
                 ],
               ),
             ),
@@ -2519,7 +2405,7 @@ class _PlanningPageState extends State<PlanningPage> {
                             children: [
                               Icon(
                                 Icons.shopping_basket_rounded,
-                                color: Color(0xff06B6D4),
+                                color: Star.star,
                                 size: 16,
                               ),
                               SizedBox(width: 8),
@@ -2527,7 +2413,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                 child: Text(
                                   'Sayuran ditambahkan ke Belanja!',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -2547,15 +2433,14 @@ class _PlanningPageState extends State<PlanningPage> {
                     label: const Text(
                       'Tambah Sayur ke Belanja',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xff06B6D4)
-                          .withValues(alpha: 0.15),
-                      foregroundColor: const Color(0xff06B6D4),
+                      backgroundColor: Star.star.withValues(alpha: 0.15),
+                      foregroundColor: Star.star,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -2570,14 +2455,14 @@ class _PlanningPageState extends State<PlanningPage> {
                   label: const Text(
                     'Buka Belanja',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xff004E71),
-                    side: const BorderSide(color: Color(0xff004E71)),
+                    foregroundColor: Star.star,
+                    side: const BorderSide(color: Star.star),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -2595,19 +2480,13 @@ class _PlanningPageState extends State<PlanningPage> {
     } else if (_selectedPantryItem == 'telur') {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xffE5A910).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xffE5A910).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Row(
               children: [
-                Icon(Icons.egg_rounded, size: 16, color: Color(0xffE5A910)),
+                Icon(Icons.egg_rounded, size: 16, color: Star.star),
                 SizedBox(width: 6),
                 Expanded(
                   child: Text(
@@ -2615,10 +2494,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xffA67C00),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -2629,7 +2508,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Kebutuhan harian: 3 butir telur ayam per hari (menyumbang 18g protein murni). Satu papan telur ayam berharga sekitar Rp55.000 dan mencukupi kebutuhan 10 hari program kalistenik. Simpan telur di wadah berventilasi suhu ruang (tahan 2 minggu). Jangan cuci telur sebelum dimasak agar lapisan pelindung cangkang tetap utuh.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -2648,17 +2527,13 @@ class _PlanningPageState extends State<PlanningPage> {
                     SnackBar(
                       content: const Row(
                         children: [
-                          Icon(
-                            Icons.egg_rounded,
-                            color: Color(0xffE5A910),
-                            size: 16,
-                          ),
+                          Icon(Icons.egg_rounded, color: Star.star, size: 16),
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               '1 Papan Telur (30 Butir) ditambahkan ke Belanja!',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -2678,15 +2553,14 @@ class _PlanningPageState extends State<PlanningPage> {
                 label: const Text(
                   'Tambah 1 Papan Telur ke Daftar Belanja',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xffE5A910)
-                      .withValues(alpha: 0.15),
-                  foregroundColor: const Color(0xffA67C00),
+                  backgroundColor: Star.star.withValues(alpha: 0.15),
+                  foregroundColor: Star.star,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -2700,19 +2574,13 @@ class _PlanningPageState extends State<PlanningPage> {
     } else {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: const Color(0xff10B981).withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xff10B981).withValues(alpha: 0.2),
-          ),
-        ),
+        decoration: Neu.well(r: 18),
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(Icons.shelves, size: 16, color: Color(0xff10B981)),
+                Icon(Icons.shelves, size: 16, color: Star.success),
                 SizedBox(width: 6),
                 Expanded(
                   child: Text(
@@ -2720,10 +2588,10 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff10B981),
+                      color: Star.success,
                     ),
                   ),
                 ),
@@ -2734,7 +2602,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Bumbu dapur esensial Volta: Garam beriodium, bawang merah & bawang putih cincang, lada bubuk, serta kecap manis secukupnya. Bumbu-bumbu ini membuat masakan rebusan dan kukusan terasa sedap dan gurih tanpa MSG berlebihan.',
               textAlign: TextAlign.justify,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.ink,
                 height: 1.45,
@@ -2767,7 +2635,7 @@ class _PlanningPageState extends State<PlanningPage> {
               isCooked
                   ? Icons.check_circle_rounded
                   : Icons.radio_button_unchecked_rounded,
-              color: isCooked ? const Color(0xff0D9488) : Star.mut,
+              color: isCooked ? Star.star : Star.mut,
               size: 16,
             ),
             const SizedBox(width: 8),
@@ -2775,7 +2643,7 @@ class _PlanningPageState extends State<PlanningPage> {
               child: Text(
                 name,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10.5,
                   fontWeight: FontWeight.w600,
                   color: isCooked ? Star.mut : Star.ink,
@@ -2787,17 +2655,17 @@ class _PlanningPageState extends State<PlanningPage> {
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
               decoration: BoxDecoration(
                 color: isCooked
-                    ? const Color(0xff0D9488).withValues(alpha: 0.12)
+                    ? Star.star.withValues(alpha: 0.12)
                     : Star.sunken,
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 isCooked ? 'Terpakai ✓' : 'Tersedia',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 8.5,
                   fontWeight: FontWeight.w700,
-                  color: isCooked ? const Color(0xff0D9488) : Star.mut,
+                  color: isCooked ? Star.star : Star.mut,
                 ),
               ),
             ),
@@ -2816,7 +2684,7 @@ class _PlanningPageState extends State<PlanningPage> {
         width: isActive ? 16 : 6,
         height: 6,
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xffFFE599) : Colors.white54,
+          color: isActive ? Paper.amberInk : Star.onAccent54,
           borderRadius: BorderRadius.circular(3),
         ),
       ),
@@ -2843,11 +2711,7 @@ class _PlanningPageState extends State<PlanningPage> {
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -2857,11 +2721,7 @@ class _PlanningPageState extends State<PlanningPage> {
               const Expanded(
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.checklist_rounded,
-                      size: 18,
-                      color: Color(0xff004E71),
-                    ),
+                    Icon(Icons.checklist_rounded, size: 18, color: Star.star),
                     SizedBox(width: 8),
                     Flexible(
                       child: Text(
@@ -2869,7 +2729,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -2885,10 +2745,10 @@ class _PlanningPageState extends State<PlanningPage> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xff009E8F),
+                  color: Star.star,
                 ),
               ),
             ],
@@ -2983,15 +2843,14 @@ class _PlanningPageState extends State<PlanningPage> {
               label: const Text(
                 '+ Buat Menu Sendiri (Racik Resep)',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xff0D9488)
-                    .withValues(alpha: 0.12),
-                foregroundColor: const Color(0xff0D9488),
+                backgroundColor: Star.star.withValues(alpha: 0.12),
+                foregroundColor: Star.star,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -3017,14 +2876,10 @@ class _PlanningPageState extends State<PlanningPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: isDone
-              ? const Color(0xff009E8F).withValues(alpha: 0.08)
-              : Star.bg,
+          color: isDone ? Star.star.withValues(alpha: 0.08) : Star.bg,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isDone
-                ? const Color(0xff009E8F).withValues(alpha: 0.3)
-                : Star.sunken,
+            color: isDone ? Star.star.withValues(alpha: 0.3) : Star.sunken,
           ),
         ),
         child: Row(
@@ -3033,7 +2888,7 @@ class _PlanningPageState extends State<PlanningPage> {
               isDone
                   ? Icons.check_circle_rounded
                   : Icons.radio_button_unchecked_rounded,
-              color: isDone ? const Color(0xff009E8F) : Star.mut,
+              color: isDone ? Star.star : Star.mut,
               size: 20,
             ),
             const SizedBox(width: 8),
@@ -3044,7 +2899,7 @@ class _PlanningPageState extends State<PlanningPage> {
                   Text(
                     '$timeLabel • $menuTitle',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
                       color: isDone
@@ -3056,9 +2911,9 @@ class _PlanningPageState extends State<PlanningPage> {
                   Text(
                     macro,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10,
-                      color: Color(0xff0284C7),
+                      color: Star.star,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -3090,17 +2945,13 @@ class _PlanningPageState extends State<PlanningPage> {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
-        decoration: BoxDecoration(
-          color: Star.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Star.lineSoft),
-        ),
+        decoration: Neu.raised(r: 12, d: 3),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: const Color(0xff0781D1).withValues(alpha: .10),
+                color: Star.star.withValues(alpha: .10),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -3108,7 +2959,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     ? Icons.notifications_active_rounded
                     : Icons.notifications_off_rounded,
                 size: 16,
-                color: const Color(0xff0781D1),
+                color: Star.star,
               ),
             ),
             const SizedBox(width: 10),
@@ -3119,7 +2970,7 @@ class _PlanningPageState extends State<PlanningPage> {
                   const Text(
                     'Pengingat latihan',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -3130,7 +2981,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       color: Star.mut,
                     ),
@@ -3157,11 +3008,7 @@ class _PlanningPageState extends State<PlanningPage> {
           padding: EdgeInsets.symmetric(horizontal: 4),
           child: Row(
             children: [
-              Icon(
-                Icons.calendar_month_rounded,
-                size: 16,
-                color: Color(0xff004E71),
-              ),
+              Icon(Icons.calendar_month_rounded, size: 16, color: Star.star),
               SizedBox(width: 6),
               Expanded(
                 child: Column(
@@ -3170,7 +3017,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     Text(
                       'Jadwal Makan & Target Nutrisi Kost',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -3179,7 +3026,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     Text(
                       'Pilih hari untuk target kalori & panduan masak harian',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10.5,
                         color: Star.mut,
                       ),
@@ -3220,21 +3067,16 @@ class _PlanningPageState extends State<PlanningPage> {
                       horizontal: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xff004E71)
-                          : Star.surface,
+                      color: isSelected ? Star.star : Star.surface,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: isSelected
-                            ? const Color(0xff004E71)
-                            : Star.sunken,
+                        color: isSelected ? Star.star : Star.sunken,
                         width: isSelected ? 1.8 : 1.0,
                       ),
                       boxShadow: [
                         if (isSelected)
                           BoxShadow(
-                            color: const Color(0xff004E71)
-                                .withValues(alpha: 0.25),
+                            color: Star.star.withValues(alpha: 0.25),
                             blurRadius: 8,
                             offset: const Offset(0, 3),
                           ),
@@ -3246,10 +3088,10 @@ class _PlanningPageState extends State<PlanningPage> {
                         Text(
                           item.dayName,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
-                            color: isSelected ? Colors.white : Star.ink,
+                            color: isSelected ? Star.onAccent : Star.ink,
                           ),
                         ),
                         const SizedBox(height: 3),
@@ -3260,19 +3102,17 @@ class _PlanningPageState extends State<PlanningPage> {
                           ),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? const Color(0xffFFE599)
+                                ? Star.onAccent.withValues(alpha: 0.14)
                                 : Star.sunken,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             'Pkt ${item.defaultPola}',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 9.5,
                               fontWeight: FontWeight.w700,
-                              color: isSelected
-                                  ? const Color(0xff004E71)
-                                  : Star.mut,
+                              color: isSelected ? Star.onAccent : Star.mut,
                             ),
                           ),
                         ),
@@ -3303,7 +3143,7 @@ class _PlanningPageState extends State<PlanningPage> {
               'Timer $minutes menit aktif! Tampil di bagian atas semua tab.',
             ),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: const Color(0xffEA580C),
+            backgroundColor: Star.star,
             duration: const Duration(milliseconds: 1400),
           ),
         );
@@ -3312,16 +3152,16 @@ class _PlanningPageState extends State<PlanningPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: const Color(0xffEA580C),
+          color: Star.star,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,
           style: const TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 10.5,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: Star.onAccent,
           ),
         ),
       ),
@@ -3335,11 +3175,7 @@ class _PlanningPageState extends State<PlanningPage> {
   ) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -3351,12 +3187,12 @@ class _PlanningPageState extends State<PlanningPage> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xffEA580C).withValues(alpha: 0.12),
+                      color: Star.star.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
                       Icons.soup_kitchen_rounded,
-                      color: Color(0xffEA580C),
+                      color: Star.star,
                       size: 18,
                     ),
                   ),
@@ -3367,7 +3203,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       Text(
                         'Resep ${dayInfo.dayName} (${activePola.k})',
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 13.5,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -3376,7 +3212,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       Text(
                         'Estimasi Biaya: Rp ${activePola.b ~/ 1000}rb/hari',
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 10,
                           color: Star.mut,
                           fontWeight: FontWeight.w600,
@@ -3393,16 +3229,16 @@ class _PlanningPageState extends State<PlanningPage> {
                     vertical: 3,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xff009E8F).withValues(alpha: 0.12),
+                    color: Star.star.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
                     'Hari Ini',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff009E8F),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -3412,7 +3248,7 @@ class _PlanningPageState extends State<PlanningPage> {
           Text(
             activePola.t,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 13,
               fontWeight: FontWeight.w700,
               color: Star.ink,
@@ -3423,7 +3259,7 @@ class _PlanningPageState extends State<PlanningPage> {
             activePola.cara,
             textAlign: TextAlign.justify,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 11.5,
               color: Star.ink,
               height: 1.45,
@@ -3433,29 +3269,19 @@ class _PlanningPageState extends State<PlanningPage> {
           // Quick Presets Timer Masak Langsung di Tab Menu Hari Ini
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xffEA580C).withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: const Color(0xffEA580C).withValues(alpha: 0.2),
-              ),
-            ),
+            decoration: Neu.well(r: 12),
             child: Row(
               children: [
-                const Icon(
-                  Icons.timer_outlined,
-                  size: 15,
-                  color: Color(0xffEA580C),
-                ),
+                const Icon(Icons.timer_outlined, size: 15, color: Star.star),
                 const SizedBox(width: 6),
                 const Expanded(
                   child: Text(
                     'Mulai Timer Masak:',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xffEA580C),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -3477,14 +3303,14 @@ class _PlanningPageState extends State<PlanningPage> {
                   label: const Text(
                     'Panduan Detail & Langkah',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xff004E71),
-                    side: const BorderSide(color: Color(0xff004E71)),
+                    foregroundColor: Star.star,
+                    side: const BorderSide(color: Star.star),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -3514,7 +3340,7 @@ class _PlanningPageState extends State<PlanningPage> {
         timerMinutes: 10,
         timerTitle: 'Sarapan: Telur & Tempe Kukus',
         icon: Icons.wb_twilight_rounded,
-        iconColor: const Color(0xffE5A910),
+        iconColor: Star.star,
         bahan: '2 butir telur ayam, 1 papan kecil tempe (potong dadu), 1 centong beras pulen.',
         langkah: 'Trik Magic Com 2-in-1: Cuci beras dan beri air di panci magic com. Taruh wadah kukusan di atas beras, letakkan telur dan tempe. Nasi matang dan lauk siap santap bersamaan dalam 10 menit tanpa kompor tambahan.',
       ),
@@ -3526,7 +3352,7 @@ class _PlanningPageState extends State<PlanningPage> {
         timerMinutes: 12,
         timerTitle: 'Makan Siang: ${activePola.k}',
         icon: Icons.wb_sunny_rounded,
-        iconColor: const Color(0xff0D9488),
+        iconColor: Star.star,
         bahan:
             'Sayuran keranjang kost (labu siam/wortel/bayam), lauk harian ${activePola.k}, bawang merah & garam.',
         langkah: activePola.cara.isNotEmpty ? activePola.cara : 'Didihkan 400ml air di panci listrik, masukkan irisan bumbu dasar dan garam. Masukkan sayuran segar selama 5-7 menit agar vitamin terjaga dan sayur tetap renyah.',
@@ -3539,7 +3365,7 @@ class _PlanningPageState extends State<PlanningPage> {
         timerMinutes: 5,
         timerTitle: 'Booster Sore: Susu & Nutrisi Otot',
         icon: Icons.bolt_rounded,
-        iconColor: const Color(0xffEA580C),
+        iconColor: Star.star,
         bahan: '1 sachet susu Dancow bubuk, 1 butir telur ayam rebus / pisang ambon.',
         langkah: 'Seduh susu bubuk dengan air panas hangat. Konsumsi 30-45 menit sebelum atau sesudah kalistenik untuk memicu pemulihan glikogen dan mempercepat pembentukan massa otot bebas lemak.',
       ),
@@ -3551,7 +3377,7 @@ class _PlanningPageState extends State<PlanningPage> {
         timerMinutes: 10,
         timerTitle: 'Makan Malam: Kuah Hangat & Lauk',
         icon: Icons.nights_stay_rounded,
-        iconColor: const Color(0xff6366F1),
+        iconColor: Star.star,
         bahan: 'Nasi hangat, kuah sup bening sisa siang/baru, tahu/telur rebus pelengkap.',
         langkah: 'Panaskan kuah sup di panci listrik selama 5 menit. Santap selagi hangat untuk memberikan rasa kenyang yang nyaman dan tidur nyenyak tanpa begah.',
       ),
@@ -3568,12 +3394,12 @@ class _PlanningPageState extends State<PlanningPage> {
             Container(
               padding: const EdgeInsets.all(7),
               decoration: BoxDecoration(
-                color: const Color(0xff004E71).withValues(alpha: 0.12),
+                color: Star.star.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(
                 Icons.restaurant_menu_rounded,
-                color: Color(0xff004E71),
+                color: Star.star,
                 size: 18,
               ),
             ),
@@ -3585,7 +3411,7 @@ class _PlanningPageState extends State<PlanningPage> {
                   const Text(
                     'Jadwal Pilihan Menu Harian Kost',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -3594,7 +3420,7 @@ class _PlanningPageState extends State<PlanningPage> {
                   Text(
                     'Porsi makan terencana 4 sesi hari ${dayInfo.dayName} dengan langkah masak & timer instan',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       color: Star.mut,
                     ),
@@ -3610,18 +3436,7 @@ class _PlanningPageState extends State<PlanningPage> {
         ...mealSessions.map((session) {
           return Container(
             margin: const EdgeInsets.only(bottom: 12),
-            decoration: BoxDecoration(
-              color: Star.surface,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: Star.lineSoft),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.03),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+            decoration: Neu.raised(r: 18, d: 5),
             padding: const EdgeInsets.all(14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -3637,7 +3452,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         Text(
                           session.session,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                             color: session.iconColor,
@@ -3658,7 +3473,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       child: Text(
                         session.cost,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -3673,7 +3488,7 @@ class _PlanningPageState extends State<PlanningPage> {
                 Text(
                   session.title,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -3685,10 +3500,10 @@ class _PlanningPageState extends State<PlanningPage> {
                 Text(
                   session.macro,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff0D9488),
+                    color: Star.star,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -3696,16 +3511,12 @@ class _PlanningPageState extends State<PlanningPage> {
                 // Langkah Masak (Justified)
                 Container(
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Star.bg,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Star.lineSoft),
-                  ),
+                  decoration: Neu.raised(r: 12, d: 3),
                   child: Text(
                     session.langkah,
                     textAlign: TextAlign.justify,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       color: Star.ink,
                       height: 1.45,
@@ -3736,13 +3547,13 @@ class _PlanningPageState extends State<PlanningPage> {
                     label: Text(
                       'Pasang Timer Masak (${session.timerMinutes} Mnt)',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xff004E71),
+                      backgroundColor: Star.star,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -3759,26 +3570,18 @@ class _PlanningPageState extends State<PlanningPage> {
         // Quick Catalog Bar: Ganti Pola Paket Resep A - G
         Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Star.surface,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Star.lineSoft),
-          ),
+          decoration: Neu.raised(r: 18, d: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Row(
                 children: [
-                  Icon(
-                    Icons.swap_horiz_rounded,
-                    size: 16,
-                    color: Color(0xff004E71),
-                  ),
+                  Icon(Icons.swap_horiz_rounded, size: 16, color: Star.star),
                   SizedBox(width: 6),
                   Text(
                     'Ganti Paket Menu Hari Ini (A – G)',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -3790,7 +3593,7 @@ class _PlanningPageState extends State<PlanningPage> {
               const Text(
                 'Pilih variasi paket makanan murah untuk mengganti lauk utama siang & malam:',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10.5,
                   color: Star.mut,
                 ),
@@ -3817,35 +3620,30 @@ class _PlanningPageState extends State<PlanningPage> {
                             horizontal: 12,
                             vertical: 8,
                           ),
-                          decoration: BoxDecoration(
-                            color: isSel ? const Color(0xff004E71) : Star.bg,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSel
-                                  ? const Color(0xff004E71)
-                                  : Star.sunken,
-                            ),
-                          ),
+                          decoration: isSel
+                              ? BoxDecoration(
+                                  color: Star.star,
+                                  borderRadius: BorderRadius.circular(12),
+                                )
+                              : Neu.raised(r: 12, d: 3),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 'Paket $k (Rp ${p.b ~/ 1000}rb)',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 11,
                                   fontWeight: FontWeight.w700,
-                                  color: isSel
-                                      ? Colors.white
-                                      : const Color(0xff004E71),
+                                  color: isSel ? Star.onAccent : Star.star,
                                 ),
                               ),
                               Text(
                                 p.t.split('|').last.trim(),
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 9.5,
-                                  color: isSel ? Colors.white70 : Star.ink,
+                                  color: isSel ? Star.onAccent70 : Star.ink,
                                 ),
                               ),
                             ],
@@ -3909,11 +3707,7 @@ class _PlanningPageState extends State<PlanningPage> {
     return Container(
       key: _grocerySectionKey,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -3924,14 +3718,14 @@ class _PlanningPageState extends State<PlanningPage> {
                 children: [
                   Icon(
                     Icons.shopping_cart_outlined,
-                    color: Color(0xff004E71),
+                    color: Star.star,
                     size: 18,
                   ),
                   SizedBox(width: 8),
                   Text(
                     'Daftar Belanja Pasar Mingguan',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -3942,16 +3736,16 @@ class _PlanningPageState extends State<PlanningPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xff004E71).withValues(alpha: 0.12),
+                  color: Star.star.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   '$boughtCount / ${groceryItems.length} Terbeli',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff004E71),
+                    color: Star.star,
                   ),
                 ),
               ),
@@ -3962,7 +3756,7 @@ class _PlanningPageState extends State<PlanningPage> {
             'Centang barang yang sudah Anda beli di pasar. Seluruh data belanjaan otomatis tersimpan di memori aplikasi.',
             textAlign: TextAlign.justify,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10.5,
               color: Star.mut,
               height: 1.35,
@@ -3985,7 +3779,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       isChecked
                           ? Icons.check_box_rounded
                           : Icons.check_box_outline_blank_rounded,
-                      color: isChecked ? const Color(0xff009E8F) : Star.mut,
+                      color: isChecked ? Star.star : Star.mut,
                       size: 20,
                     ),
                     const SizedBox(width: 10),
@@ -3996,7 +3790,7 @@ class _PlanningPageState extends State<PlanningPage> {
                           Text(
                             item.name,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11.5,
                               fontWeight: FontWeight.w700,
                               color: isChecked ? Star.mut : Star.ink,
@@ -4008,9 +3802,9 @@ class _PlanningPageState extends State<PlanningPage> {
                           Text(
                             item.note,
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 9.5,
-                              color: Color(0xff0284C7),
+                              color: Star.star,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -4035,14 +3829,12 @@ class _PlanningPageState extends State<PlanningPage> {
       margin: const EdgeInsets.only(top: 6),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: isDone
-            ? const Color(0xff0D9488).withValues(alpha: 0.08)
-            : Colors.white,
+        color: isDone ? Star.star.withValues(alpha: 0.08) : Star.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isDone
-              ? const Color(0xff0D9488).withValues(alpha: 0.3)
-              : const Color(0xff0D9488).withValues(alpha: 0.4),
+              ? Star.star.withValues(alpha: 0.3)
+              : Star.star.withValues(alpha: 0.4),
           width: 1.2,
         ),
       ),
@@ -4064,7 +3856,7 @@ class _PlanningPageState extends State<PlanningPage> {
               isDone
                   ? Icons.check_circle_rounded
                   : Icons.radio_button_unchecked_rounded,
-              color: isDone ? const Color(0xff0D9488) : const Color(0xff0D9488),
+              color: isDone ? Star.star : Star.star,
               size: 20,
             ),
           ),
@@ -4081,16 +3873,16 @@ class _PlanningPageState extends State<PlanningPage> {
                         vertical: 1.5,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xff0D9488).withValues(alpha: 0.15),
+                        color: Star.star.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
                         '★ ${cm.mealTime}',
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 9,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xff0D9488),
+                          color: Star.star,
                         ),
                       ),
                     ),
@@ -4101,7 +3893,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11.5,
                           fontWeight: FontWeight.w700,
                           color: isDone ? Star.mut : Star.ink,
@@ -4117,10 +3909,10 @@ class _PlanningPageState extends State<PlanningPage> {
                 Text(
                   '• ${cm.kalori} kkal • ${cm.protein}g Protein • ${cm.karbo}g Karbo${cm.bahan.isNotEmpty ? ' • ${cm.bahan.length} Bahan' : ''}',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff0D9488),
+                    color: Star.star,
                   ),
                 ),
                 if (cm.langkah.isNotEmpty) ...[
@@ -4130,7 +3922,7 @@ class _PlanningPageState extends State<PlanningPage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 9.5,
                       color: Star.mut,
                     ),
@@ -4143,7 +3935,7 @@ class _PlanningPageState extends State<PlanningPage> {
             icon: const Icon(
               Icons.delete_outline_rounded,
               size: 18,
-              color: Color(0xffEF4444),
+              color: Star.error,
             ),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
@@ -4190,17 +3982,17 @@ class _PlanningPageState extends State<PlanningPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 18, color: isActive ? Colors.white : Star.mut),
+            Icon(icon, size: 18, color: isActive ? Star.onAccent : Star.mut),
             const SizedBox(height: 3),
             Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
                 fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
-                color: isActive ? Colors.white : Star.ink,
+                color: isActive ? Star.onAccent : Star.ink,
               ),
             ),
             Text(
@@ -4208,11 +4000,11 @@ class _PlanningPageState extends State<PlanningPage> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 8.5,
                 fontWeight: FontWeight.w600,
                 color: isActive
-                    ? Colors.white.withValues(alpha: 0.85)
+                    ? Star.onAccent.withValues(alpha: 0.85)
                     : Star.mut,
               ),
             ),
@@ -4309,7 +4101,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         children: [
                           Icon(
                             Icons.restaurant_menu_rounded,
-                            color: Color(0xff0D9488),
+                            color: Star.star,
                             size: 22,
                           ),
                           SizedBox(width: 8),
@@ -4317,7 +4109,7 @@ class _PlanningPageState extends State<PlanningPage> {
                             child: Text(
                               'Buat Menu Sendiri (Racik Resep Kost)',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 14.5,
                                 fontWeight: FontWeight.w700,
                                 color: Star.ink,
@@ -4330,7 +4122,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       const Text(
                         'Rancang menu favorit Anda dengan kalkulasi nutrisi presisi. Sesuaikan asupan agar tidak kurang dan pas dengan target profil!',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                           color: Star.mut,
                         ),
@@ -4340,15 +4132,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       // ACUAN 1X MAKAN DARI PROFIL (CARD TERPUSAT)
                       Container(
                         padding: const EdgeInsets.all(11),
-                        decoration: BoxDecoration(
-                          color: const Color(0xff0D9488)
-                              .withValues(alpha: 0.08),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: const Color(0xff0D9488)
-                                .withValues(alpha: 0.22),
-                          ),
-                        ),
+                        decoration: Neu.well(r: 14),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -4357,17 +4141,17 @@ class _PlanningPageState extends State<PlanningPage> {
                                 const Icon(
                                   Icons.track_changes_rounded,
                                   size: 15,
-                                  color: Color(0xff0D9488),
+                                  color: Star.star,
                                 ),
                                 const SizedBox(width: 6),
                                 const Expanded(
                                   child: Text(
                                     'Acuan 1x Porsi Makan Anda (Dari Profil):',
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 11,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff0D9488),
+                                      color: Star.star,
                                     ),
                                   ),
                                 ),
@@ -4378,10 +4162,10 @@ class _PlanningPageState extends State<PlanningPage> {
                                             ? 'Cutting'
                                             : 'Fit'),
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xff0D9488),
+                                    color: Star.star,
                                   ),
                                 ),
                               ],
@@ -4391,27 +4175,27 @@ class _PlanningPageState extends State<PlanningPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  '🥩 $targetPro g Protein',
+                                  '$targetPro g Protein',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w700,
                                     color: Star.ink,
                                   ),
                                 ),
                                 Text(
-                                  '⚡ $targetCal kkal',
+                                  '$targetCal kkal',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w700,
                                     color: Star.ink,
                                   ),
                                 ),
                                 Text(
-                                  '🍚 $targetCarb g Karbo',
+                                  '$targetCarb g Karbo',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w700,
                                     color: Star.ink,
@@ -4428,7 +4212,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       const Text(
                         'Template Resep Cepat Kost:',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 10.5,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -4441,15 +4225,14 @@ class _PlanningPageState extends State<PlanningPage> {
                           children: [
                             ActionChip(
                               label: const Text(
-                                '🍳 Omelet Bayam Tahu',
+                                'Omelet Bayam Tahu',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              backgroundColor: const Color(0xff0D9488)
-                                  .withValues(alpha: 0.1),
+                              backgroundColor: Star.star.withValues(alpha: 0.1),
                               onPressed: () => applyPreset(
                                 'Omelet Bayam Tahu',
                                 '380',
@@ -4462,15 +4245,14 @@ class _PlanningPageState extends State<PlanningPage> {
                             const SizedBox(width: 6),
                             ActionChip(
                               label: const Text(
-                                '🥗 Tumis Kangkung Tempe',
+                                'Tumis Kangkung Tempe',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              backgroundColor: const Color(0xffEA580C)
-                                  .withValues(alpha: 0.1),
+                              backgroundColor: Star.star.withValues(alpha: 0.1),
                               onPressed: () => applyPreset(
                                 'Tumis Kangkung Tempe',
                                 '420',
@@ -4483,15 +4265,14 @@ class _PlanningPageState extends State<PlanningPage> {
                             const SizedBox(width: 6),
                             ActionChip(
                               label: const Text(
-                                '🍲 Sop Ayam Sayur Magic Com',
+                                'Sop Ayam Sayur Magic Com',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              backgroundColor: const Color(0xff0284C7)
-                                  .withValues(alpha: 0.1),
+                              backgroundColor: Star.star.withValues(alpha: 0.1),
                               onPressed: () => applyPreset(
                                 'Sop Ayam Sayur Magic Com',
                                 '490',
@@ -4512,7 +4293,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         decoration: InputDecoration(
                           labelText: 'Nama Menu Makanan',
                           labelStyle: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                           ),
                           hintText: 'Contoh: Telur Dadar Jamur Tiram',
@@ -4525,7 +4306,7 @@ class _PlanningPageState extends State<PlanningPage> {
                           ),
                         ),
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                         ),
@@ -4536,7 +4317,7 @@ class _PlanningPageState extends State<PlanningPage> {
                       const Text(
                         'Pilih Sesi Makan:',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 10.5,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -4557,7 +4338,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                 label: Text(
                                   time,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     fontWeight: isSel
                                         ? FontWeight.w700
@@ -4565,9 +4346,9 @@ class _PlanningPageState extends State<PlanningPage> {
                                   ),
                                 ),
                                 selected: isSel,
-                                selectedColor: const Color(0xff0D9488),
+                                selectedColor: Star.star,
                                 labelStyle: TextStyle(
-                                  color: isSel ? Colors.white : Star.ink,
+                                  color: isSel ? Star.onAccent : Star.ink,
                                 ),
                                 onSelected: (val) {
                                   if (val) {
@@ -4600,7 +4381,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                 ),
                               ),
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -4623,7 +4404,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                 ),
                               ),
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -4646,7 +4427,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                 ),
                               ),
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -4663,11 +4444,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         Container(
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Star.bg,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Star.lineSoft),
-                          ),
+                          decoration: Neu.raised(r: 12, d: 3),
                           child: const Row(
                             children: [
                               Icon(
@@ -4680,7 +4457,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                 child: Text(
                                   'Isi jumlah protein, kalori, dan karbohidrat di atas untuk melihat perbandingan dengan target gizi porsi makanmu.',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10.5,
                                     color: Star.mut,
                                   ),
@@ -4694,14 +4471,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         Container(
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffFFFBEB),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: const Color(0xffF59E0B),
-                              width: 1.5,
-                            ),
-                          ),
+                          decoration: Neu.well(r: 14),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -4713,7 +4483,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                       vertical: 2.5,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xffF59E0B),
+                                      color: Star.star,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: const Row(
@@ -4722,16 +4492,16 @@ class _PlanningPageState extends State<PlanningPage> {
                                         Icon(
                                           Icons.warning_amber_rounded,
                                           size: 12,
-                                          color: Colors.white,
+                                          color: Star.onAccent,
                                         ),
                                         SizedBox(width: 4),
                                         Text(
                                           'PERLU TAMBAHAN PROTEIN',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
+                                            fontFamily: 'Manrope',
                                             fontSize: 9.5,
                                             fontWeight: FontWeight.w700,
-                                            color: Colors.white,
+                                            color: Star.onAccent,
                                           ),
                                         ),
                                       ],
@@ -4741,10 +4511,10 @@ class _PlanningPageState extends State<PlanningPage> {
                                   Text(
                                     '$proPct% dari target porsi',
                                     style: const TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xffD97706),
+                                      color: Star.star,
                                     ),
                                   ),
                                 ],
@@ -4753,20 +4523,20 @@ class _PlanningPageState extends State<PlanningPage> {
                               Text(
                                 'OH TERNYATA AKU BUTUH PROTEIN ${targetPro}g DAN INI TERNYATA KURANG?',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xff92400E),
+                                  color: Paper.amberInk,
                                   height: 1.25,
                                 ),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Menu ini baru menyumbang ${proVal}g protein (masih kurang ${targetPro - proVal}g dari acuan sekali makan Anda).\n💡 Saran Cepat: Tambahkan 2 butir telur rebus (+12g), 1 potong tempe goreng (+8g), atau dada ayam (+20g) agar regenerasi serat otot tidak terhambat!',
+                                'Menu ini baru menyumbang ${proVal}g protein (masih kurang ${targetPro - proVal}g dari acuan sekali makan Anda).\nSaran Cepat: Tambahkan 2 butir telur rebus (+12g), 1 potong tempe goreng (+8g), atau dada ayam (+20g) agar regenerasi serat otot tidak terhambat!',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10.5,
-                                  color: Color(0xff78350F),
+                                  color: Paper.amberInk,
                                   height: 1.35,
                                 ),
                               ),
@@ -4778,14 +4548,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         Container(
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffECFDF5),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: const Color(0xff10B981),
-                              width: 1.5,
-                            ),
-                          ),
+                          decoration: Neu.well(r: 14),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -4797,7 +4560,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                       vertical: 2.5,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xff10B981),
+                                      color: Star.success,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: const Row(
@@ -4806,16 +4569,16 @@ class _PlanningPageState extends State<PlanningPage> {
                                         Icon(
                                           Icons.check_circle_rounded,
                                           size: 12,
-                                          color: Colors.white,
+                                          color: Star.onAccent,
                                         ),
                                         SizedBox(width: 4),
                                         Text(
                                           'PROTEIN PAS & OPTIMAL',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
+                                            fontFamily: 'Manrope',
                                             fontSize: 9.5,
                                             fontWeight: FontWeight.w700,
-                                            color: Colors.white,
+                                            color: Star.onAccent,
                                           ),
                                         ),
                                       ],
@@ -4825,10 +4588,10 @@ class _PlanningPageState extends State<PlanningPage> {
                                   Text(
                                     '$proPct% dari target porsi',
                                     style: const TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff059669),
+                                      color: Star.success,
                                     ),
                                   ),
                                 ],
@@ -4837,10 +4600,10 @@ class _PlanningPageState extends State<PlanningPage> {
                               const Text(
                                 'OHH UDAH CUKUP, AKU TAHU!',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xff065F46),
+                                  color: Paper.mintDeep,
                                   height: 1.25,
                                 ),
                               ),
@@ -4848,9 +4611,9 @@ class _PlanningPageState extends State<PlanningPage> {
                               Text(
                                 'Asupan protein ${proVal}g ini pas banget dan sudah mencukupi target 1 kali makan Anda (${proVal}g / ${targetPro}g target). Sangat ideal untuk mendukung pembentukan fisik atletis kost!',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10.5,
-                                  color: Color(0xff047857),
+                                  color: Paper.mintDeep,
                                   height: 1.35,
                                 ),
                               ),
@@ -4862,14 +4625,7 @@ class _PlanningPageState extends State<PlanningPage> {
                         Container(
                           margin: const EdgeInsets.only(bottom: 8),
                           padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF0FDFA),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: const Color(0xff0D9488),
-                              width: 1.5,
-                            ),
-                          ),
+                          decoration: Neu.well(r: 14),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -4881,7 +4637,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                       vertical: 2.5,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xff0D9488),
+                                      color: Star.star,
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: const Row(
@@ -4890,16 +4646,16 @@ class _PlanningPageState extends State<PlanningPage> {
                                         Icon(
                                           Icons.bolt_rounded,
                                           size: 12,
-                                          color: Colors.white,
+                                          color: Star.onAccent,
                                         ),
                                         SizedBox(width: 4),
                                         Text(
                                           'SUPER HIGH PROTEIN',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
+                                            fontFamily: 'Manrope',
                                             fontSize: 9.5,
                                             fontWeight: FontWeight.w700,
-                                            color: Colors.white,
+                                            color: Star.onAccent,
                                           ),
                                         ),
                                       ],
@@ -4909,10 +4665,10 @@ class _PlanningPageState extends State<PlanningPage> {
                                   Text(
                                     '$proPct% dari target',
                                     style: const TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff0D9488),
+                                      color: Star.star,
                                     ),
                                   ),
                                 ],
@@ -4921,10 +4677,10 @@ class _PlanningPageState extends State<PlanningPage> {
                               Text(
                                 'SUPER HIGH PROTEIN! ${proVal}g Sangat Melimpah!',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xff115E59),
+                                  color: Star.star,
                                   height: 1.25,
                                 ),
                               ),
@@ -4932,9 +4688,9 @@ class _PlanningPageState extends State<PlanningPage> {
                               Text(
                                 'Porsi protein ini sangat tinggi ($proPct% dari acuan 1x makan). Cocok sebagai menu pasca latihan intensif untuk mempercepat pemulihan dan penambahan massa otot!',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10.5,
-                                  color: Color(0xff0F766E),
+                                  color: Star.star,
                                   height: 1.35,
                                 ),
                               ),
@@ -4948,18 +4704,14 @@ class _PlanningPageState extends State<PlanningPage> {
                           horizontal: 10,
                           vertical: 6,
                         ),
-                        decoration: BoxDecoration(
-                          color: Star.bg,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Star.lineSoft),
-                        ),
+                        decoration: Neu.raised(r: 10, d: 3),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
                               'Kal: $calVal/$targetCal kkal ($calPct%)',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w600,
                                 color: Star.ink,
@@ -4969,20 +4721,20 @@ class _PlanningPageState extends State<PlanningPage> {
                             Text(
                               'Pro: $proVal/$targetPro g ($proPct%)',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff0D9488),
+                                color: Star.star,
                               ),
                             ),
                             Container(width: 1, height: 12, color: Star.sunken),
                             Text(
                               'Karbo: $carbVal/$targetCarb g ($carbPct%)',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xff0284C7),
+                                color: Star.star,
                               ),
                             ),
                           ],
@@ -5005,7 +4757,7 @@ class _PlanningPageState extends State<PlanningPage> {
                           ),
                         ),
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                         ),
                       ),
@@ -5027,7 +4779,7 @@ class _PlanningPageState extends State<PlanningPage> {
                           ),
                         ),
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                         ),
                       ),
@@ -5039,14 +4791,14 @@ class _PlanningPageState extends State<PlanningPage> {
                         title: const Text(
                           'Otomatis masukkan bahan ke Daftar Belanja',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: Star.ink,
                           ),
                         ),
                         value: autoAddToGroceries,
-                        activeTrackColor: const Color(0xff0D9488),
+                        activeTrackColor: Star.star,
                         onChanged: (val) =>
                             setModalState(() => autoAddToGroceries = val),
                       ),
@@ -5127,7 +4879,7 @@ class _PlanningPageState extends State<PlanningPage> {
                                 content: Text(
                                   'Menu "$cleanName" berhasil disimpan! ($pros g Protein, $cals kkal, $carbs g Karbo)',
                                 ),
-                                backgroundColor: const Color(0xff0D9488),
+                                backgroundColor: Star.star,
                                 behavior: SnackBarBehavior.floating,
                               ),
                             );
@@ -5136,14 +4888,14 @@ class _PlanningPageState extends State<PlanningPage> {
                           label: const Text(
                             'Simpan Menu ke Jadwal',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           style: FilledButton.styleFrom(
-                            backgroundColor: const Color(0xff0D9488),
-                            foregroundColor: Colors.white,
+                            backgroundColor: Star.star,
+                            foregroundColor: Star.onAccent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -5209,7 +4961,7 @@ class _KitchenPillBtn extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : accentColor,
+              color: isSelected ? Star.onAccent : accentColor,
               size: 14,
             ),
             const SizedBox(width: 4),
@@ -5219,10 +4971,10 @@ class _KitchenPillBtn extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
-                  color: isSelected ? Colors.white : Star.ink,
+                  color: isSelected ? Star.onAccent : Star.ink,
                 ),
               ),
             ),

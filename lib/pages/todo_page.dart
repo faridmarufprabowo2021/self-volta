@@ -14,28 +14,29 @@ import '../services/todo_notifications.dart';
 import '../store.dart';
 import '../widgets.dart';
 import 'notif_settings_sheet.dart';
+import '../theme.dart';
 
 // ---------------------------------------------------------------------------
 // Token palet "Hari" (krem + mint, independen dari Star/*Themes).
 // ---------------------------------------------------------------------------
 class TodoPal {
-  static const canvas = Color(0xffFBF9F5);
-  static const card = Color(0xffffffff);
-  static const mint = Color(0xff2E8B70);
-  static const mintDeep = Color(0xff1F6B55);
-  static const header = Color(0xff16594C);
-  static const mintSoft = Color(0xffDFF3EC);
-  static const mintBorder = Color(0xffBFDFD3);
-  static const ink = Color(0xff1d1b16);
-  static const sec = Color(0xff6f6a61);
-  static const ter = Color(0xff817b70);
-  static const coral = Color(0xffC96F5C);
-  static const coralSoft = Color(0xffF5E1DA);
-  static const amber = Color(0xffA67C00);
-  static const amberSoft = Color(0xffF4ECCF);
-  static const overlay = Color(0xffCBC4B8);
-  static const hair = Color(0xffE7E2DA);
-  static const field = Color(0xffF6F4EE);
+  static const canvas = Paper.canvas;
+  static const card = Paper.card;
+  static const mint = Paper.mint;
+  static const mintDeep = Paper.mintDeep;
+  static const header = Paper.header;
+  static const mintSoft = Paper.mintSoft;
+  static const mintBorder = Color(0xff4A6B5A);
+  static const ink = Paper.ink;
+  static const sec = Paper.sec;
+  static const ter = Paper.ter;
+  static const coral = Paper.coral;
+  static const coralSoft = Paper.coralSoft;
+  static const amber = Paper.amber;
+  static const amberSoft = Paper.amberSoft;
+  static const overlay = Color(0xff454B54);
+  static const hair = Paper.hair;
+  static const field = Paper.field;
 }
 
 // ---------------------------------------------------------------------------
@@ -245,7 +246,7 @@ class _TodoPageState extends State<TodoPage> {
             content: Text('Tuntas "${t.title}"$bonus'),
             duration: const Duration(milliseconds: 1400),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: TodoPal.mint,
+            backgroundColor: TodoPal.header,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -264,10 +265,10 @@ class _TodoPageState extends State<TodoPage> {
           content: Text('Tugas "${t.title}" dihapus'),
           duration: const Duration(seconds: 4),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color(0xff004E71),
+          backgroundColor: Star.star,
           action: SnackBarAction(
             label: 'Urungkan',
-            textColor: const Color(0xff7FD1BB),
+            textColor: Star.success,
             onPressed: () => st.restoreTodo(idx, t),
           ),
           shape: RoundedRectangleBorder(
@@ -380,7 +381,7 @@ class _TodoPageState extends State<TodoPage> {
                         child: Text(
                           'Tugas saya',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 17,
                             fontWeight: FontWeight.w700,
                             letterSpacing: -0.2,
@@ -411,7 +412,7 @@ class _TodoPageState extends State<TodoPage> {
                                   _Sort.judul => 'Judul',
                                 },
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 11.5,
                                   fontWeight: FontWeight.w600,
                                   color: TodoPal.ter,
@@ -427,7 +428,7 @@ class _TodoPageState extends State<TodoPage> {
                           child: Text(
                             '${groups.fold<int>(0, (s, g) => s + g.$2.length)}',
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11.5,
                               fontWeight: FontWeight.w600,
                               color: TodoPal.ter,
@@ -545,9 +546,10 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifOk = TodoNotif.ready && TodoNotif.granted;
     return Container(
-      decoration: const BoxDecoration(
-        color: TodoPal.header,
+      decoration: BoxDecoration(
+        color: Star.bg,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(26)),
+        boxShadow: Neu.shadows(d: 6),
       ),
       padding: const EdgeInsets.fromLTRB(20, 16, 16, 20),
       child: Column(
@@ -555,19 +557,15 @@ class _Header extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.grid_view_rounded,
-                size: 16,
-                color: Colors.white70,
-              ),
+              const Icon(Icons.grid_view_rounded, size: 16, color: Star.mut),
               const Spacer(),
               Text(
                 dateStr,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white70,
+                  color: Star.mut,
                 ),
               ),
               const Spacer(),
@@ -589,7 +587,7 @@ class _Header extends StatelessWidget {
                             ? Icons.notifications_active_rounded
                             : Icons.notifications_none_rounded,
                         size: 20,
-                        color: Colors.white,
+                        color: Star.ink,
                       ),
                       Positioned(
                         right: 8,
@@ -598,9 +596,7 @@ class _Header extends StatelessWidget {
                           width: 6,
                           height: 6,
                           decoration: BoxDecoration(
-                            color: notifOk
-                                ? const Color(0xff7FD1BB)
-                                : const Color(0xffF0B45A),
+                            color: notifOk ? Star.success : Star.star,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -624,12 +620,12 @@ class _Header extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 28,
                         height: 1.1,
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.6,
-                        color: Colors.white,
+                        color: Star.ink,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -638,9 +634,9 @@ class _Header extends StatelessWidget {
                           ? 'Tidak ada tugas tersisa'
                           : '$count tugas · $done selesai',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12.5,
-                        color: Colors.white70,
+                        color: Star.mut,
                       ),
                     ),
                   ],
@@ -655,7 +651,7 @@ class _Header extends StatelessWidget {
                   height: 42,
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Star.surface,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Row(
@@ -666,7 +662,7 @@ class _Header extends StatelessWidget {
                       Text(
                         'Tambah',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w700,
                           color: TodoPal.header,
@@ -704,11 +700,7 @@ class _WeekStrip extends StatelessWidget {
     final todayKey = todoTodayKey();
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
-      decoration: BoxDecoration(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.raised(r: 18, d: 5),
       child: Row(
         children: [
           for (var i = 0; i < 7; i++)
@@ -743,7 +735,7 @@ class _DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fg = selected ? Colors.white : TodoPal.sec;
+    final fg = selected ? Star.onAccent : TodoPal.sec;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
@@ -769,7 +761,7 @@ class _DayCell extends StatelessWidget {
                   kTodoHariPendek[date.weekday],
                   maxLines: 1,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w600,
                     color: fg,
@@ -783,11 +775,11 @@ class _DayCell extends StatelessWidget {
                   '${date.day}',
                   maxLines: 1,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.3,
-                    color: selected ? Colors.white : TodoPal.ink,
+                    color: selected ? Star.onAccent : TodoPal.ink,
                   ),
                 ),
               ),
@@ -798,7 +790,7 @@ class _DayCell extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: hasTasks
-                      ? (selected ? Colors.white : TodoPal.mint)
+                      ? (selected ? Star.surface : TodoPal.mint)
                       : Colors.transparent,
                 ),
               ),
@@ -826,11 +818,7 @@ class _GoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -853,7 +841,7 @@ class _GoalCard extends StatelessWidget {
                 child: Text(
                   'Target hari ini',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: TodoPal.ink,
@@ -863,7 +851,7 @@ class _GoalCard extends StatelessWidget {
               Text(
                 '$done / $total',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                   color: TodoPal.mintDeep,
@@ -877,7 +865,7 @@ class _GoalCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),
               minHeight: 7,
-              backgroundColor: const Color(0xffEDE8DF),
+              backgroundColor: Paper.hair,
               valueColor: const AlwaysStoppedAnimation(TodoPal.mint),
             ),
           ),
@@ -885,7 +873,7 @@ class _GoalCard extends StatelessWidget {
           Text(
             quote,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 11.5,
               height: 1.35,
               color: TodoPal.sec,
@@ -938,27 +926,27 @@ class _CatStrip extends StatelessWidget {
                     Icon(
                       todoCatIcon(c),
                       size: 14,
-                      color: on ? Colors.white : TodoPal.sec,
+                      color: on ? Star.onAccent : TodoPal.sec,
                     ),
                     const SizedBox(width: 6),
                   ],
                   Text(
                     c,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: on ? Colors.white : TodoPal.ink,
+                      color: on ? Star.onAccent : TodoPal.ink,
                     ),
                   ),
                   const SizedBox(width: 6),
                   Text(
                     '${countOf(c)}',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      color: on ? Colors.white70 : TodoPal.ter,
+                      color: on ? Star.onAccent70 : TodoPal.ter,
                     ),
                   ),
                 ],
@@ -986,11 +974,7 @@ class _Segment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.raised(r: 14, d: 4),
       child: Row(
         children: [
           for (var i = 0; i < labels.length; i++)
@@ -1012,7 +996,7 @@ class _Segment extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: index == i
                           ? FontWeight.w700
@@ -1041,7 +1025,7 @@ class _GroupHead extends StatelessWidget {
         Text(
           label.toUpperCase(),
           style: const TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 10.5,
             letterSpacing: 0.6,
             fontWeight: FontWeight.w700,
@@ -1052,7 +1036,7 @@ class _GroupHead extends StatelessWidget {
         Text(
           '$count',
           style: const TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 10.5,
             fontWeight: FontWeight.w600,
             color: TodoPal.ter,
@@ -1081,11 +1065,7 @@ class _Empty extends StatelessWidget {
     };
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 20),
-      decoration: BoxDecoration(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         children: [
           Container(
@@ -1106,7 +1086,7 @@ class _Empty extends StatelessWidget {
             copy,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 13,
               color: TodoPal.sec,
             ),
@@ -1117,14 +1097,14 @@ class _Empty extends StatelessWidget {
             child: FilledButton.icon(
               onPressed: onCreate,
               style: FilledButton.styleFrom(
-                backgroundColor: TodoPal.mint,
-                foregroundColor: Colors.white,
+                backgroundColor: TodoPal.header,
+                foregroundColor: Star.onAccent,
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 textStyle: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),
@@ -1165,13 +1145,13 @@ class _TaskCard extends StatelessWidget {
     final t = task;
     final done = t.done;
     final titleStyle = TextStyle(
-      fontFamily: 'Inter',
+      fontFamily: 'Manrope',
       fontSize: 13.5,
       height: 1.25,
       fontWeight: FontWeight.w600,
-      color: done ? const Color(0xFFBFBBB2) : TodoPal.ink,
+      color: done ? Star.mut : TodoPal.ink,
       decoration: done ? TextDecoration.lineThrough : TextDecoration.none,
-      decorationColor: const Color(0xFFBFBBB2),
+      decorationColor: Star.mut,
     );
 
     return Dismissible(
@@ -1181,27 +1161,20 @@ class _TaskCard extends StatelessWidget {
       background: Container(
         decoration: BoxDecoration(
           color: TodoPal.coral,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
         ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
-        child: const Icon(Icons.delete_rounded, color: Colors.white, size: 22),
+        child: const Icon(Icons.delete_rounded, color: Star.onAccent, size: 22),
       ),
-      child: Material(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(14),
-        child: InkWell(
-          onTap: onOpen,
-          borderRadius: BorderRadius.circular(14),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: overdue && !done
-                    ? TodoPal.coral.withValues(alpha: .35)
-                    : TodoPal.hair,
-              ),
-            ),
+      child: DecoratedBox(
+        decoration: Neu.raised(r: 18, d: 4),
+        child: Material(
+          type: MaterialType.transparency,
+          borderRadius: BorderRadius.circular(18),
+          child: InkWell(
+            onTap: onOpen,
+            borderRadius: BorderRadius.circular(18),
             child: IntrinsicHeight(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1216,8 +1189,8 @@ class _TaskCard extends StatelessWidget {
                           : (overdue
                                 ? TodoPal.coral
                                 : switch (t.cat) {
-                                    'Pekerjaan' => const Color(0xff3E7CB1),
-                                    'Belajar' => const Color(0xff8A6BB8),
+                                    'Pekerjaan' => Star.star,
+                                    'Belajar' => Star.star,
                                     'Kesehatan' => TodoPal.coral,
                                     _ => TodoPal.mint,
                                   }),
@@ -1239,11 +1212,11 @@ class _TaskCard extends StatelessWidget {
                               t.timeMin < 0 ? '—' : timeLabel(t.timeMin),
                               maxLines: 1,
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                                 color: done
-                                    ? const Color(0xFFBFBBB2)
+                                    ? Star.mut
                                     : (overdue ? TodoPal.coral : TodoPal.ink),
                               ),
                             ),
@@ -1254,7 +1227,7 @@ class _TaskCard extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 9.5,
                               color: TodoPal.ter,
                             ),
@@ -1283,7 +1256,7 @@ class _TaskCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 color: TodoPal.sec,
                               ),
@@ -1316,7 +1289,7 @@ class _TaskCard extends StatelessWidget {
                                 Text(
                                   '+${t.xp} XP',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     color: TodoPal.mintDeep,
@@ -1339,7 +1312,7 @@ class _TaskCard extends StatelessWidget {
                                 const Text(
                                   'Telat',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     color: TodoPal.coral,
@@ -1375,7 +1348,7 @@ class _TaskCard extends StatelessWidget {
                           child: done
                               ? const Icon(
                                   Icons.check_rounded,
-                                  color: Colors.white,
+                                  color: Star.onAccent,
                                   size: 15,
                                 )
                               : null,
@@ -1407,7 +1380,7 @@ class _TaskCard extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10,
               fontWeight: FontWeight.w700,
               color: fg,
@@ -1438,23 +1411,16 @@ class _StudyCta extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
-        decoration: BoxDecoration(
-          color: TodoPal.header,
-          borderRadius: BorderRadius.circular(16),
-        ),
+        decoration: Neu.raised(r: 22, d: 6),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: .14),
+                color: Star.ink.withValues(alpha: 0.07),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(
-                Icons.timer_rounded,
-                size: 18,
-                color: Colors.white,
-              ),
+              child: const Icon(Icons.timer_rounded, size: 18, color: Star.ink),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -1464,10 +1430,10 @@ class _StudyCta extends StatelessWidget {
                   const Text(
                     'Sesi fokus',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: Star.ink,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -1476,19 +1442,15 @@ class _StudyCta extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
-                      color: Colors.white70,
+                      color: Star.mut,
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: Colors.white70,
-            ),
+            const Icon(Icons.chevron_right_rounded, size: 20, color: Star.mut),
           ],
         ),
       ),
@@ -1573,7 +1535,7 @@ class _TodoEditorState extends State<_TodoEditor> {
 
   InputDecoration _field(String hint) => InputDecoration(
     hintText: hint,
-    hintStyle: const TextStyle(color: Color(0xffA9A296)),
+    hintStyle: const TextStyle(color: Star.mut),
     filled: true,
     fillColor: TodoPal.field,
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -1587,7 +1549,7 @@ class _TodoEditorState extends State<_TodoEditor> {
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: TodoPal.mint, width: 1.5),
+      borderSide: const BorderSide(color: TodoPal.header, width: 1.5),
     ),
   );
 
@@ -1598,9 +1560,7 @@ class _TodoEditorState extends State<_TodoEditor> {
         SnackBar(
           content: Text(copy),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: error
-              ? const Color(0xffD64545)
-              : const Color(0xff004E71),
+          backgroundColor: error ? Star.error : Star.star,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -1624,7 +1584,7 @@ class _TodoEditorState extends State<_TodoEditor> {
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: Theme.of(ctx).colorScheme
-              .copyWith(primary: TodoPal.mint),
+              .copyWith(primary: TodoPal.header),
         ),
         child: child!,
       ),
@@ -1730,7 +1690,7 @@ class _TodoEditorState extends State<_TodoEditor> {
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Star.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
         constraints: BoxConstraints(
@@ -1749,7 +1709,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                     width: 40,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: const Color(0xffD9D2C6),
+                      color: Paper.hair,
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
@@ -1764,7 +1724,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                           Text(
                             editing ? 'Ubah tugas' : 'Tugas baru',
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontWeight: FontWeight.w700,
                               fontSize: 18,
                               letterSpacing: -0.3,
@@ -1777,7 +1737,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                                 ? 'Perubahan langsung tersimpan ke perangkat.'
                                 : 'Isi satu langkah kecil yang bisa kamu selesaikan.',
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11.5,
                               color: TodoPal.sec,
                             ),
@@ -1808,7 +1768,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                 const Text(
                   'Pilih aktivitas',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
                     color: TodoPal.ink,
@@ -1842,7 +1802,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                   autofocus: !editing,
                   textInputAction: TextInputAction.next,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: TodoPal.ink,
@@ -1855,7 +1815,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                   maxLines: 2,
                   minLines: 1,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13.5,
                     color: TodoPal.ink,
                   ),
@@ -1889,7 +1849,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                             child: Text(
                               _pris[i],
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: _pri == i
@@ -1915,11 +1875,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                         child: Container(
                           height: 44,
                           padding: const EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                            color: TodoPal.field,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: TodoPal.hair, width: 1.5),
-                          ),
+                          decoration: Neu.well(r: 12),
                           child: Row(
                             children: [
                               const Icon(
@@ -1936,7 +1892,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     color: TodoPal.ink,
@@ -1969,11 +1925,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                       child: Container(
                         height: 44,
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: TodoPal.field,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: TodoPal.hair, width: 1.5),
-                        ),
+                        decoration: Neu.well(r: 12),
                         child: Row(
                           children: [
                             const Icon(
@@ -1988,7 +1940,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: TodoPal.ink,
@@ -1999,7 +1951,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                               scale: 0.8,
                               child: Switch.adaptive(
                                 value: _reminder && _timeMin != null,
-                                activeThumbColor: Colors.white,
+                                activeThumbColor: Star.onAccent,
                                 activeTrackColor: TodoPal.mint,
                                 onChanged: _timeMin == null
                                     ? null
@@ -2066,7 +2018,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                       ? 'Mengikuti setelan global: ${AppState.I.notifSoundLabel}.'
                       : 'Khusus tugas ini: ${TodoNotif.soundLabel(_sound)}.',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: TodoPal.ter,
                   ),
@@ -2119,7 +2071,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                               child: Text(
                                 'Izin notifikasi belum aktif — ketuk untuk mengizinkan.',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 11,
                                   color: TodoPal.amber,
                                 ),
@@ -2137,7 +2089,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [ThousandsSeparatorInputFormatter()],
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13.5,
                     color: TodoPal.ink,
                   ),
@@ -2151,13 +2103,13 @@ class _TodoEditorState extends State<_TodoEditor> {
                   child: FilledButton(
                     onPressed: _save,
                     style: FilledButton.styleFrom(
-                      backgroundColor: TodoPal.mint,
-                      foregroundColor: Colors.white,
+                      backgroundColor: TodoPal.header,
+                      foregroundColor: Star.onAccent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
                       textStyle: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
@@ -2175,7 +2127,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                       style: TextButton.styleFrom(
                         foregroundColor: TodoPal.coral,
                         textStyle: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
                         ),
@@ -2213,7 +2165,7 @@ class _TodoEditorState extends State<_TodoEditor> {
         child: Text(
           label,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 11.5,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
             color: selected ? TodoPal.mintDeep : TodoPal.sec,
@@ -2248,17 +2200,17 @@ class _TodoEditorState extends State<_TodoEditor> {
               const Icon(
                 Icons.graphic_eq_rounded,
                 size: 13,
-                color: Colors.white,
+                color: Star.onAccent,
               ),
               const SizedBox(width: 4),
             ],
             Text(
               label,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11.5,
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                color: selected ? Colors.white : TodoPal.sec,
+                color: selected ? Star.onAccent : TodoPal.sec,
               ),
             ),
           ],
@@ -2276,11 +2228,7 @@ class _TodoEditorState extends State<_TodoEditor> {
   }) {
     return Container(
       padding: const EdgeInsets.fromLTRB(11, 3, 4, 3),
-      decoration: BoxDecoration(
-        color: TodoPal.field,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.well(r: 12),
       child: Row(
         children: [
           Icon(icon, size: 17, color: TodoPal.mintDeep),
@@ -2294,7 +2242,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
                       color: TodoPal.ink,
@@ -2303,7 +2251,7 @@ class _TodoEditorState extends State<_TodoEditor> {
                   Text(
                     subtitle,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       height: 1.3,
                       color: TodoPal.ter,
@@ -2317,7 +2265,7 @@ class _TodoEditorState extends State<_TodoEditor> {
             scale: 0.78,
             child: Switch.adaptive(
               value: value,
-              activeThumbColor: Colors.white,
+              activeThumbColor: Star.onAccent,
               activeTrackColor: TodoPal.mint,
               onChanged: onChanged,
             ),
@@ -2332,7 +2280,7 @@ class _TodoEditorState extends State<_TodoEditor> {
     child: Text(
       text,
       style: const TextStyle(
-        fontFamily: 'Inter',
+        fontFamily: 'Manrope',
         fontSize: 12,
         fontWeight: FontWeight.w600,
         color: TodoPal.ter,
@@ -2383,11 +2331,7 @@ class _EditorDateStrip extends StatelessWidget {
             child: Container(
               width: 46,
               height: 52,
-              decoration: BoxDecoration(
-                color: TodoPal.field,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: TodoPal.hair),
-              ),
+              decoration: Neu.well(r: 12),
               child: const Icon(
                 Icons.event_rounded,
                 size: 18,
@@ -2420,11 +2364,12 @@ class _EditorDay extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        decoration: BoxDecoration(
-          color: selected ? TodoPal.header : TodoPal.field,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: selected ? TodoPal.header : TodoPal.hair),
-        ),
+        decoration: selected
+            ? BoxDecoration(
+                color: TodoPal.header,
+                borderRadius: BorderRadius.circular(12),
+              )
+            : Neu.raised(r: 12, d: 3),
         alignment: Alignment.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -2435,10 +2380,10 @@ class _EditorDay extends StatelessWidget {
                 label,
                 maxLines: 1,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  color: selected ? Colors.white70 : TodoPal.ter,
+                  color: selected ? Star.onAccent70 : TodoPal.ter,
                 ),
               ),
             ),
@@ -2449,10 +2394,10 @@ class _EditorDay extends StatelessWidget {
                 '${date.day} ${kTodoBulan[date.month]}',
                 maxLines: 1,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: selected ? Colors.white : TodoPal.ink,
+                  color: selected ? Star.onAccent : TodoPal.ink,
                 ),
               ),
             ),
@@ -2505,7 +2450,7 @@ class _ActivityTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w700,
                       color: fg,
@@ -2515,7 +2460,7 @@ class _ActivityTile extends StatelessWidget {
                     '$count tugas',
                     maxLines: 1,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10,
                       color: TodoPal.ter,
                     ),

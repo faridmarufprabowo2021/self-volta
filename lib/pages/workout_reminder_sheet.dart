@@ -117,7 +117,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                           Text(
                             'Pengingat latihan',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 17,
                               fontWeight: FontWeight.w700,
                               letterSpacing: -0.3,
@@ -128,7 +128,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                           Text(
                             'Notifikasi sistem di hari & jam pilihanmu.',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               color: Star.mut,
                             ),
@@ -168,7 +168,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                             Text(
                               'Aktifkan pengingat',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: Star.ink,
@@ -178,7 +178,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                             Text(
                               'Bunyi di hari latihan, tanpa perlu app terbuka.',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 color: Star.mut,
                               ),
@@ -188,7 +188,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                       ),
                       Switch.adaptive(
                         value: st.workoutReminderOn,
-                        activeThumbColor: Colors.white,
+                        activeThumbColor: Star.onAccent,
                         activeTrackColor: Star.star,
                         onChanged: (v) async {
                           await st.setWorkoutReminder(on: v);
@@ -203,7 +203,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                 const Text(
                   'Hari latihan',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Star.mut,
@@ -254,7 +254,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                           child: Text(
                             'Jam pengingat',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 13.5,
                               fontWeight: FontWeight.w600,
                               color: Star.ink,
@@ -264,7 +264,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                         Text(
                           st.workoutReminderTimeLabel,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: st.workoutReminderOn
@@ -290,7 +290,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                     'Notifikasi sistem tidak tersedia di perangkat ini; '
                     'pengingat tampil sebagai banner di dalam aplikasi.',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       color: Star.mut,
                     ),
@@ -304,12 +304,12 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                       onPressed: _askPermission,
                       style: FilledButton.styleFrom(
                         backgroundColor: Star.star,
-                        foregroundColor: Colors.white,
+                        foregroundColor: Star.onAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         textStyle: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w700,
                         ),
@@ -330,12 +330,12 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                     },
                     style: FilledButton.styleFrom(
                       backgroundColor: Star.star,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Star.onAccent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
                       textStyle: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
@@ -348,7 +348,7 @@ class _WorkoutReminderSheetState extends State<_WorkoutReminderSheet> {
                   child: Text(
                     'Pengingat disimpan otomatis di perangkat ini.',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       color: Star.faint,
                     ),
@@ -393,10 +393,10 @@ class _DayChip extends StatelessWidget {
             label,
             maxLines: 1,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: active ? Colors.white : (enabled ? Star.ink : Star.faint),
+              color: active ? Star.onAccent : (enabled ? Star.ink : Star.faint),
             ),
           ),
         ),

@@ -16,8 +16,8 @@ void main() {
     PrayerService.instance;
     // Muat font asli (Inter) seperti di HP; font bawaan test (Ahem) membuat
     // semua glyph kotak penuh sehingga memunculkan overflow palsu.
-    final loader = FontLoader('Inter')
-      ..addFont(rootBundle.load('assets/fonts/Inter-Variable.ttf'));
+    final loader = FontLoader('Manrope')
+      ..addFont(rootBundle.load('assets/fonts/Manrope-Variable.ttf'));
     await loader.load();
   });
 

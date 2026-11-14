@@ -33,8 +33,8 @@ void main() {
     PrayerService.instance;
     // Muat font asli agar lebar teks di test sama dengan di HP
     // (font bawaan flutter_test membuat semua glyph selebar kotak).
-    final loader = FontLoader('Inter')
-      ..addFont(rootBundle.load('assets/fonts/Inter-Variable.ttf'));
+    final loader = FontLoader('Manrope')
+      ..addFont(rootBundle.load('assets/fonts/Manrope-Variable.ttf'));
     await loader.load();
   });
 
@@ -93,6 +93,40 @@ void main() {
           expect(problems, isEmpty, reason: problems.join('\n'));
         });
       }
+    }
+  }
+
+  // Seluruh isi halaman (viewport sangat tinggi supaya list malas ikut
+  // dibangun) — menangkap overflow di bagian bawah yang tak terlihat awal.
+  for (final entry in pages.entries) {
+    for (final w in const [360.0, 412.0]) {
+      testWidgets('${entry.key} penuh ${w.toInt()}px tidak overflow', (
+        tester,
+      ) async {
+        tester.view.physicalSize = Size(w, 7000);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final problems = <String>[];
+        final old = FlutterError.onError;
+        FlutterError.onError = (details) {
+          problems.add(details.exceptionAsString());
+        };
+        try {
+          await tester.pumpWidget(
+            MaterialApp(
+              theme: buildTheme(),
+              home: Scaffold(body: entry.value()),
+            ),
+          );
+          await tester.pump(const Duration(milliseconds: 50));
+          await tester.pump(const Duration(milliseconds: 300));
+        } finally {
+          FlutterError.onError = old;
+        }
+        expect(problems, isEmpty, reason: problems.join('\n'));
+      });
     }
   }
 

@@ -162,7 +162,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                           Text(
                             'Notifikasi',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 17,
                               fontWeight: FontWeight.w700,
                               letterSpacing: -0.3,
@@ -173,7 +173,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                           Text(
                             'Nada, getar, izin, dan jadwal pengingat.',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               color: Star.mut,
                             ),
@@ -230,7 +230,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                                   ? 'Notifikasi aktif'
                                   : 'Notifikasi belum aktif',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w700,
                                 color: ok ? Star.success : Star.warning,
@@ -244,7 +244,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                                   ? 'Pengingat muncul di luar app, termasuk saat layar mati.'
                                   : 'Izinkan sekali agar pengingat bisa berbunyi.',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 height: 1.35,
                                 color: Star.mut,
@@ -261,7 +261,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                             onPressed: _asking ? null : _askPermission,
                             style: FilledButton.styleFrom(
                               backgroundColor: Star.star,
-                              foregroundColor: Colors.white,
+                              foregroundColor: Star.onAccent,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
                               ),
@@ -269,7 +269,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               textStyle: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -320,7 +320,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                   'per aplikasi di Android hanya berlaku untuk kanal baru, '
                   'jadi pengingat dijadwalkan ulang otomatis.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     height: 1.4,
                     color: Star.faint,
@@ -339,7 +339,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       textStyle: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
                       ),
@@ -361,7 +361,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       textStyle: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
                       ),
@@ -375,7 +375,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                   'Tes nada = langsung berbunyi. Tes alarm = lewat sistem, sama '
                   'seperti pengingat tugas; kunci layar setelah menekannya.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     height: 1.4,
                     color: Star.faint,
@@ -394,7 +394,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       textStyle: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
                       ),
@@ -409,7 +409,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                   'layar saat HP terkunci. Tanpa izin, alarm tetap berbunyi '
                   'sebagai notifikasi biasa.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     height: 1.4,
                     color: Star.faint,
@@ -433,7 +433,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                             Text(
                               'Getar',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w600,
                                 color: Star.ink,
@@ -443,7 +443,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                             Text(
                               'Ikut pola getar bawaan ponsel.',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 color: Star.mut,
                               ),
@@ -453,7 +453,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                       ),
                       Switch.adaptive(
                         value: st.notifVibrate,
-                        activeThumbColor: Colors.white,
+                        activeThumbColor: Star.onAccent,
                         activeTrackColor: Star.star,
                         onChanged: (v) async {
                           await AppState.I.setNotifPrefs(vibrate: v);
@@ -494,7 +494,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                                     ? '${st.workoutReminderDaysLabel} · ${st.workoutReminderTimeLabel}'
                                     : 'Nonaktif',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: Star.ink,
@@ -504,7 +504,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                               const Text(
                                 'Ubah hari & jam pengingat latihan.',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 11.5,
                                   color: Star.mut,
                                 ),
@@ -526,7 +526,7 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                   'Pengingat To-Do otomatis aktif saat tugas diberi jam. '
                   'Setiap tugas bisa dimatikan sendiri di editornya.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     height: 1.4,
                     color: Star.faint,
@@ -565,7 +565,7 @@ class _SecLabel extends StatelessWidget {
   Widget build(BuildContext context) => Text(
     text,
     style: const TextStyle(
-      fontFamily: 'Inter',
+      fontFamily: 'Manrope',
       fontSize: 12,
       fontWeight: FontWeight.w600,
       color: Star.mut,
@@ -611,7 +611,7 @@ class _SoundRow extends StatelessWidget {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w600,
                       color: Star.ink,
@@ -620,7 +620,7 @@ class _SoundRow extends StatelessWidget {
                   Text(
                     subtitle,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       color: Star.mut,
                     ),

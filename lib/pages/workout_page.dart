@@ -26,7 +26,7 @@ class WorkoutPage extends StatelessWidget {
           description: 'Program kalistenik tanpa alat terstruktur: Senin (Pull & Push), Rabu (Wide & Legs), Jumat (Upper & Core). Hari lainnya difokuskan untuk mobilitas & pemulihan otot.',
           tip: 'Lakukan sesi latihan di sore hari (16.30) saat suhu inti tubuh dan kekuatan otot berada pada puncaknya.',
           icon: Icons.fitness_center_rounded,
-          accentColor: Color(0xff0781D1),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Gamifikasi Adil Anti-Grind',
@@ -35,7 +35,7 @@ class WorkoutPage extends StatelessWidget {
           description: 'Setiap gerakan yang dituntaskan memberi +15 XP. Jika dibatalkan, XP dikurangi secara simetris sehingga bebas dari celah grinding/spam.',
           tip: 'Rutin peregangan dan mobilitas juga memberikan bonus XP harian sekali klaim per hari.',
           icon: Icons.military_tech_rounded,
-          accentColor: Color(0xffE5A910),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Metronome Tempo & Timer Istirahat',
@@ -44,7 +44,7 @@ class WorkoutPage extends StatelessWidget {
           description: 'Gunakan metronome audio untuk menjaga tempo repetisi: 2-3 detik fase turun (eksentrik) dan 1 detik fase dorong/tarik untuk hypertrophy maksimal.',
           tip: 'Gunakan rest timer 60 detik antar set agar otot pulih optimal tanpa kehilangan fokus latihan.',
           icon: Icons.timer_rounded,
-          accentColor: Color(0xff00B074),
+          accentColor: Star.success,
         ),
         TutorialStepItem(
           title: 'Choice Plan: Kustom Gerakan',
@@ -53,7 +53,7 @@ class WorkoutPage extends StatelessWidget {
           description: 'Ingin memilih variasi gerakan sendiri? Ketuk banner Choice Plan di atas. Kamu bebas menentukan gerakan dengan batasan ilmiah maksimal 3 set per gerakan.',
           tip: 'Saran pelatih: Lebih baik dibanyakin reps nya dan set nya udah tiga aja dalam satu gerakan ini.',
           icon: Icons.tune_rounded,
-          accentColor: Color(0xff8A63B0),
+          accentColor: Star.star,
         ),
       ],
     );
@@ -73,16 +73,16 @@ class WorkoutPage extends StatelessWidget {
         Color todayStatusColor;
         if (now.weekday == 1) {
           todayStatus = 'Hari Latihan: Sesi 1 (Pull & Push)';
-          todayStatusColor = const Color(0xff0781D1);
+          todayStatusColor = Star.star;
         } else if (now.weekday == 3) {
           todayStatus = 'Hari Latihan: Sesi 2 (Wide & Legs)';
-          todayStatusColor = const Color(0xff009E8F);
+          todayStatusColor = Star.star;
         } else if (now.weekday == 5) {
           todayStatus = 'Hari Latihan: Sesi 3 (Upper & Core)';
-          todayStatusColor = const Color(0xffE5A910);
+          todayStatusColor = Star.star;
         } else {
           todayStatus = 'Hari Pemulihan & Mobilitas (Rest Day)';
-          todayStatusColor = const Color(0xff8A63B0);
+          todayStatusColor = Star.star;
         }
 
         return ListView(
@@ -133,7 +133,7 @@ class WorkoutPage extends StatelessWidget {
                           Text(
                             st.workoutReminderShort,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11.5,
                               fontWeight: FontWeight.w700,
                               color: c.acc,
@@ -255,10 +255,7 @@ class WorkoutPage extends StatelessWidget {
   // -------------------------------------------------------------
   Widget _buildChoicePlanHeroCard(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Star.deepSpace,
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: Neu.raised(r: 22, d: 6),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -291,11 +288,10 @@ class WorkoutPage extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xffFFE599).withValues(alpha: 0.2),
+                          color: Paper.amberInk.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(
-                            color: const Color(0xffFFE599)
-                                .withValues(alpha: 0.5),
+                            color: Paper.amberInk.withValues(alpha: 0.5),
                           ),
                         ),
                         child: const Row(
@@ -304,7 +300,7 @@ class WorkoutPage extends StatelessWidget {
                             Icon(
                               Icons.tune_rounded,
                               size: 14,
-                              color: Color(0xffFFE599),
+                              color: Paper.amberInk,
                             ),
                             SizedBox(width: 5),
                             Flexible(
@@ -313,10 +309,10 @@ class WorkoutPage extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10.5,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xffFFE599),
+                                  color: Paper.amberInk,
                                   letterSpacing: 0.5,
                                 ),
                               ),
@@ -329,7 +325,7 @@ class WorkoutPage extends StatelessWidget {
                     const Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 16,
-                      color: Colors.white70,
+                      color: Star.mut,
                     ),
                   ],
                 ),
@@ -337,10 +333,10 @@ class WorkoutPage extends StatelessWidget {
                 const Text(
                   'Latihan apa hari ini?',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: Star.ink,
                     height: 1.25,
                   ),
                 ),
@@ -348,9 +344,9 @@ class WorkoutPage extends StatelessWidget {
                 const Text(
                   'Bebas atur repetisi mandiri, target durasi jam latihan, asupan nutrisi & rest timer fleksibel (+30s / lewati).',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11.5,
-                    color: Colors.white,
+                    color: Star.ink,
                     height: 1.35,
                   ),
                 ),
@@ -373,25 +369,11 @@ class WorkoutPage extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 11),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
+                  decoration: Neu.raised(r: 14, d: 4),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.bolt_rounded,
-                        size: 18,
-                        color: Color(0xff004E71),
-                      ),
+                      Icon(Icons.bolt_rounded, size: 18, color: Star.star),
                       SizedBox(width: 6),
                       Flexible(
                         child: Text(
@@ -399,10 +381,10 @@ class WorkoutPage extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xff004E71),
+                            color: Star.star,
                           ),
                         ),
                       ),
@@ -421,21 +403,21 @@ class WorkoutPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: Star.ink.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: Colors.white),
+          Icon(icon, size: 12, color: Star.ink),
           const SizedBox(width: 4),
           Text(
             text,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10,
               fontWeight: FontWeight.w700,
-              color: Colors.white,
+              color: Star.ink,
             ),
           ),
         ],
@@ -460,18 +442,7 @@ class WorkoutPage extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Star.lineSoft),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xff004E71).withValues(alpha: 0.05),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 20, d: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -491,7 +462,7 @@ class WorkoutPage extends StatelessWidget {
                 child: Text(
                   todayStatus,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
                     color: statusColor,
@@ -507,7 +478,7 @@ class WorkoutPage extends StatelessWidget {
                 child: Text(
                   '$workoutDoneCount Selesai',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: statusColor,
@@ -524,7 +495,7 @@ class WorkoutPage extends StatelessWidget {
               const Text(
                 'Progres Volume Gerakan Mingguan',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   color: Star.mut,
                   fontWeight: FontWeight.w500,
@@ -533,7 +504,7 @@ class WorkoutPage extends StatelessWidget {
               Text(
                 '${(weeklyProgress * 100).toInt()}%',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: Star.ink,
@@ -575,7 +546,7 @@ class WorkoutPage extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 15.5,
                   fontWeight: FontWeight.w700,
                   color: Star.ink,
@@ -584,7 +555,7 @@ class WorkoutPage extends StatelessWidget {
               Text(
                 subtitle,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
                   color: Star.mut,
                 ),
@@ -859,7 +830,7 @@ class WorkoutPage extends StatelessWidget {
         'Peregangan Seluruh Tubuh',
         '5 Menit • Mobilitas sendi',
         Icons.self_improvement_rounded,
-        const Color(0xff0781D1),
+        Star.star,
         [
           'Leher memutar pelan searah jarum jam & kebalikan (10x)',
           'Peregangan bahu & lengan di kusen pintu (30s/sisi)',
@@ -871,7 +842,7 @@ class WorkoutPage extends StatelessWidget {
         'Pemanasan Pagi',
         '3 Menit • Aktifkan otot',
         Icons.wb_sunny_rounded,
-        const Color(0xffE5A910),
+        Star.star,
         [
           'Arm circles putaran besar bahu (15x)',
           'Jumping jacks ritmis ringan (20x)',
@@ -883,7 +854,7 @@ class WorkoutPage extends StatelessWidget {
         'Redakan Ketegangan Bahu',
         '4 Menit • Bahu & leher enteng',
         Icons.front_hand_rounded,
-        const Color(0xff009E8F),
+        Star.star,
         [
           'Cross-body shoulder stretch menarik lengan ke dada (25s/sisi)',
           'Overhead triceps stretch siku di belakang kepala (25s/sisi)',
@@ -895,7 +866,7 @@ class WorkoutPage extends StatelessWidget {
         'Peregangan Sebelum Tidur',
         '5 Menit • Tidur lebih nyenyak',
         Icons.bedtime_rounded,
-        const Color(0xff8A63B0),
+        Star.star,
         [
           'Child’s pose duduk bersimpuh meregangkan tangan (45s)',
           'Reclining spinal twist memutar lutut ke samping (30s/sisi)',
@@ -951,19 +922,20 @@ class WorkoutPage extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isStretchDone
-              ? const Color(0xff009E8F).withValues(alpha: 0.08)
+              ? Star.star.withValues(alpha: 0.08)
               : Star.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: isStretchDone
-                ? const Color(0xff009E8F).withValues(alpha: 0.45)
+                ? Star.star.withValues(alpha: 0.45)
                 : color.withValues(alpha: 0.25),
             width: isStretchDone ? 1.5 : 1.0,
           ),
           boxShadow: [
             BoxShadow(
-              color: (isStretchDone ? const Color(0xff009E8F) : color)
-                  .withValues(alpha: 0.08),
+              color: (isStretchDone ? Star.star : color).withValues(
+                alpha: 0.08,
+              ),
               blurRadius: 10,
               offset: const Offset(0, 3),
             ),
@@ -978,13 +950,14 @@ class WorkoutPage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: (isStretchDone ? const Color(0xff009E8F) : color)
-                        .withValues(alpha: 0.12),
+                    color: (isStretchDone ? Star.star : color).withValues(
+                      alpha: 0.12,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
                     isStretchDone ? Icons.check_circle_rounded : icon,
-                    color: isStretchDone ? const Color(0xff009E8F) : color,
+                    color: isStretchDone ? Star.star : color,
                     size: 20,
                   ),
                 ),
@@ -995,16 +968,16 @@ class WorkoutPage extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xff009E8F).withValues(alpha: 0.15),
+                      color: Star.star.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: const Text(
                       '✓ Selesai',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 9.5,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff009E8F),
+                        color: Star.star,
                       ),
                     ),
                   ),
@@ -1016,10 +989,10 @@ class WorkoutPage extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12.5,
                 fontWeight: FontWeight.w700,
-                color: isStretchDone ? const Color(0xff009E8F) : Star.ink,
+                color: isStretchDone ? Star.star : Star.ink,
                 height: 1.25,
                 decoration: isStretchDone ? TextDecoration.lineThrough : null,
               ),
@@ -1030,9 +1003,9 @@ class WorkoutPage extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
-                color: isStretchDone ? const Color(0xff009E8F) : Star.mut,
+                color: isStretchDone ? Star.star : Star.mut,
                 fontWeight: isStretchDone ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
@@ -1093,7 +1066,7 @@ class WorkoutPage extends StatelessWidget {
                       Text(
                         title,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -1102,7 +1075,7 @@ class WorkoutPage extends StatelessWidget {
                       Text(
                         subtitle,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12,
                           color: Star.mut,
                         ),
@@ -1116,7 +1089,7 @@ class WorkoutPage extends StatelessWidget {
             const Text(
               'Langkah Gerakan:',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
                 fontSize: 13,
                 color: Star.ink,
@@ -1140,7 +1113,7 @@ class WorkoutPage extends StatelessWidget {
                       child: Text(
                         '${i + 1}',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
                           color: color,
@@ -1152,7 +1125,7 @@ class WorkoutPage extends StatelessWidget {
                       child: Text(
                         steps[i],
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 13,
                           color: Star.ink,
                           height: 1.35,
@@ -1215,11 +1188,11 @@ class WorkoutPage extends StatelessWidget {
                       },
                       icon: const Icon(
                         Icons.check_circle_rounded,
-                        color: Colors.white,
+                        color: Star.onAccent,
                       ),
                       label: const Text('✓ Sudah Selesai Hari Ini (+30 XP)'),
                       style: FilledButton.styleFrom(
-                        backgroundColor: const Color(0xff009E8F),
+                        backgroundColor: Star.star,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -1388,7 +1361,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                     color: Star.star,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: Icon(widget.icon, color: Colors.white, size: 24),
+                  child: Icon(widget.icon, color: Star.onAccent, size: 24),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -1398,7 +1371,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                       Text(
                         widget.title,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -1407,7 +1380,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                       Text(
                         widget.subtitle,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11.5,
                           color: Star.mut,
                         ),
@@ -1435,7 +1408,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                     Text(
                       'Progres Set: $_completedSets dari $_totalSets Selesai',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                         color: Star.mut,
@@ -1444,10 +1417,10 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                     Text(
                       '${(_progress * 100).toInt()}%',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff0781D1),
+                        color: Star.star,
                       ),
                     ),
                   ],
@@ -1459,7 +1432,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                     value: _progress,
                     minHeight: 6,
                     backgroundColor: Star.sunken,
-                    valueColor: const AlwaysStoppedAnimation(Color(0xff0781D1)),
+                    valueColor: const AlwaysStoppedAnimation(Star.star),
                   ),
                 ),
               ],
@@ -1483,12 +1456,12 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: exerciseSetsDone
-                        ? const Color(0xff009E8F).withValues(alpha: 0.06)
+                        ? Star.star.withValues(alpha: 0.06)
                         : Star.bg,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(
                       color: exerciseSetsDone
-                          ? const Color(0xff009E8F).withValues(alpha: 0.3)
+                          ? Star.star.withValues(alpha: 0.3)
                           : Star.sunken,
                     ),
                   ),
@@ -1508,7 +1481,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                                     Text(
                                       ex.name,
                                       style: const TextStyle(
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Manrope',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                         color: Star.ink,
@@ -1519,7 +1492,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                                       const Icon(
                                         Icons.check_circle_rounded,
                                         size: 16,
-                                        color: Color(0xff009E8F),
+                                        color: Star.star,
                                       ),
                                     ],
                                   ],
@@ -1528,9 +1501,9 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                                 Text(
                                   'Target: ${ex.targetMuscle} • ${ex.reps}',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11,
-                                    color: Color(0xff0781D1),
+                                    color: Star.star,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -1582,7 +1555,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                               child: Text(
                                 ex.formTips,
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10.5,
                                   color: Star.mut,
                                   height: 1.3,
@@ -1631,22 +1604,22 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
           if (_isResting && _restSecondsLeft > 0)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: const Color(0xff004E71),
+              color: Star.star,
               child: Row(
                 children: [
                   const Icon(
                     Icons.timer_rounded,
-                    color: Color(0xffFFE599),
+                    color: Paper.amberInk,
                     size: 18,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     'Jeda Istirahat: ${_restSecondsLeft}s',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: Star.onAccent,
                     ),
                   ),
                   const Spacer(),
@@ -1659,7 +1632,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                     child: const Text(
                       '+15s',
                       style: TextStyle(
-                        color: Color(0xffFFE599),
+                        color: Paper.amberInk,
                         fontWeight: FontWeight.w700,
                         fontSize: 11.5,
                       ),
@@ -1679,7 +1652,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                     ),
                     child: const Text(
                       'Lewati',
-                      style: TextStyle(color: Colors.white70, fontSize: 11.5),
+                      style: TextStyle(color: Star.onAccent70, fontSize: 11.5),
                     ),
                   ),
                 ],
@@ -1707,7 +1680,7 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                             final ok = AppState.I.claimXp('sesi_fokus', 50);
                             showEpicCelebrationDialog(
                               context: context,
-                              title: 'Latihan Fokus Tuntas! 🏆',
+                              title: 'Latihan Fokus Tuntas!',
                               message: ok
                                   ? 'Target otot terstimulasi maksimal. Minum air dan penuhi nutrisi protein setelah ini!'
                                   : 'Sesi selesai! Bonus XP hari ini sudah diklaim; klaim lagi setelah reset pukul 00.00.',
@@ -1721,10 +1694,10 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                       alreadyClaimed
                           ? 'Bonus hari ini sudah diklaim — reset 00.00'
                           : _completedSets >= _totalSets
-                          ? 'Latihan 100% Selesai • Klaim +50 XP ⚡'
+                          ? 'Latihan 100% Selesai • Klaim +50 XP'
                           : 'Selesaikan Sesi Latihan (+50 XP)',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontWeight: FontWeight.w700,
                         fontSize: 13.5,
                       ),
@@ -1733,9 +1706,11 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                       backgroundColor: alreadyClaimed
                           ? Star.sunken
                           : _completedSets >= _totalSets
-                          ? const Color(0xff009E8F)
+                          ? Star.star
                           : Star.star,
-                      foregroundColor: alreadyClaimed ? Star.mut : Colors.white,
+                      foregroundColor: alreadyClaimed
+                          ? Star.mut
+                          : Star.onAccent,
                       disabledBackgroundColor: Star.sunken,
                       disabledForegroundColor: Star.mut,
                       shape: RoundedRectangleBorder(
@@ -1764,14 +1739,12 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-          color: isChecked ? const Color(0xff009E8F) : Star.surface,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: isChecked ? const Color(0xff009E8F) : Star.sunken,
-            width: 1.2,
-          ),
-        ),
+        decoration: isChecked
+            ? BoxDecoration(
+                color: Star.star,
+                borderRadius: BorderRadius.circular(10),
+              )
+            : Neu.raised(r: 10, d: 3),
         child: Column(
           children: [
             Row(
@@ -1782,16 +1755,16 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
                       ? Icons.check_circle_rounded
                       : Icons.radio_button_unchecked_rounded,
                   size: 14,
-                  color: isChecked ? Colors.white : Star.mut,
+                  color: isChecked ? Star.onAccent : Star.mut,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   'Set $setNum',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: isChecked ? Colors.white : Star.ink,
+                    color: isChecked ? Star.onAccent : Star.ink,
                   ),
                 ),
               ],
@@ -1800,10 +1773,10 @@ class _InteractiveWorkoutModalState extends State<_InteractiveWorkoutModal> {
             Text(
               reps,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 9.5,
                 color: isChecked
-                    ? Colors.white.withValues(alpha: 0.85)
+                    ? Star.onAccent.withValues(alpha: 0.85)
                     : Star.faint,
               ),
             ),
@@ -1873,18 +1846,7 @@ class _WorkoutRestTimerState extends State<_WorkoutRestTimer> {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: c.acc.withValues(alpha: .2)),
-        boxShadow: [
-          BoxShadow(
-            color: c.acc.withValues(alpha: 0.06),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 20, d: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1910,7 +1872,7 @@ class _WorkoutRestTimerState extends State<_WorkoutRestTimer> {
                           Text(
                             'Rest Timer Antar-Set',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 13.5,
                               fontWeight: FontWeight.w700,
                               color: Star.ink,
@@ -1919,7 +1881,7 @@ class _WorkoutRestTimerState extends State<_WorkoutRestTimer> {
                           Text(
                             'Jeda istirahat hipertrofi otot',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10.5,
                               color: Star.mut,
                             ),
@@ -1953,11 +1915,11 @@ class _WorkoutRestTimerState extends State<_WorkoutRestTimer> {
                           child: Text(
                             '${s}s',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10.5,
                               fontWeight: FontWeight.w700,
                               color: _initialSeconds == s
-                                  ? Colors.white
+                                  ? Star.onAccent
                                   : Star.mut,
                             ),
                           ),
@@ -1983,7 +1945,7 @@ class _WorkoutRestTimerState extends State<_WorkoutRestTimer> {
                         Text(
                           _isRunning ? 'Waktu Istirahat' : 'Siap Mulai',
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11,
                             color: Star.mut,
                           ),
@@ -1991,7 +1953,7 @@ class _WorkoutRestTimerState extends State<_WorkoutRestTimer> {
                         Text(
                           '${_secondsLeft}s',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: _secondsLeft == 0 ? Star.mut : c.acc,
@@ -2059,15 +2021,7 @@ class _SessionCard extends StatelessWidget {
 
         return Container(
           margin: const EdgeInsets.only(top: 10),
-          decoration: BoxDecoration(
-            color: Star.surface,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: all
-                  ? const Color(0xff009E8F).withValues(alpha: 0.3)
-                  : Star.sunken,
-            ),
-          ),
+          decoration: Neu.raised(r: 14, d: 4),
           child: ExpansionTile(
             shape: const Border(),
             collapsedShape: const Border(),
@@ -2080,20 +2034,20 @@ class _SessionCard extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: all
-                    ? const Color(0xff009E8F).withValues(alpha: 0.15)
+                    ? Star.star.withValues(alpha: 0.15)
                     : c.acc.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 all ? Icons.check_circle_rounded : Icons.fitness_center_rounded,
-                color: all ? const Color(0xff009E8F) : c.acc,
+                color: all ? Star.star : c.acc,
                 size: 20,
               ),
             ),
             title: Text(
               s.t,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
                 fontSize: 13.5,
                 color: Star.ink,
@@ -2102,9 +2056,9 @@ class _SessionCard extends StatelessWidget {
             subtitle: Text(
               '$done/$total gerakan selesai',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
-                color: all ? const Color(0xff009E8F) : Star.mut,
+                color: all ? Star.star : Star.mut,
                 fontWeight: all ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
@@ -2186,7 +2140,7 @@ class _ExerciseCheckItem extends StatelessWidget {
                     content: Text('✓ Gerakan "$name" tuntas! (+15 XP)'),
                     duration: const Duration(milliseconds: 1200),
                     behavior: SnackBarBehavior.floating,
-                    backgroundColor: const Color(0xff009E8F),
+                    backgroundColor: Star.star,
                   ),
                 );
               }
@@ -2195,13 +2149,11 @@ class _ExerciseCheckItem extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
-                color: isDone
-                    ? const Color(0xff009E8F).withValues(alpha: 0.08)
-                    : Star.bg,
+                color: isDone ? Star.star.withValues(alpha: 0.08) : Star.bg,
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: isDone
-                      ? const Color(0xff009E8F).withValues(alpha: 0.35)
+                      ? Star.star.withValues(alpha: 0.35)
                       : Star.sunken,
                   width: isDone ? 1.5 : 1.0,
                 ),
@@ -2212,7 +2164,7 @@ class _ExerciseCheckItem extends StatelessWidget {
                     isDone
                         ? Icons.check_box_rounded
                         : Icons.check_box_outline_blank_rounded,
-                    color: isDone ? const Color(0xff009E8F) : Star.mut,
+                    color: isDone ? Star.star : Star.mut,
                     size: 20,
                   ),
                   const SizedBox(width: 10),
@@ -2223,7 +2175,7 @@ class _ExerciseCheckItem extends StatelessWidget {
                           child: Text(
                             name,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12.5,
                               fontWeight: FontWeight.w600,
                               color: isDone ? Star.mut : Star.ink,
@@ -2240,17 +2192,16 @@ class _ExerciseCheckItem extends StatelessWidget {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xff009E8F)
-                                  .withValues(alpha: 0.15),
+                              color: Star.star.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: const Text(
                               'Sudah Diceklis',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 9,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff009E8F),
+                                color: Star.star,
                               ),
                             ),
                           ),
@@ -2299,7 +2250,7 @@ class _DailyResetCardState extends State<_DailyResetCard> {
               'Tengah malam — progres latihan direset otomatis dan kuota XP harian terbuka lagi.',
             ),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Color(0xff0D9488),
+            backgroundColor: Star.star,
           ),
         );
       }
@@ -2347,30 +2298,19 @@ class _DailyResetCardState extends State<_DailyResetCard> {
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: const Color(0xff009E8F).withValues(alpha: 0.06),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: const Color(0xff009E8F).withValues(alpha: 0.3),
-              width: 1.5,
-            ),
-          ),
+          decoration: Neu.well(r: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const Icon(
-                    Icons.bolt_rounded,
-                    size: 18,
-                    color: Color(0xff009E8F),
-                  ),
+                  const Icon(Icons.bolt_rounded, size: 18, color: Star.star),
                   const SizedBox(width: 6),
                   const Expanded(
                     child: Text(
                       'Progres Latihan Hari Ini',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -2383,7 +2323,7 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xff009E8F).withValues(alpha: 0.14),
+                      color: Star.star.withValues(alpha: 0.14),
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Row(
@@ -2392,16 +2332,16 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                         const Icon(
                           Icons.schedule_rounded,
                           size: 12,
-                          color: Color(0xff009E8F),
+                          color: Star.star,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           _countdown(),
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xff00685F),
+                            color: Star.star,
                           ),
                         ),
                       ],
@@ -2413,7 +2353,7 @@ class _DailyResetCardState extends State<_DailyResetCard> {
               Text(
                 '$checked gerakan tuntas hari ini. Semua centang & kuota XP direset otomatis setiap pukul 00.00.',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   height: 1.4,
                   color: Star.mut,
@@ -2433,7 +2373,7 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                       ),
                       decoration: BoxDecoration(
                         color: st.isClaimed(src)
-                            ? const Color(0xff009E8F).withValues(alpha: 0.16)
+                            ? Star.star.withValues(alpha: 0.16)
                             : Star.sunken,
                         borderRadius: BorderRadius.circular(999),
                       ),
@@ -2445,20 +2385,16 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                                 ? Icons.check_circle_rounded
                                 : Icons.radio_button_unchecked_rounded,
                             size: 12,
-                            color: st.isClaimed(src)
-                                ? const Color(0xff00685F)
-                                : Star.mut,
+                            color: st.isClaimed(src) ? Star.star : Star.mut,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             label,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10.5,
                               fontWeight: FontWeight.w700,
-                              color: st.isClaimed(src)
-                                  ? const Color(0xff00685F)
-                                  : Star.mut,
+                              color: st.isClaimed(src) ? Star.star : Star.mut,
                             ),
                           ),
                         ],
@@ -2499,13 +2435,13 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                                       'Centang latihan hari ini dihapus. Kuota XP menunggu reset pukul 00.00.',
                                     ),
                                     behavior: SnackBarBehavior.floating,
-                                    backgroundColor: Color(0xffD64545),
+                                    backgroundColor: Star.error,
                                   ),
                                 );
                             },
                             child: const Text(
                               'Ya, Hapus Progres',
-                              style: TextStyle(color: Color(0xffD64545)),
+                              style: TextStyle(color: Star.error),
                             ),
                           ),
                         ],
@@ -2515,7 +2451,7 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                   label: const Text(
                     'Hapus Progres Centang',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.w700,
                       fontSize: 12.5,
                     ),

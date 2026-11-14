@@ -11,8 +11,8 @@ class SharpVNavItem {
   const SharpVNavItem({required this.icon, required this.label});
 }
 
-/// Tab bar gaya iOS: permukaan putih, hairline atas, ikon + label kecil,
-/// satu aksen (Star.star) untuk item aktif. Tanpa bentuk "V", tanpa glow.
+/// Tab bar neumorphic: panel timbul dengan sudut atas membulat; item aktif
+/// "tertekan" ke dalam sumur cekung dengan ikon & label beraksen.
 class SharpVBottomNavBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onItemSelected;
@@ -28,14 +28,26 @@ class SharpVBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Star.surface,
-        border: Border(top: BorderSide(color: Star.lineSoft)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
+        boxShadow: [
+          BoxShadow(
+            color: Neu.shadowDark.withValues(alpha: .9),
+            offset: const Offset(0, -4),
+            blurRadius: 16,
+          ),
+          BoxShadow(
+            color: Neu.shadowLight.withValues(alpha: .5),
+            offset: const Offset(0, -1),
+            blurRadius: 3,
+          ),
+        ],
       ),
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 54,
+          height: 62,
           child: Row(
             children: List.generate(items.length, (index) {
               final item = items[index];
@@ -52,32 +64,45 @@ class SharpVBottomNavBar extends StatelessWidget {
                       onItemSelected(index);
                     },
                     splashColor: Colors.transparent,
-                    highlightColor: Star.fill.withValues(alpha: .6),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          item.icon,
-                          size: 23,
-                          color: isSelected ? Star.star : Star.faint,
-                        ),
-                        const SizedBox(height: 3),
-                        Text(
-                          item.label,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 10.5,
-                            height: 1.0,
-                            fontWeight: isSelected
-                                ? FontWeight.w600
-                                : FontWeight.w500,
-                            letterSpacing: -0.1,
+                    highlightColor: Colors.transparent,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOut,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 7,
+                      ),
+                      decoration: isSelected
+                          ? Neu.well(r: 16)
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            item.icon,
+                            size: 23,
                             color: isSelected ? Star.star : Star.faint,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 3),
+                          Text(
+                            item.label,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 10.5,
+                              height: 1.0,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
+                              letterSpacing: -0.1,
+                              color: isSelected ? Star.star : Star.faint,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

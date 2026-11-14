@@ -11,6 +11,7 @@ import 'theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  applySystemOverlay();
   TodoNotif.onPayload = (payload) {
     unawaited(openAlarmFromPayload(payload));
   };

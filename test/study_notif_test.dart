@@ -113,8 +113,8 @@ void main() {
   testWidgets('StudyPage: tombol +15 menambah sesi & memperbarui UI', (
     tester,
   ) async {
-    final loader = FontLoader('Inter')
-      ..addFont(rootBundle.load('assets/fonts/Inter-Variable.ttf'));
+    final loader = FontLoader('Manrope')
+      ..addFont(rootBundle.load('assets/fonts/Manrope-Variable.ttf'));
     await loader.load();
 
     final st = AppState.I;
@@ -151,8 +151,8 @@ void main() {
   testWidgets('StudyPage dengan data 7 hari tidak error di layar sempit', (
     tester,
   ) async {
-    final loader = FontLoader('Inter')
-      ..addFont(rootBundle.load('assets/fonts/Inter-Variable.ttf'));
+    final loader = FontLoader('Manrope')
+      ..addFont(rootBundle.load('assets/fonts/Manrope-Variable.ttf'));
     await loader.load();
 
     final st = AppState.I;

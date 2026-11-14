@@ -39,12 +39,9 @@ class AppIcon extends StatelessWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        // iOS: tint datar, tanpa gradien/border.
-        color: cat.withValues(alpha: .10),
-        borderRadius: BorderRadius.circular(size * .28),
-      ),
-      child: Icon(icon, color: cat, size: size * .52),
+      // Ikon duduk di dalam sumur cekung kecil.
+      decoration: Neu.well(r: size * .32),
+      child: Icon(icon, color: cat, size: size * .5),
     );
   }
 }
@@ -61,16 +58,12 @@ class VLogo extends StatelessWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(size / 3),
-        border: Border.all(color: Star.line),
-      ),
+      decoration: Neu.raised(r: size / 3, d: 2.5),
       child: Text(
         'V',
         style: const TextStyle(
-          fontFamily: 'Inter',
-          fontWeight: FontWeight.w700,
+          fontFamily: 'Manrope',
+          fontWeight: FontWeight.w800,
           height: 1.0,
           color: Star.star,
         ).copyWith(fontSize: fontSize),
@@ -215,14 +208,10 @@ class SoftCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 16),
       padding: padding,
-      decoration: BoxDecoration(
-        // iOS grouped list: satu permukaan putih, hairline, tanpa bayangan.
-        color: color ?? Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      // Blok utama = timbul. Baris di dalamnya tetap datar.
+      decoration: Neu.raised(r: 22, d: 6, color: color),
       child: child,
     );
   }
@@ -247,7 +236,7 @@ class HRow extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 14,
                   height: 1.25,
@@ -257,7 +246,7 @@ class HRow extends StatelessWidget {
               Text(
                 subtitle,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   height: 1.35,
                   color: Star.mut,
@@ -283,22 +272,24 @@ class Pill extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    // iOS status chip: tint datar, teks aksen, tanpa border.
+    // Chip status: cekung tipis (tint aksen), atau isian aksen bila `dark`.
     final c = page == Colors.transparent ? Star.nebula : page;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: dark ? c : c.withValues(alpha: .12),
-        borderRadius: BorderRadius.circular(6),
+        color: dark
+            ? c
+            : Color.alphaBlend(c.withValues(alpha: .12), Star.sunken),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         text,
         style: TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 11.5,
           fontWeight: FontWeight.w600,
           letterSpacing: -0.1,
-          color: dark ? Colors.white : c,
+          color: dark ? Star.onAccent : c,
         ),
       ),
     );
@@ -311,24 +302,27 @@ class GradBar extends StatelessWidget {
   final Color c2;
   final double height;
   const GradBar(this.pct, {super.key, Color? c1, Color? c2, this.height = 12})
-    : c1 = c1 ?? const Color(0xff16a34a),
-      c2 = c2 ?? const Color(0xff84cc16);
+    : c1 = c1 ?? Star.star,
+      c2 = c2 ?? Star.star;
   @override
   Widget build(BuildContext context) {
-    // Satu warna aksen; gradien dihapus agar konsisten gaya iOS.
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(99),
-      child: Container(
-        height: height,
-        color: Star.fillStrong,
-        child: Stack(
-          children: [
-            FractionallySizedBox(
-              widthFactor: (pct.clamp(0, 100)) / 100,
-              alignment: Alignment.centerLeft,
-              child: Container(color: c1),
+    // Jalur cekung sejati + isian aksen datar.
+    final r = height / 2;
+    return NeuWell(
+      radius: r,
+      depth: height >= 10 ? 2.5 : 1.6,
+      height: height,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: FractionallySizedBox(
+          widthFactor: (pct.clamp(0, 100)) / 100,
+          heightFactor: 1,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: c1,
+              borderRadius: BorderRadius.circular(r),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -373,7 +367,7 @@ class RowItem extends StatelessWidget {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
                       letterSpacing: -0.2,
@@ -383,7 +377,7 @@ class RowItem extends StatelessWidget {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12.5,
                         height: lh ?? 1.45,
                         color: CustomColors.mut,
@@ -410,11 +404,7 @@ class BigStat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 18, d: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -428,7 +418,7 @@ class BigStat extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: CustomColors.mut,
@@ -443,7 +433,7 @@ class BigStat extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 20,
               fontWeight: FontWeight.w700,
               letterSpacing: -0.5,
@@ -538,11 +528,7 @@ class InfoCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 22, d: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -711,7 +697,7 @@ class ActivityTriRingWidget extends StatelessWidget {
                   Text(
                     '$avgPct%',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.4,
@@ -722,7 +708,7 @@ class ActivityTriRingWidget extends StatelessWidget {
                   const Text(
                     'Tuntas',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 9.5,
                       fontWeight: FontWeight.w600,
                       color: Paper.sec,
@@ -792,7 +778,7 @@ class ActivityTriRingWidget extends StatelessWidget {
           child: Text(
             label,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: Paper.ink,
@@ -802,7 +788,7 @@ class ActivityTriRingWidget extends StatelessWidget {
         Text(
           '$pct%',
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 12,
             fontWeight: FontWeight.w700,
             color: textColor ?? color,
@@ -969,7 +955,7 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
     final xpInLvl = st.xpInLevel;
 
     return Scaffold(
-      backgroundColor: Colors.black.withValues(alpha: 0.65),
+      backgroundColor: const Color(0xD0101215),
       body: Stack(
         children: [
           // Confetti particles canvas
@@ -989,57 +975,40 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Container(
                 padding: const EdgeInsets.all(28),
-                decoration: BoxDecoration(
-                  color: Star.surface,
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      blurRadius: 30,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
+                decoration: Neu.raised(r: 30, d: 8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Bouncing Glowing Trophy Icon
+                    // Medali: lingkaran timbul + ikon aksen (tanpa emoji/glow).
                     Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        gradient: const RadialGradient(
-                          colors: [Color(0xffFFF2CC), Color(0xffFFE599)],
-                        ),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xffFFE599)
-                                .withValues(alpha: 0.8),
-                            blurRadius: 24,
-                          ),
-                        ],
+                      width: 84,
+                      height: 84,
+                      alignment: Alignment.center,
+                      decoration: Neu.raised(r: 42, d: 6),
+                      child: const Icon(
+                        Icons.workspace_premium_rounded,
+                        size: 42,
+                        color: Star.star,
                       ),
-                      child: const Text('🏆', style: TextStyle(fontSize: 48)),
                     ),
                     const SizedBox(height: 18),
-                    // XP Reward Pill
-                    Container(
+                    // Hadiah XP: sumur cekung dengan angka aksen.
+                    NeuWell(
+                      radius: 100,
+                      depth: 2,
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffD97706),
-                        borderRadius: BorderRadius.circular(100),
+                        horizontal: 16,
+                        vertical: 7,
                       ),
                       child: Text(
-                        '+${widget.xpReward} XP EARNED!',
+                        '+${widget.xpReward} XP',
                         style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: 0.6,
+                          fontFamily: 'Manrope',
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w800,
+                          color: Star.star,
+                          letterSpacing: 0.4,
+                          fontFeatures: [FontFeature.tabularFigures()],
                         ),
                       ),
                     ),
@@ -1048,7 +1017,7 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
                       widget.title,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 21,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -1059,7 +1028,7 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
                       widget.message,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13,
                         color: Star.mut,
                         height: 1.45,
@@ -1068,13 +1037,10 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
                     const SizedBox(height: 20),
 
                     // Gamification Level & XP Progress Card
-                    Container(
+                    NeuWell(
+                      radius: 18,
+                      depth: 3,
                       padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: Star.bg,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Star.lineSoft),
-                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -1084,16 +1050,16 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
                               Text(
                                 'Lv. $currentLevel • ${st.levelTitle}',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
-                                  color: Star.deepSpace,
+                                  color: Star.ink,
                                 ),
                               ),
                               Text(
                                 '$xpInLvl / 100 XP',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                   color: Star.star,
@@ -1102,32 +1068,19 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
                             ],
                           ),
                           const SizedBox(height: 8),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: LinearProgressIndicator(
-                              value: (xpInLvl / 100.0).clamp(0.0, 1.0),
-                              minHeight: 8,
-                              backgroundColor: Star.sunken,
-                              valueColor: const AlwaysStoppedAnimation(
-                                Star.nebula,
-                              ),
-                            ),
+                          GradBar(
+                            (xpInLvl / 100.0).clamp(0.0, 1.0) * 100,
+                            height: 8,
                           ),
-                          const SizedBox(height: 6),
-                          Row(
-                            children: [
-                              const Text('🔥', style: TextStyle(fontSize: 12)),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${st.streak} Hari Berturut-turut Aktif!',
-                                style: const TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xffA67C00),
-                                ),
-                              ),
-                            ],
+                          const SizedBox(height: 8),
+                          Text(
+                            '${st.streak} hari berturut-turut aktif',
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: Star.mut,
+                            ),
                           ),
                         ],
                       ),
@@ -1139,16 +1092,17 @@ class _EpicCelebrationViewState extends State<_EpicCelebrationView>
                       child: FilledButton(
                         onPressed: () => Navigator.pop(context),
                         style: FilledButton.styleFrom(
-                          backgroundColor: Star.deepSpace,
+                          backgroundColor: Star.star,
+                          foregroundColor: Star.onAccent,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(16),
                           ),
                         ),
                         child: const Text(
-                          'Lanjutkan Konsistensi ⚡',
+                          'Lanjutkan',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontWeight: FontWeight.w700,
                             fontSize: 14,
                           ),
@@ -1248,14 +1202,7 @@ class MuscleFocusCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Star.ink,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: Star.star.withValues(alpha: 0.35),
-              width: 1.5,
-            ),
-          ),
+          decoration: Neu.raised(r: 22, d: 6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1269,7 +1216,7 @@ class MuscleFocusCard extends StatelessWidget {
                       color: Star.star,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(icon, color: Colors.white, size: 22),
+                    child: Icon(icon, color: Star.onAccent, size: 22),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -1277,19 +1224,19 @@ class MuscleFocusCard extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xffE5A910).withValues(alpha: 0.18),
+                      color: Star.star.withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: const Color(0xffE5A910).withValues(alpha: 0.4),
+                        color: Star.star.withValues(alpha: 0.4),
                       ),
                     ),
                     child: Text(
                       xpTag,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xffFFE599),
+                        color: Paper.amberInk,
                       ),
                     ),
                   ),
@@ -1303,10 +1250,10 @@ class MuscleFocusCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 15.5,
-                  color: Colors.white,
+                  color: Star.ink,
                 ),
               ),
               const SizedBox(height: 2),
@@ -1315,10 +1262,10 @@ class MuscleFocusCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white.withValues(alpha: 0.7),
+                  color: Star.ink.withValues(alpha: 0.7),
                 ),
               ),
               const SizedBox(height: 6),
@@ -1329,32 +1276,40 @@ class MuscleFocusCard extends StatelessWidget {
                   Icon(
                     Icons.fitness_center_rounded,
                     size: 12,
-                    color: Colors.white.withValues(alpha: 0.5),
+                    color: Star.ink.withValues(alpha: 0.5),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    exerciseCount,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 10.5,
-                      color: Colors.white.withValues(alpha: 0.6),
-                      fontWeight: FontWeight.w600,
+                  Flexible(
+                    child: Text(
+                      exerciseCount,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 10.5,
+                        color: Star.ink.withValues(alpha: 0.6),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Icon(
                     Icons.timer_outlined,
                     size: 12,
-                    color: Colors.white.withValues(alpha: 0.5),
+                    color: Star.ink.withValues(alpha: 0.5),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    timeTag,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 10.5,
-                      color: Colors.white.withValues(alpha: 0.6),
-                      fontWeight: FontWeight.w600,
+                  Flexible(
+                    child: Text(
+                      timeTag,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 10.5,
+                        color: Star.ink.withValues(alpha: 0.6),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -1374,17 +1329,17 @@ class MuscleFocusCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.play_circle_fill_rounded,
-                      color: Colors.white,
+                      color: Star.onAccent,
                       size: 16,
                     ),
                     SizedBox(width: 6),
                     Text(
                       'Mulai Sesi',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: Star.onAccent,
                         letterSpacing: 0.3,
                       ),
                     ),
@@ -1418,7 +1373,7 @@ class TutorialStepItem {
     required this.description,
     required this.tip,
     required this.icon,
-    this.accentColor = const Color(0xff0781D1),
+    this.accentColor = Star.star,
     this.featureTag,
   });
 }
@@ -1459,7 +1414,7 @@ class TutorialPillButton extends StatelessWidget {
     super.key,
     required this.onTap,
     this.label = 'Tutorial',
-    this.color = const Color(0xff0781D1),
+    this.color = Star.star,
   });
 
   @override
@@ -1487,7 +1442,7 @@ class TutorialPillButton extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: color,
@@ -1608,7 +1563,7 @@ class _InteractiveSpotlightDialogState
                             Text(
                               widget.tutorialTitle.toUpperCase(),
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 10.5,
                                 fontWeight: FontWeight.w700,
                                 color: step.accentColor,
@@ -1621,7 +1576,7 @@ class _InteractiveSpotlightDialogState
                       IconButton(
                         icon: const Icon(
                           Icons.close_rounded,
-                          color: Colors.white70,
+                          color: Star.mut,
                           size: 22,
                         ),
                         onPressed: () =>
@@ -1668,10 +1623,10 @@ class _InteractiveSpotlightDialogState
                                   child: const Text(
                                     'PERHATIKAN BAGIAN INI',
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                                      color: Star.onAccent,
                                       letterSpacing: 0.6,
                                     ),
                                   ),
@@ -1700,7 +1655,7 @@ class _InteractiveSpotlightDialogState
                             width: double.infinity,
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: const Color(0xff0F172A),
+                              color: Star.sunken,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: step.accentColor.withValues(
@@ -1766,7 +1721,7 @@ class _InteractiveSpotlightDialogState
                                           child: Text(
                                             step.featureTag!,
                                             style: TextStyle(
-                                              fontFamily: 'Inter',
+                                              fontFamily: 'Manrope',
                                               fontSize: 9.5,
                                               fontWeight: FontWeight.w700,
                                               color: step.accentColor,
@@ -1776,19 +1731,19 @@ class _InteractiveSpotlightDialogState
                                       Text(
                                         step.title,
                                         style: const TextStyle(
-                                          fontFamily: 'Inter',
+                                          fontFamily: 'Manrope',
                                           fontSize: 15,
                                           fontWeight: FontWeight.w700,
-                                          color: Colors.white,
+                                          color: Star.ink,
                                         ),
                                       ),
                                       Text(
                                         step.category,
                                         style: const TextStyle(
-                                          fontFamily: 'Inter',
+                                          fontFamily: 'Manrope',
                                           fontSize: 11,
                                           fontWeight: FontWeight.w500,
-                                          color: Color(0xff94A3B8),
+                                          color: Star.mut,
                                         ),
                                       ),
                                     ],
@@ -1809,9 +1764,9 @@ class _InteractiveSpotlightDialogState
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: const Color(0xff1E293B),
+                      color: Star.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xff334155)),
+                      border: Border.all(color: Star.overlay),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.4),
@@ -1831,7 +1786,7 @@ class _InteractiveSpotlightDialogState
                             Text(
                               'Langkah  dari ',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,
                                 color: step.accentColor,
@@ -1840,10 +1795,10 @@ class _InteractiveSpotlightDialogState
                             Text(
                               '% Selesai',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xff94A3B8),
+                                color: Star.mut,
                               ),
                             ),
                           ],
@@ -1854,7 +1809,7 @@ class _InteractiveSpotlightDialogState
                           child: LinearProgressIndicator(
                             value: progress,
                             minHeight: 5,
-                            backgroundColor: const Color(0xff334155),
+                            backgroundColor: Star.overlay,
                             valueColor: AlwaysStoppedAnimation(
                               step.accentColor,
                             ),
@@ -1866,19 +1821,19 @@ class _InteractiveSpotlightDialogState
                         Text(
                           step.title,
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: Star.ink,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           step.description,
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 12.5,
-                            color: Color(0xffCBD5E1),
+                            color: Star.ink,
                             height: 1.45,
                           ),
                         ),
@@ -1888,7 +1843,7 @@ class _InteractiveSpotlightDialogState
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: const Color(0xff0F172A),
+                            color: Star.sunken,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: step.accentColor.withValues(alpha: 0.3),
@@ -1907,7 +1862,7 @@ class _InteractiveSpotlightDialogState
                                 child: Text(
                                   step.tip,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11,
                                     fontWeight: FontWeight.w500,
                                     color: step.accentColor,
@@ -1927,10 +1882,8 @@ class _InteractiveSpotlightDialogState
                               OutlinedButton(
                                 onPressed: _prevStep,
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: const Color(0xffCBD5E1),
-                                  side: const BorderSide(
-                                    color: Color(0xff475569),
-                                  ),
+                                  foregroundColor: Star.ink,
+                                  side: const BorderSide(color: Star.overlay),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 14,
                                     vertical: 12,
@@ -1942,7 +1895,7 @@ class _InteractiveSpotlightDialogState
                                 child: const Text(
                                   'Kembali',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -1957,9 +1910,9 @@ class _InteractiveSpotlightDialogState
                                 child: const Text(
                                   'Lewati',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 12,
-                                    color: Color(0xff94A3B8),
+                                    color: Star.mut,
                                   ),
                                 ),
                               ),
@@ -1968,7 +1921,7 @@ class _InteractiveSpotlightDialogState
                               onPressed: _nextStep,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: step.accentColor,
-                                foregroundColor: Colors.white,
+                                foregroundColor: Star.onAccent,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 12,
@@ -1986,7 +1939,7 @@ class _InteractiveSpotlightDialogState
                                         ? 'Paham & Selesai!'
                                         : 'Lanjut',
                                     style: const TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 12.5,
                                       fontWeight: FontWeight.w700,
                                     ),

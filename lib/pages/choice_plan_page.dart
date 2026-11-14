@@ -398,7 +398,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                 Text(
                   'Choice Plan Latihan',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -407,7 +407,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                 Text(
                   'Kustom Gerakan, Reps, Waktu & Nutrisi',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: Star.mut,
                     fontWeight: FontWeight.w500,
@@ -419,7 +419,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               TutorialPillButton(
                 onTap: () => _showChoicePlanTutorial(context),
                 label: 'Panduan',
-                color: const Color(0xff0781D1),
+                color: Star.star,
               ),
               const SizedBox(width: 8),
               Container(
@@ -429,28 +429,22 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xff0781D1).withValues(alpha: 0.12),
+                  color: Star.star.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(100),
-                  border: Border.all(
-                    color: const Color(0xff0781D1).withValues(alpha: 0.3),
-                  ),
+                  border: Border.all(color: Star.star.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.bolt_rounded,
-                      size: 16,
-                      color: Color(0xff0781D1),
-                    ),
+                    const Icon(Icons.bolt_rounded, size: 16, color: Star.star),
                     const SizedBox(width: 4),
                     Text(
                       'Lv.${st.level}',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff0781D1),
+                        color: Star.star,
                       ),
                     ),
                   ],
@@ -528,7 +522,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                         Text(
                           '${_exercises.length} Gerakan • $_totalPlannedSets Total Set',
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
                             color: Star.mut,
@@ -537,10 +531,10 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                         Text(
                           'Estimasi $_targetDurationMinutes Menit (~$calBurned kkal)',
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xff0781D1),
+                            color: Star.star,
                           ),
                         ),
                       ],
@@ -555,13 +549,13 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     label: const Text(
                       'Mulai Latihan',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
                       ),
                     ),
                     style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xff004E71),
+                      backgroundColor: Star.star,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 14,
@@ -582,18 +576,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
 
   Widget _buildBackToRoutineProgramCard(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -613,12 +596,12 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: const Color(0xff0284C7).withValues(alpha: 0.12),
+                    color: Star.star.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
                     Icons.fitness_center_rounded,
-                    color: Color(0xff0284C7),
+                    color: Star.star,
                     size: 22,
                   ),
                 ),
@@ -630,7 +613,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       Text(
                         'Program Rutin 3x Seminggu',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 13.5,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -641,7 +624,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       Text(
                         'Beralih ke program terstruktur Senin, Rabu & Jumat',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                           color: Star.mut,
                           height: 1.3,
@@ -675,27 +658,16 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
   }) {
     Color bmiBadgeColor;
     if (st.bmi < 18.5) {
-      bmiBadgeColor = const Color(0xffE5A910); // Amber Underweight
+      bmiBadgeColor = Star.star; // Amber Underweight
     } else if (st.bmi < 25.0) {
-      bmiBadgeColor = const Color(0xff009E8F); // Emerald Ideal
+      bmiBadgeColor = Star.star; // Emerald Ideal
     } else {
-      bmiBadgeColor = const Color(0xffD64545); // Rose Overweight
+      bmiBadgeColor = Star.error; // Rose Overweight
     }
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xff004E71).withValues(alpha: 0.04),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -708,12 +680,12 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: const Color(0xff004E71).withValues(alpha: 0.08),
+                        color: Star.star.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
                         Icons.monitor_weight_rounded,
-                        color: Color(0xff004E71),
+                        color: Star.star,
                         size: 18,
                       ),
                     ),
@@ -727,7 +699,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: Star.ink,
@@ -738,7 +710,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10,
                               color: Star.mut,
                             ),
@@ -759,25 +731,21 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xff004E71).withValues(alpha: 0.12),
+                    color: Star.star.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.edit_rounded,
-                        size: 12,
-                        color: Color(0xff004E71),
-                      ),
+                      Icon(Icons.edit_rounded, size: 12, color: Star.star),
                       SizedBox(width: 4),
                       Text(
                         'Ubah BB/TB',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xff004E71),
+                          color: Star.star,
                         ),
                       ),
                     ],
@@ -791,11 +759,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           // Baris Metrik Fisik (BB, TB, BMI Score, Kategori)
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Star.bg,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Star.lineSoft),
-            ),
+            decoration: Neu.raised(r: 16, d: 5),
             child: Row(
               children: [
                 Expanded(
@@ -814,7 +778,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       Text(
                         '${st.weightKg.toStringAsFixed(1)} kg • ${st.heightCm.toInt()} cm',
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 13.5,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -843,7 +807,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                           Text(
                             st.bmi.toStringAsFixed(1),
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
                               color: bmiBadgeColor,
@@ -892,7 +856,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               Expanded(
                 child: _buildNutritionPill(
                   icon: Icons.local_fire_department_rounded,
-                  iconColor: const Color(0xffE5A910),
+                  iconColor: Star.star,
                   title: 'Target Kalori',
                   value: '$dailyCal kkal',
                   subtitle: '+$calBurned kkal bakar',
@@ -902,7 +866,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               Expanded(
                 child: _buildNutritionPill(
                   icon: Icons.egg_alt_rounded,
-                  iconColor: const Color(0xff0D9488),
+                  iconColor: Star.star,
                   title: 'Target Protein',
                   value: '$dailyProtein gram',
                   subtitle:
@@ -917,7 +881,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               Expanded(
                 child: _buildNutritionPill(
                   icon: Icons.grain_rounded,
-                  iconColor: const Color(0xffEA580C),
+                  iconColor: Star.star,
                   title: 'Karbohidrat',
                   value: '${st.dailyCarbs} gram',
                   subtitle: 'Bahan Bakar Latihan',
@@ -927,7 +891,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               Expanded(
                 child: _buildNutritionPill(
                   icon: Icons.water_drop_rounded,
-                  iconColor: const Color(0xff0284C7),
+                  iconColor: Star.star,
                   title: 'Kebutuhan Air',
                   value: '${dailyWater.toStringAsFixed(1)} L',
                   subtitle: '±${(dailyWater * 4).round()} Gelas',
@@ -940,27 +904,21 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           // Panduan Nutrisi Pre & Post Workout Praktis (Anti-Slop AI, Berdasarkan Bahan Nyata)
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: const Color(0xff004E71).withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: const Color(0xff004E71).withValues(alpha: 0.12),
-              ),
-            ),
+            decoration: Neu.well(r: 12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(
                   Icons.restaurant_rounded,
                   size: 16,
-                  color: Color(0xff004E71),
+                  color: Star.star,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: RichText(
                     text: TextSpan(
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         color: Star.ink,
                         height: 1.35,
@@ -970,7 +928,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                           text: 'Menu Disarankan: ',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            color: Color(0xff004E71),
+                            color: Star.star,
                           ),
                         ),
                         TextSpan(
@@ -998,11 +956,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 14, d: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1011,7 +965,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           Text(
             title,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10,
               fontWeight: FontWeight.w600,
               color: Star.mut,
@@ -1021,7 +975,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           Text(
             value,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12.5,
               fontWeight: FontWeight.w700,
               color: Star.ink,
@@ -1030,7 +984,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           Text(
             subtitle,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 9.5,
               color: iconColor,
               fontWeight: FontWeight.w700,
@@ -1055,11 +1009,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1069,11 +1019,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               const Expanded(
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.schedule_rounded,
-                      color: Color(0xff0781D1),
-                      size: 20,
-                    ),
+                    Icon(Icons.schedule_rounded, color: Star.star, size: 20),
                     SizedBox(width: 8),
                     Flexible(
                       child: Text(
@@ -1081,7 +1027,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -1095,16 +1041,16 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xff0781D1).withValues(alpha: 0.1),
+                  color: Star.star.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   '${_targetDurationMinutes >= 60 ? (_targetDurationMinutes / 60.0).toStringAsFixed(1) : _targetDurationMinutes} ${_targetDurationMinutes >= 60 ? "Jam" : "Menit"}',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff0781D1),
+                    color: Star.star,
                   ),
                 ),
               ),
@@ -1127,31 +1073,30 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     borderRadius: BorderRadius.circular(12),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      decoration: BoxDecoration(
-                        color: isSel ? const Color(0xff004E71) : Star.bg,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: isSel ? const Color(0xff004E71) : Star.sunken,
-                        ),
-                      ),
+                      decoration: isSel
+                          ? BoxDecoration(
+                              color: Star.star,
+                              borderRadius: BorderRadius.circular(12),
+                            )
+                          : Neu.raised(r: 12, d: 3),
                       child: Column(
                         children: [
                           Text(
                             d.label,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11.5,
                               fontWeight: FontWeight.w700,
-                              color: isSel ? Colors.white : Star.ink,
+                              color: isSel ? Star.onAccent : Star.ink,
                             ),
                           ),
                           Text(
                             d.sub,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 9,
                               fontWeight: FontWeight.w600,
-                              color: isSel ? const Color(0xffFFE599) : Star.mut,
+                              color: isSel ? Star.onAccent70 : Star.mut,
                             ),
                           ),
                         ],
@@ -1185,11 +1130,10 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                 child: SliderTheme(
                   data: SliderTheme.of(context).copyWith(
                     trackHeight: 6,
-                    activeTrackColor: const Color(0xff0781D1),
+                    activeTrackColor: Star.star,
                     inactiveTrackColor: Star.sunken,
-                    thumbColor: const Color(0xff004E71),
-                    overlayColor: const Color(0xff0781D1)
-                        .withValues(alpha: 0.15),
+                    thumbColor: Star.star,
+                    overlayColor: Star.star.withValues(alpha: 0.15),
                     thumbShape: const RoundSliderThumbShape(
                       enabledThumbRadius: 10,
                     ),
@@ -1262,12 +1206,12 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           padding: EdgeInsets.symmetric(horizontal: 4),
           child: Row(
             children: [
-              Icon(Icons.category_rounded, size: 18, color: Color(0xff004E71)),
+              Icon(Icons.category_rounded, size: 18, color: Star.star),
               SizedBox(width: 8),
               Text(
                 'Pilih Fokus Rencana Latihan',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Star.ink,
@@ -1292,7 +1236,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       Icon(
                         p.icon,
                         size: 15,
-                        color: isSel ? Colors.white : const Color(0xff004E71),
+                        color: isSel ? Star.onAccent : Star.star,
                       ),
                       const SizedBox(width: 6),
                       Text(p.title),
@@ -1305,19 +1249,17 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       _loadPreset(p.key);
                     }
                   },
-                  selectedColor: const Color(0xff004E71),
+                  selectedColor: Star.star,
                   backgroundColor: Star.surface,
                   labelStyle: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11.5,
                     fontWeight: isSel ? FontWeight.w700 : FontWeight.w600,
-                    color: isSel ? Colors.white : Star.ink,
+                    color: isSel ? Star.onAccent : Star.ink,
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(
-                      color: isSel ? const Color(0xff004E71) : Star.sunken,
-                    ),
+                    side: BorderSide(color: isSel ? Star.star : Star.sunken),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -1346,7 +1288,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               child: Text(
                 'Gerakan & Pengaturan Set',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Star.ink,
@@ -1359,13 +1301,13 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               label: const Text(
                 'Tambah Gerakan',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xff0781D1),
+                foregroundColor: Star.star,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
               ),
             ),
@@ -1376,11 +1318,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
         if (_exercises.isEmpty)
           Container(
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Star.surface,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: Star.lineSoft),
-            ),
+            decoration: Neu.raised(r: 18, d: 5),
             child: Center(
               child: Column(
                 children: [
@@ -1393,7 +1331,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                   const Text(
                     'Belum ada gerakan yang dipilih',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
                     ),
@@ -1402,7 +1340,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                   const Text(
                     'Pilih salah satu preset di atas atau tambah gerakan manual.',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       color: Star.mut,
                     ),
@@ -1431,18 +1369,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Star.lineSoft),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xff004E71).withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 18, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1453,17 +1380,17 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                 width: 26,
                 height: 26,
                 decoration: BoxDecoration(
-                  color: const Color(0xff004E71).withValues(alpha: 0.1),
+                  color: Star.star.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: Text(
                     '${idx + 1}',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontWeight: FontWeight.w700,
                       fontSize: 12,
-                      color: Color(0xff004E71),
+                      color: Star.star,
                     ),
                   ),
                 ),
@@ -1476,7 +1403,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     Text(
                       ex.name,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13.5,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -1485,10 +1412,10 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     Text(
                       ex.targetMuscle,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10.5,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff0781D1),
+                        color: Star.star,
                       ),
                     ),
                   ],
@@ -1531,7 +1458,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                   child: Text(
                     ex.tip,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       color: Star.mut,
                       height: 1.3,
@@ -1605,18 +1532,14 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       horizontal: 10,
                       vertical: 8,
                     ),
-                    decoration: BoxDecoration(
-                      color: Star.bg,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Star.lineSoft),
-                    ),
+                    decoration: Neu.raised(r: 12, d: 3),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Waktu per Set',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 9.5,
                             color: Star.mut,
                             fontWeight: FontWeight.w600,
@@ -1628,7 +1551,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                             const Icon(
                               Icons.timer_outlined,
                               size: 14,
-                              color: Color(0xff0781D1),
+                              color: Star.star,
                             ),
                             const SizedBox(width: 4),
                             Text(
@@ -1636,7 +1559,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                                   ? 'Bebas Reps'
                                   : '${ex.workSeconds} Detik',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w700,
                                 color: Star.ink,
@@ -1661,18 +1584,14 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       horizontal: 10,
                       vertical: 8,
                     ),
-                    decoration: BoxDecoration(
-                      color: Star.bg,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Star.lineSoft),
-                    ),
+                    decoration: Neu.raised(r: 12, d: 3),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Jeda Istirahat (Rest)',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 9.5,
                             color: Star.mut,
                             fontWeight: FontWeight.w600,
@@ -1684,16 +1603,16 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                             const Icon(
                               Icons.hourglass_top_rounded,
                               size: 14,
-                              color: Color(0xffD97706),
+                              color: Star.star,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               '${ex.restSeconds} Detik',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xffD97706),
+                                color: Star.star,
                               ),
                             ),
                           ],
@@ -1718,18 +1637,14 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      decoration: BoxDecoration(
-        color: Star.bg,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 12, d: 3),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 9.5,
               color: Star.mut,
               fontWeight: FontWeight.w600,
@@ -1761,7 +1676,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               Text(
                 valueText,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: Star.ink,
@@ -1803,16 +1718,12 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
-            Icon(
-              Icons.info_outline_rounded,
-              color: Color(0xffD97706),
-              size: 24,
-            ),
+            Icon(Icons.info_outline_rounded, color: Star.star, size: 24),
             SizedBox(width: 8),
             Text(
               'Batas Maksimal 3 Set',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
                 color: Star.ink,
@@ -1823,7 +1734,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
         content: const Text(
           'Lebih baik dibanyakin reps nya dan set nya udah tiga aja dalam satu gerakan ini',
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 13,
             color: Star.mut,
             height: 1.45,
@@ -1833,7 +1744,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           FilledButton(
             onPressed: () => Navigator.pop(ctx),
             style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xff004E71),
+              backgroundColor: Star.star,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -1857,7 +1768,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           description: 'Pilih preset Push, Pull, Legs, Core, atau Fullbody untuk memuat daftar gerakan kalistenik standar yang seimbang untuk melatih otot tanpa alat berat.',
           tip: 'Kamu bisa memilih preset rekomendasi, lalu menambah atau menghapus gerakan sesuka hati.',
           icon: Icons.fitness_center_rounded,
-          accentColor: Color(0xff0781D1),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Aturan Presisi: Maksimal 3 Set',
@@ -1866,7 +1777,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           description: 'Setiap gerakan dibatasi maksimal 3 set. Mengapa? Dalam kalistenik intensif, 3 set berkualitas tinggi dengan repetisi penuh lebih efektif memicu hypertrophy tanpa membebani ligamen dan tendon siku/bahu.',
           tip: 'Saran pelatih: Lebih baik dibanyakin reps nya dan set nya udah tiga aja dalam satu gerakan ini.',
           icon: Icons.shield_rounded,
-          accentColor: Color(0xffD97706),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Input Gerakan Kustom Sendiri',
@@ -1875,7 +1786,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           description: 'Ingin latihan Handstand, Archer Push-up, atau L-Sit? Gunakan tombol Tambah Gerakan Kustom untuk memasukkan gerakan pilihanmu sendiri dengan repetisi bebas.',
           tip: 'Atur durasi istirahat antar set antara 45 hingga 90 detik agar ATP otot pulih maksimal sebelum set berikutnya.',
           icon: Icons.add_circle_outline_rounded,
-          accentColor: Color(0xff10B981),
+          accentColor: Star.success,
         ),
         TutorialStepItem(
           title: 'Mode Live Sesi & Rest Timer Otomatis',
@@ -1884,7 +1795,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           description: 'Tekan Mulai Sesi Sekarang untuk menjalankan panduan latihan layar penuh. Aplikasi akan memandu hitungan set demi set dan menghitung jeda istirahat otomatis dengan audio bip.',
           tip: 'Kamu bisa menambah 20 detik jika napas belum teratur atau lewati jeda jika sudah siap gas ke set berikutnya!',
           icon: Icons.play_circle_fill_rounded,
-          accentColor: Color(0xff004E71),
+          accentColor: Star.star,
         ),
       ],
     );
@@ -1934,7 +1845,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     const Text(
                       'Input Gerakan Kustom Sendiri',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -1943,7 +1854,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     const Text(
                       'Bebas tentukan nama, repetisi, dan otot target. Maksimal 3 set untuk hypertrophy aman.',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         color: Star.mut,
                       ),
@@ -1988,18 +1899,14 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            decoration: BoxDecoration(
-                              color: Star.bg,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Star.lineSoft),
-                            ),
+                            decoration: Neu.raised(r: 12, d: 3),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
                                   'Jumlah Set (Maks 3)',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     color: Star.mut,
                                     fontWeight: FontWeight.w600,
@@ -2025,7 +1932,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                                     Text(
                                       '$customSets Set',
                                       style: const TextStyle(
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Manrope',
                                         fontSize: 12.5,
                                         fontWeight: FontWeight.w700,
                                         color: Star.ink,
@@ -2042,7 +1949,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                                       child: const Icon(
                                         Icons.add_circle_outline_rounded,
                                         size: 20,
-                                        color: Color(0xff0781D1),
+                                        color: Star.star,
                                       ),
                                     ),
                                   ],
@@ -2060,18 +1967,14 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                               horizontal: 10,
                               vertical: 8,
                             ),
-                            decoration: BoxDecoration(
-                              color: Star.bg,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Star.lineSoft),
-                            ),
+                            decoration: Neu.raised(r: 12, d: 3),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
                                   'Repetisi Bebas',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     color: Star.mut,
                                     fontWeight: FontWeight.w600,
@@ -2097,10 +2000,10 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                                     Text(
                                       '$customReps Reps',
                                       style: const TextStyle(
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Manrope',
                                         fontSize: 12.5,
                                         fontWeight: FontWeight.w700,
-                                        color: Color(0xff0781D1),
+                                        color: Star.star,
                                       ),
                                     ),
                                     InkWell(
@@ -2112,7 +2015,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                                       child: const Icon(
                                         Icons.add_circle_outline_rounded,
                                         size: 20,
-                                        color: Color(0xff0781D1),
+                                        color: Star.star,
                                       ),
                                     ),
                                   ],
@@ -2191,26 +2094,26 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                               content: Text(
                                 'Gerakan "$name" ($customSets Set x $customReps Reps) ditambahkan!',
                               ),
-                              backgroundColor: const Color(0xff004E71),
+                              backgroundColor: Star.star,
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
                         },
                         icon: const Icon(
                           Icons.check_circle_rounded,
-                          color: Colors.white,
+                          color: Star.onAccent,
                           size: 18,
                         ),
                         label: const Text(
                           'Simpan Gerakan Kustom',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: Star.onAccent,
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff0781D1),
+                          backgroundColor: Star.star,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -2252,7 +2155,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                 const Text(
                   'Atur Waktu Kerja per Set',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -2266,16 +2169,16 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     title: Text(
                       opt.label,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13,
                         fontWeight: isSel ? FontWeight.w700 : FontWeight.w500,
-                        color: isSel ? const Color(0xff0781D1) : Star.ink,
+                        color: isSel ? Star.star : Star.ink,
                       ),
                     ),
                     trailing: isSel
                         ? const Icon(
                             Icons.check_circle_rounded,
-                            color: Color(0xff0781D1),
+                            color: Star.star,
                           )
                         : null,
                     onTap: () {
@@ -2319,7 +2222,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                 const Text(
                   'Atur Jeda Istirahat (Rest Timer)',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -2333,16 +2236,16 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     title: Text(
                       opt.label,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13,
                         fontWeight: isSel ? FontWeight.w700 : FontWeight.w500,
-                        color: isSel ? const Color(0xffD97706) : Star.ink,
+                        color: isSel ? Star.star : Star.ink,
                       ),
                     ),
                     trailing: isSel
                         ? const Icon(
                             Icons.check_circle_rounded,
-                            color: Color(0xffD97706),
+                            color: Star.star,
                           )
                         : null,
                     onTap: () {
@@ -2455,7 +2358,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               const Text(
                 'Koleksi Gerakan Kalistenik',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: Star.ink,
@@ -2464,7 +2367,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
               const Text(
                 'Pilih gerakan standar atau buat gerakan kustom Anda sendiri',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
                   color: Star.mut,
                 ),
@@ -2493,17 +2396,17 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     children: [
                       Icon(
                         Icons.add_circle_outline_rounded,
-                        color: Colors.white,
+                        color: Star.onAccent,
                         size: 18,
                       ),
                       SizedBox(width: 8),
                       Text(
                         '+ Buat Gerakan Kustom Sendiri',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                          color: Star.onAccent,
                         ),
                       ),
                     ],
@@ -2524,19 +2427,19 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       leading: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: const Color(0xff0781D1).withValues(alpha: 0.1),
+                          color: Star.star.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Icon(
                           Icons.fitness_center_rounded,
-                          color: Color(0xff0781D1),
+                          color: Star.star,
                           size: 20,
                         ),
                       ),
                       title: Text(
                         item.name,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -2545,14 +2448,14 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                       subtitle: Text(
                         '${item.muscle} • ${item.reps} Reps',
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                           color: Star.mut,
                         ),
                       ),
                       trailing: const Icon(
                         Icons.add_circle_outline_rounded,
-                        color: Color(0xff0781D1),
+                        color: Star.star,
                       ),
                       onTap: () {
                         iosTapBuzz();
@@ -2622,7 +2525,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     const Text(
                       'Ubah Profil Fisik (BB & TB)',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -2631,7 +2534,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                     const Text(
                       'Kebutuhan kalori dan target protein harian akan disesuaikan otomatis.',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         color: Star.mut,
                       ),
@@ -2645,7 +2548,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                         const Text(
                           'Berat Badan (kg)',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                           ),
@@ -2669,7 +2572,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                               child: Text(
                                 '${tempWeight.toStringAsFixed(1)} kg',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -2699,7 +2602,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                         const Text(
                           'Tinggi Badan (cm)',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                           ),
@@ -2723,7 +2626,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                               child: Text(
                                 '${tempHeight.toInt()} cm',
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -2759,7 +2662,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                           const Text(
                             'Kalkulasi BMI Baru:',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Star.mut,
@@ -2768,10 +2671,10 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                           Text(
                             tempBmi.toStringAsFixed(1),
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff004E71),
+                              color: Star.star,
                             ),
                           ),
                         ],
@@ -2790,7 +2693,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                           Navigator.pop(ctx);
                         },
                         style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xff004E71),
+                          backgroundColor: Star.star,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -2798,7 +2701,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                         child: const Text(
                           'Simpan Perubahan Fisik',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -2832,7 +2735,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
           if (ok) {
             showEpicCelebrationDialog(
               context: context,
-              title: 'Sesi Choice Plan Tuntas! 🏆',
+              title: 'Sesi Choice Plan Tuntas!',
               message: 'Target gerakan selesai maksimal. Segera minum air dan konsumsi protein untuk pemulihan otot.',
               xpReward: 60,
             );
@@ -2843,7 +2746,7 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                   'Bonus Choice Plan hari ini sudah diklaim sebelumnya (+60 XP) — kuota kembali setelah reset pukul 00.00.',
                 ),
                 behavior: SnackBarBehavior.floating,
-                backgroundColor: Color(0xff0D9488),
+                backgroundColor: Star.star,
               ),
             );
           }
@@ -3064,7 +2967,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xff004E71).withValues(alpha: 0.1),
+                        color: Star.star.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Row(
@@ -3072,16 +2975,16 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                           const Icon(
                             Icons.timer_rounded,
                             size: 14,
-                            color: Color(0xff004E71),
+                            color: Star.star,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             _formatSeconds(_elapsedSessionSeconds),
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12.5,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff004E71),
+                              color: Star.star,
                             ),
                           ),
                         ],
@@ -3091,7 +2994,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                     Text(
                       'Gerakan ${_currentExIdx + 1} dari ${widget.exercises.length}',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
                         color: Star.mut,
                         fontWeight: FontWeight.w600,
@@ -3119,7 +3022,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                     Text(
                       'Progres Sesi: $_completedSets / $_totalSets Set Tuntas',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: Star.mut,
@@ -3128,10 +3031,10 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                     Text(
                       '${(overallProgress * 100).toInt()}%',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff0781D1),
+                        color: Star.star,
                       ),
                     ),
                   ],
@@ -3143,7 +3046,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                     value: overallProgress,
                     minHeight: 6,
                     backgroundColor: Star.sunken,
-                    valueColor: const AlwaysStoppedAnimation(Color(0xff0781D1)),
+                    valueColor: const AlwaysStoppedAnimation(Star.star),
                   ),
                 ),
               ],
@@ -3175,16 +3078,16 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             decoration: BoxDecoration(
-              color: const Color(0xff0781D1).withValues(alpha: 0.12),
+              color: Star.star.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(100),
             ),
             child: Text(
               ex.targetMuscle,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11.5,
                 fontWeight: FontWeight.w700,
-                color: Color(0xff0781D1),
+                color: Star.star,
               ),
             ),
           ),
@@ -3195,7 +3098,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
             ex.name,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 22,
               fontWeight: FontWeight.w700,
               color: Star.ink,
@@ -3207,20 +3110,16 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Star.bg,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Star.lineSoft),
-            ),
+            decoration: Neu.raised(r: 16, d: 5),
             child: Column(
               children: [
                 Text(
                   'SET $_currentSetNum DARI ${ex.sets}',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff004E71),
+                    color: Star.star,
                     letterSpacing: 1.1,
                   ),
                 ),
@@ -3228,7 +3127,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                 Text(
                   '${ex.reps}',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 48,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -3237,7 +3136,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                 const Text(
                   'TARGET REPETISI',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: Star.mut,
@@ -3252,16 +3151,16 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xff0781D1).withValues(alpha: 0.12),
+                      color: Star.star.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       'Waktu: ${ex.workSeconds} Detik / Set',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff0781D1),
+                        color: Star.star,
                       ),
                     ),
                   ),
@@ -3274,25 +3173,17 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
           // Petunjuk Form Gerakan
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Star.surface,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Star.lineSoft),
-            ),
+            decoration: Neu.raised(r: 14, d: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.lightbulb_rounded,
-                  size: 18,
-                  color: Color(0xffE5A910),
-                ),
+                const Icon(Icons.lightbulb_rounded, size: 18, color: Star.star),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     ex.tip,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       color: Star.ink,
                       height: 1.35,
@@ -3314,13 +3205,13 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
               label: Text(
                 'Selesai Set $_currentSetNum (Mulai Rest)',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 14.5,
                 ),
               ),
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xff009E8F),
+                backgroundColor: Star.star,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -3349,25 +3240,21 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xffD97706).withValues(alpha: 0.12),
+              color: Star.star.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(100),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.hourglass_top_rounded,
-                  size: 16,
-                  color: Color(0xffD97706),
-                ),
+                Icon(Icons.hourglass_top_rounded, size: 16, color: Star.star),
                 SizedBox(width: 6),
                 Text(
                   'Jeda Pemulihan Otot (Rest)',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xffD97706),
+                    color: Star.star,
                   ),
                 ),
               ],
@@ -3386,7 +3273,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                   value: restProgress,
                   strokeWidth: 10,
                   backgroundColor: Star.sunken,
-                  valueColor: const AlwaysStoppedAnimation(Color(0xffD97706)),
+                  valueColor: const AlwaysStoppedAnimation(Star.star),
                 ),
               ),
               Column(
@@ -3395,7 +3282,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                   Text(
                     '$_restSecondsLeft',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 52,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -3405,7 +3292,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                   const Text(
                     'DETIK',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: Star.mut,
@@ -3440,14 +3327,13 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                 label: const Text(
                   '+30s Tambah Rest',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 style: FilledButton.styleFrom(
-                  backgroundColor: const Color(0xffD97706)
-                      .withValues(alpha: 0.15),
-                  foregroundColor: const Color(0xffD97706),
+                  backgroundColor: Star.star.withValues(alpha: 0.15),
+                  foregroundColor: Star.star,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -3460,25 +3346,21 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
           // Petunjuk Pemulihan & Gerakan Selanjutnya
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Star.bg,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Star.lineSoft),
-            ),
+            decoration: Neu.raised(r: 14, d: 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.air_rounded, size: 16, color: Color(0xff0781D1)),
+                    Icon(Icons.air_rounded, size: 16, color: Star.star),
                     SizedBox(width: 6),
                     Text(
                       'Tips Recovery:',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff0781D1),
+                        color: Star.star,
                       ),
                     ),
                   ],
@@ -3487,7 +3369,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                 const Text(
                   'Tarik napas dalam dari hidung 4 detik, hembuskan perlahan dari mulut. Minum seteguk air jika haus.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: Star.ink,
                     height: 1.3,
@@ -3501,7 +3383,7 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
                       ? 'Berikutnya: ${widget.exercises[_currentExIdx + 1].name}'
                       : 'Berikutnya: Sesi Selesai (Pendinginan)',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: Star.mut,
@@ -3521,16 +3403,16 @@ class _LiveChoiceWorkoutModalState extends State<_LiveChoiceWorkoutModal> {
               icon: const Icon(Icons.fast_forward_rounded, size: 20),
               label: Text(
                 _currentSetNum < ex.sets
-                    ? 'Lanjut ke Set ${_currentSetNum + 1} ⏩'
-                    : 'Lanjut ke Gerakan Berikutnya ⏩',
+                    ? 'Lanjut ke Set ${_currentSetNum + 1}'
+                    : 'Lanjut ke Gerakan Berikutnya',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 14,
                 ),
               ),
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xff004E71),
+                backgroundColor: Star.star,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

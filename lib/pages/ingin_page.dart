@@ -81,13 +81,7 @@ class _HeroRing extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Star.deepSpace,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xffFBBF24).withValues(alpha: .5),
-        ),
-      ),
+      decoration: Neu.raised(r: 22, d: 6),
       child: Column(
         children: [
           _PianoRing(pct),
@@ -98,7 +92,7 @@ class _HeroRing extends StatelessWidget {
               Text(
                 'Terkumpul: ${rp(got)}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Star.ink,
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
                   height: 1.7,
@@ -107,7 +101,7 @@ class _HeroRing extends StatelessWidget {
               Text(
                 left == 0 ? 'LUNAS!' : 'Sisa: ${rp(left)}',
                 style: const TextStyle(
-                  color: Color(0xffFBBF24),
+                  color: Star.star,
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
                   height: 1.7,
@@ -118,11 +112,7 @@ class _HeroRing extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             '${pct.toStringAsFixed(1)}% · $got dari 1.500.000',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: .75),
-              fontSize: 12,
-              height: 1.7,
-            ),
+            style: TextStyle(color: Star.mut, fontSize: 12, height: 1.7),
           ),
         ],
       ),
@@ -145,8 +135,8 @@ class _PianoRing extends StatelessWidget {
           child: Text(
             '${pct.toStringAsFixed(0)}%',
             style: const TextStyle(
-              fontFamily: 'Inter',
-              color: Colors.white,
+              fontFamily: 'Manrope',
+              color: Star.onAccent,
               fontWeight: FontWeight.w700,
               fontSize: 24,
             ),
@@ -165,14 +155,14 @@ class _RingPainter extends CustomPainter {
     final c = Offset(size.width / 2, size.height / 2);
     final r = size.width / 2 - 8;
     final track = Paint()
-      ..color = Colors.white.withValues(alpha: .18)
+      ..color = Star.ink.withValues(alpha: .08)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 10
       ..strokeCap = StrokeCap.round;
     canvas.drawCircle(c, r, track);
     if (t <= 0) return;
     final prog = Paint()
-      ..color = const Color(0xffFBBF24)
+      ..color = Star.star
       ..style = PaintingStyle.stroke
       ..strokeWidth = 10
       ..strokeCap = StrokeCap.round
@@ -280,7 +270,7 @@ class _OptionTile extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    const gold = Color(0xffA67C00);
+    const gold = Star.star;
     return PopTap(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),

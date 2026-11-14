@@ -6,18 +6,20 @@ import 'package:flutter/material.dart';
 import '../data.dart';
 import '../store.dart';
 import '../widgets.dart';
+import '../theme.dart';
 
 // Palet "Kertas & Tinta" untuk halaman Uang: kanvas terang, kartu putih
 // bergaris rambut, navy sebagai jangkar, amber hanya untuk uang/progres.
-const Color _kCanvas = Color(0xFFF8F9FA);
-const Color _kCard = Color(0xFFFFFFFF);
-const Color _kBorder = Color(0xFFE8ECEF);
-const Color _kNavy = Color(0xFF143E48);
-const Color _kSlate = Color(0xFF6B7280);
-const Color _kAmber = Color(0xFFF5A623);
-const Color _kAmberDark = Color(0xFFB45309);
-const Color _kCyan = Color(0xFF0284C7);
-const Color _kCyanPill = Color(0xFFEBF5F8);
+const Color _kCanvas = Star.bg;
+const Color _kCard = Star.surface;
+const Color _kBorder = Paper.hair;
+const Color _kNavy = Star.ink;
+const Color _kNavyFill = Star.star;
+const Color _kSlate = Star.mut;
+const Color _kAmber = Star.star;
+const Color _kAmberDark = Paper.amberInk;
+const Color _kCyan = Star.star;
+const Color _kCyanPill = Star.sunken;
 
 /// Kartu putih dasar halaman Uang. Dibuat lokal agar halaman lain yang masih
 /// memakai tema lama tidak ikut berubah.
@@ -39,10 +41,10 @@ class _KCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: borderColor),
+      decoration: Neu.raised(
+        r: 22,
+        d: 6,
+        color: (color == _kCard || color == _kNavyFill) ? null : color,
       ),
       clipBehavior: Clip.antiAlias,
       child: Material(
@@ -82,7 +84,7 @@ class _KSectionHead extends StatelessWidget {
                 Text(
                   eyebrow.toUpperCase(),
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.2,
@@ -93,7 +95,7 @@ class _KSectionHead extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 16.5,
                   height: 1.2,
                   fontWeight: FontWeight.w700,
@@ -105,7 +107,7 @@ class _KSectionHead extends StatelessWidget {
               Text(
                 subtitle,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   height: 1.45,
                   color: _kSlate,
@@ -132,11 +134,7 @@ class _KIconBox extends StatelessWidget {
       width: 36,
       height: 36,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: _kCanvas,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _kBorder),
-      ),
+      decoration: Neu.raised(r: 10, d: 3),
       child: Icon(icon, size: 17, color: color),
     );
   }
@@ -178,7 +176,7 @@ class KeuanganPage extends StatelessWidget {
                 children: [
                   const _KIconBox(
                     icon: Icons.calculate_outlined,
-                    color: _kNavy,
+                    color: _kNavyFill,
                   ),
                   const SizedBox(width: 10),
                   const Expanded(
@@ -188,7 +186,7 @@ class KeuanganPage extends StatelessWidget {
                         Text(
                           'Kalkulator',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontWeight: FontWeight.w700,
                             fontSize: 16,
                             letterSpacing: -0.3,
@@ -199,7 +197,7 @@ class KeuanganPage extends StatelessWidget {
                         Text(
                           'Hitung belanja & harga per porsi',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             color: _kSlate,
                           ),
@@ -232,7 +230,7 @@ class KeuanganPage extends StatelessWidget {
             Text(
               'Setor Tabungan Piano',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
               ),
@@ -302,7 +300,7 @@ class KeuanganPage extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: _kAmberDark,
-              foregroundColor: Colors.white,
+              foregroundColor: Star.onAccent,
             ),
             child: const Text('Simpan Setoran'),
           ),
@@ -323,7 +321,7 @@ class KeuanganPage extends StatelessWidget {
           description: 'Gunakan kalkulator mengambang untuk menjumlahkan belanja pasar, bagi biaya sewa kost, atau hitung selisih harga. Dilengkapi pelindung pembagian nol dan format error otomatis.',
           tip: 'Bisa dibuka kapan saja dengan mengetuk tombol Kalkulator di pojok kanan bawah layar.',
           icon: Icons.calculate_rounded,
-          accentColor: Color(0xff0D9488),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Catat Pemasukan & Pengeluaran',
@@ -332,7 +330,7 @@ class KeuanganPage extends StatelessWidget {
           description: 'Input nominal harian terlindungi dengan pemisah ribuan titik otomatis. Mencegah angka ekstrem (maksimal Rp 1 Miliar) dan menjamin data tersimpan aman di database lokal.',
           tip: 'Kategorikan belanja ke Lauk/Protein, Sayur, Beras, atau Lainnya untuk analisis proporsi nutrisi.',
           icon: Icons.receipt_long_rounded,
-          accentColor: Color(0xff10B981),
+          accentColor: Star.success,
         ),
         TutorialStepItem(
           title: 'Sinkronisasi Jatah Harian & Tabungan',
@@ -341,7 +339,7 @@ class KeuanganPage extends StatelessWidget {
           description: 'Aplikasi membagi sisa budget dengan sisa hari bulan berjalan secara otomatis sehingga kamu tahu persis batas pengeluaran aman hari ini.',
           tip: 'Pantau kartu Target Impian (Piano) untuk mengalokasikan sisa uang belanja ke tabungan produktif.',
           icon: Icons.savings_rounded,
-          accentColor: Color(0xff004E71),
+          accentColor: Star.star,
         ),
       ],
     );
@@ -382,11 +380,11 @@ class KeuanganPage extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.2,
-                    color: Colors.white.withValues(alpha: 0.62),
+                    color: Star.mut,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -397,10 +395,10 @@ class KeuanganPage extends StatelessWidget {
                     value,
                     maxLines: 1,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: Star.ink,
                       fontFeatures: [FontFeature.tabularFigures()],
                     ),
                   ),
@@ -414,8 +412,8 @@ class KeuanganPage extends StatelessWidget {
           backgroundColor: _kCanvas,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => _showFloatingCalcSheet(context),
-            backgroundColor: _kNavy,
-            foregroundColor: Colors.white,
+            backgroundColor: _kNavyFill,
+            foregroundColor: Star.onAccent,
             elevation: 0,
             highlightElevation: 0,
             shape: RoundedRectangleBorder(
@@ -425,7 +423,7 @@ class KeuanganPage extends StatelessWidget {
             label: const Text(
               'Kalkulator',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w600,
                 fontSize: 12.5,
               ),
@@ -439,8 +437,8 @@ class KeuanganPage extends StatelessWidget {
 
               // Jangkar halaman: ringkasan anggaran bulan berjalan.
               _KCard(
-                color: _kNavy,
-                borderColor: _kNavy,
+                color: _kNavyFill,
+                borderColor: _kNavyFill,
                 padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
                 onTap: () => _showBudgetSheet(context),
                 child: Column(
@@ -451,29 +449,25 @@ class KeuanganPage extends StatelessWidget {
                         Text(
                           'SISA BUDGET',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 10.5,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.2,
-                            color: Colors.white.withValues(alpha: 0.66),
+                            color: Star.mut,
                           ),
                         ),
                         const Spacer(),
                         Text(
                           'Atur',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white.withValues(alpha: 0.72),
+                            color: Star.mut,
                           ),
                         ),
                         const SizedBox(width: 3),
-                        Icon(
-                          Icons.tune_rounded,
-                          size: 15,
-                          color: Colors.white.withValues(alpha: 0.72),
-                        ),
+                        Icon(Icons.tune_rounded, size: 15, color: Star.mut),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -484,12 +478,12 @@ class KeuanganPage extends StatelessWidget {
                         rp(st.sisaBudget),
                         maxLines: 1,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 31,
                           height: 1.05,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.8,
-                          color: Colors.white,
+                          color: Star.ink,
                           fontFeatures: [FontFeature.tabularFigures()],
                         ),
                       ),
@@ -500,9 +494,9 @@ class KeuanganPage extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
-                        color: Colors.white.withValues(alpha: 0.62),
+                        color: Star.mut,
                         fontFeatures: const [FontFeature.tabularFigures()],
                       ),
                     ),
@@ -512,7 +506,7 @@ class KeuanganPage extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: usedRatio,
                         minHeight: 5,
-                        backgroundColor: Colors.white.withValues(alpha: 0.14),
+                        backgroundColor: Star.ink.withValues(alpha: 0.07),
                         valueColor: const AlwaysStoppedAnimation<Color>(
                           _kAmber,
                         ),
@@ -521,7 +515,7 @@ class KeuanganPage extends StatelessWidget {
                     const SizedBox(height: 14),
                     Container(
                       height: 1,
-                      color: Colors.white.withValues(alpha: 0.12),
+                      color: Star.ink.withValues(alpha: 0.07),
                     ),
                     const SizedBox(height: 12),
                     Row(
@@ -531,14 +525,14 @@ class KeuanganPage extends StatelessWidget {
                           width: 1,
                           height: 28,
                           margin: const EdgeInsets.symmetric(horizontal: 12),
-                          color: Colors.white.withValues(alpha: 0.12),
+                          color: Star.ink.withValues(alpha: 0.07),
                         ),
                         metric('Keluar', rp(totalOut)),
                         Container(
                           width: 1,
                           height: 28,
                           margin: const EdgeInsets.symmetric(horizontal: 12),
-                          color: Colors.white.withValues(alpha: 0.12),
+                          color: Star.ink.withValues(alpha: 0.07),
                         ),
                         metric('Pegangan', rp(st.sisa)),
                       ],
@@ -569,7 +563,7 @@ class KeuanganPage extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: -0.2,
@@ -582,7 +576,7 @@ class KeuanganPage extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 11.5,
                                   color: _kSlate,
                                 ),
@@ -594,7 +588,7 @@ class KeuanganPage extends StatelessWidget {
                         Text(
                           '${(pianoPct * 100).toStringAsFixed(1)}%',
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: _kAmberDark,
@@ -622,7 +616,7 @@ class KeuanganPage extends StatelessWidget {
                         Text(
                           'Terkumpul ${rp(st.pianoTotal)}',
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
                             color: _kNavy,
@@ -631,7 +625,7 @@ class KeuanganPage extends StatelessWidget {
                         Text(
                           'Sisa ${rp((PIANO_TARGET - st.pianoTotal).clamp(0, PIANO_TARGET))}',
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             color: _kSlate,
                           ),
@@ -654,7 +648,7 @@ class KeuanganPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           textStyle: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
@@ -716,7 +710,7 @@ class KeuanganPage extends StatelessWidget {
                           style: TextButton.styleFrom(
                             foregroundColor: _kSlate,
                             textStyle: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11.5,
                               fontWeight: FontWeight.w600,
                             ),
@@ -751,7 +745,7 @@ class KeuanganPage extends StatelessWidget {
                 child: Text(
                   'LAPORAN BULAN INI',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.1,
@@ -773,7 +767,7 @@ class KeuanganPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(999),
                     ),
                     textStyle: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       fontWeight: FontWeight.w600,
                     ),
@@ -790,7 +784,7 @@ class KeuanganPage extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 25,
               height: 1.15,
               fontWeight: FontWeight.w700,
@@ -802,7 +796,7 @@ class KeuanganPage extends StatelessWidget {
           const Text(
             'Anggaran, tabungan, dan catatan harian dalam satu tempat.',
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12.5,
               height: 1.45,
               color: _kSlate,
@@ -890,7 +884,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
         ThousandsSeparatorInputFormatter(),
       ],
       style: const TextStyle(
-        fontFamily: 'Inter',
+        fontFamily: 'Manrope',
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: _kNavy,
@@ -901,7 +895,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
         filled: true,
         fillColor: _kCard,
         prefixStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 15,
           fontWeight: FontWeight.w500,
           color: _kSlate,
@@ -916,7 +910,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: _kNavy, width: 1.4),
+          borderSide: const BorderSide(color: _kNavyFill, width: 1.4),
         ),
       ),
     );
@@ -948,7 +942,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
               const Text(
                 'Atur anggaran',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 19,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.4,
@@ -959,7 +953,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
               const Text(
                 'Budget dipakai untuk menghitung sisa dan jatah harian.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   height: 1.45,
                   color: _kSlate,
@@ -969,7 +963,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
               const Text(
                 'Budget bulanan',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   fontWeight: FontWeight.w600,
                   color: _kSlate,
@@ -981,7 +975,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
               const Text(
                 'Uang pegangan',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   fontWeight: FontWeight.w600,
                   color: _kSlate,
@@ -1006,7 +1000,7 @@ class _BudgetSheetState extends State<_BudgetSheet> {
                         'Uang pegangan adalah saldo awal sebelum pengeluaran. '
                         'Sisa budget dipakai untuk jatah harian.',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                           height: 1.45,
                           color: _kNavy,
@@ -1023,13 +1017,13 @@ class _BudgetSheetState extends State<_BudgetSheet> {
                 child: FilledButton(
                   onPressed: _save,
                   style: FilledButton.styleFrom(
-                    backgroundColor: _kNavy,
-                    foregroundColor: Colors.white,
+                    backgroundColor: _kNavyFill,
+                    foregroundColor: Star.onAccent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     textStyle: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w600,
                     ),
@@ -1191,18 +1185,14 @@ class _CalcState extends State<_Calc> {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(
-            color: _kCard,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: _kBorder),
-          ),
+          decoration: Neu.raised(r: 14, d: 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const Text(
                 'HASIL',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 9.5,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.1,
@@ -1217,7 +1207,7 @@ class _CalcState extends State<_Calc> {
                   expr.isEmpty ? '0' : expr,
                   maxLines: 1,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 30,
                     height: 1.1,
                     fontWeight: FontWeight.w700,
@@ -1257,7 +1247,7 @@ class _CalcState extends State<_Calc> {
                               ? _kCyanPill
                               : _kCard,
                           foregroundColor: k == '='
-                              ? Colors.white
+                              ? Star.onAccent
                               : k == 'C' || k == 'DEL'
                               ? _kAmberDark
                               : _kNavy,
@@ -1277,7 +1267,7 @@ class _CalcState extends State<_Calc> {
                         child: Text(
                           k,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: k == 'DEL' ? 12 : 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -1342,17 +1332,17 @@ class _TxnInputState extends State<_TxnInput> {
         filled: true,
         fillColor: _kCanvas,
         labelStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 13,
           color: _kSlate,
         ),
         hintStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 13,
           color: _kSlate,
         ),
         prefixStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 14,
           color: _kSlate,
         ),
@@ -1366,7 +1356,7 @@ class _TxnInputState extends State<_TxnInput> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: _kNavy, width: 1.4),
+          borderSide: const BorderSide(color: _kNavyFill, width: 1.4),
         ),
       );
     }
@@ -1381,7 +1371,7 @@ class _TxnInputState extends State<_TxnInput> {
           child: CupertinoSlidingSegmentedControl<int>(
             groupValue: isMasuk ? 1 : 0,
             backgroundColor: _kCanvas,
-            thumbColor: Colors.white,
+            thumbColor: Star.surface,
             padding: const EdgeInsets.all(4),
             children: const {
               0: Padding(
@@ -1389,7 +1379,7 @@ class _TxnInputState extends State<_TxnInput> {
                 child: Text(
                   'Keluar',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: _kNavy,
@@ -1401,7 +1391,7 @@ class _TxnInputState extends State<_TxnInput> {
                 child: Text(
                   'Masuk',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: _kNavy,
@@ -1465,13 +1455,13 @@ class _TxnInputState extends State<_TxnInput> {
           child: FilledButton.icon(
             onPressed: add,
             style: FilledButton.styleFrom(
-              backgroundColor: _kNavy,
-              foregroundColor: Colors.white,
+              backgroundColor: _kNavyFill,
+              foregroundColor: Star.onAccent,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               textStyle: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),
@@ -1483,7 +1473,11 @@ class _TxnInputState extends State<_TxnInput> {
         const SizedBox(height: 8),
         const Text(
           'Tersimpan otomatis di perangkat ini.',
-          style: TextStyle(fontFamily: 'Inter', fontSize: 10.5, color: _kSlate),
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 10.5,
+            color: _kSlate,
+          ),
         ),
       ],
     );
@@ -1508,7 +1502,7 @@ class _TxnTable extends StatelessWidget {
               'Belum ada data bulan ini — catat belanja harianmu.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12,
                 height: 1.45,
                 color: _kSlate,
@@ -1539,11 +1533,7 @@ class _TxnTable extends StatelessWidget {
             width: 34,
             height: 34,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: _kCanvas,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: _kBorder),
-            ),
+            decoration: Neu.raised(r: 10, d: 3),
             child: Icon(
               masuk ? Icons.south_west_rounded : Icons.north_east_rounded,
               size: 15,
@@ -1560,7 +1550,7 @@ class _TxnTable extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13.5,
                     fontWeight: FontWeight.w600,
                     color: _kNavy,
@@ -1572,7 +1562,7 @@ class _TxnTable extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     color: _kSlate,
                   ),
@@ -1584,7 +1574,7 @@ class _TxnTable extends StatelessWidget {
           Text(
             '${masuk ? '+' : '−'}${rp(t.jml)}',
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12.5,
               fontWeight: FontWeight.w700,
               color: accent,
@@ -1645,7 +1635,7 @@ class _DayGrid extends StatelessWidget {
             title: const Text(
               'Grafik & tren 30 hari',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
                 color: _kNavy,
@@ -1654,7 +1644,7 @@ class _DayGrid extends StatelessWidget {
             subtitle: const Text(
               'Batang amber = pengeluaran lewat jatah.',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
                 color: _kSlate,
               ),
@@ -1682,7 +1672,7 @@ class _DayGrid extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: today
-              ? _kNavy
+              ? _kNavyFill
               : over
               ? _kAmberDark.withValues(alpha: 0.55)
               : _kBorder,
@@ -1695,7 +1685,7 @@ class _DayGrid extends StatelessWidget {
           Text(
             'H$h',
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 9.5,
               fontWeight: FontWeight.w600,
               color: _kSlate,
@@ -1708,7 +1698,7 @@ class _DayGrid extends StatelessWidget {
               rp(out).replaceAll('Rp', ''),
               maxLines: 1,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
                 fontWeight: FontWeight.w700,
                 color: out == 0 ? _kSlate : accent,
@@ -1730,15 +1720,11 @@ class _KTag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-      decoration: BoxDecoration(
-        color: _kCanvas,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: _kBorder),
-      ),
+      decoration: Neu.raised(r: 999, d: 6),
       child: Text(
         text,
         style: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 10.5,
           fontWeight: FontWeight.w600,
           color: _kSlate,
@@ -1810,11 +1796,7 @@ class _TrendLine extends StatelessWidget {
       height: 210,
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(4, 12, 12, 8),
-      decoration: BoxDecoration(
-        color: _kCanvas,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _kBorder),
-      ),
+      decoration: Neu.raised(r: 12, d: 3),
       child: LineChart(
         LineChartData(
           minX: 1,
@@ -1841,7 +1823,7 @@ class _TrendLine extends StatelessWidget {
                   alignment: Alignment.topRight,
                   padding: const EdgeInsets.only(right: 4, bottom: 4),
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 9.5,
                     fontWeight: FontWeight.w600,
                     color: _kAmberDark,
@@ -1868,7 +1850,7 @@ class _TrendLine extends StatelessWidget {
                   child: Text(
                     'H${v.toInt()}',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 9.5,
                       fontWeight: FontWeight.w500,
                       color: _kSlate,
@@ -1887,7 +1869,7 @@ class _TrendLine extends StatelessWidget {
                   child: Text(
                     '${(v / 1000).round()}rb',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 9.5,
                       fontWeight: FontWeight.w500,
                       color: _kSlate,
@@ -1905,10 +1887,10 @@ class _TrendLine extends StatelessWidget {
                     (s) => LineTooltipItem(
                       'H${s.x.toInt()}: ${rp(s.y.toInt())}',
                       const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: Star.onAccent,
                       ),
                     ),
                   )
@@ -1972,7 +1954,7 @@ class _MoneyCalendar extends StatelessWidget {
                       '${BULAN_ID[st.calMonth]} ${st.calYear}',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13.5,
                         fontWeight: FontWeight.w700,
                         color: _kNavy,
@@ -1993,7 +1975,7 @@ class _MoneyCalendar extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       textStyle: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
@@ -2019,7 +2001,7 @@ class _MoneyCalendar extends StatelessWidget {
                         d,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                           color: _kSlate,
@@ -2056,14 +2038,14 @@ class _MoneyCalendar extends StatelessWidget {
                     height: 6,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _kNavy,
+                      color: _kNavyFill,
                     ),
                   ),
                   const SizedBox(width: 5),
                   const Text(
                     'Masuk',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       color: _kSlate,
                     ),
@@ -2081,7 +2063,7 @@ class _MoneyCalendar extends StatelessWidget {
                   const Text(
                     'Keluar',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       color: _kSlate,
                     ),
@@ -2131,16 +2113,16 @@ class _MoneyDay extends StatelessWidget {
             height: 28,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: isToday ? _kNavy : Colors.transparent,
+              color: isToday ? _kNavyFill : Colors.transparent,
               shape: BoxShape.circle,
             ),
             child: Text(
               '$day',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w600,
                 fontSize: 12.5,
-                color: isToday ? Colors.white : _kNavy,
+                color: isToday ? Star.onAccent : _kNavy,
               ),
             ),
           ),
@@ -2157,7 +2139,7 @@ class _MoneyDay extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 1.5),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _kNavy,
+                      color: _kNavyFill,
                     ),
                   ),
                 if (hasOut)
@@ -2221,7 +2203,7 @@ void showMoneyDay(BuildContext context, int day) {
                 '${HARI_ID[DateTime(st.calYear, st.calMonth, day).weekday]}, '
                 '$day ${BULAN_ID[st.calMonth]} ${st.calYear}',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
                   letterSpacing: -0.4,
@@ -2232,17 +2214,13 @@ void showMoneyDay(BuildContext context, int day) {
               // WAJIB: ringkasan pemasukan + pengeluaran hari itu.
               Container(
                 padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-                decoration: BoxDecoration(
-                  color: _kCard,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: _kBorder),
-                ),
+                decoration: Neu.raised(r: 14, d: 4),
                 child: Column(
                   children: [
                     _MoneyRow(
                       'Pemasukan',
                       '+${rp(inc)}',
-                      _kNavy,
+                      _kNavyFill,
                       Icons.south_west_rounded,
                     ),
                     const SizedBox(height: 8),
@@ -2271,7 +2249,7 @@ void showMoneyDay(BuildContext context, int day) {
               Text(
                 'Transaksi hari ini (${dayTxns.length})',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 13.5,
                   color: _kNavy,
@@ -2282,7 +2260,7 @@ void showMoneyDay(BuildContext context, int day) {
                 const Text(
                   'Belum ada — catat lewat form di atas.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11.5,
                     height: 1.5,
                     color: _kSlate,
@@ -2295,7 +2273,7 @@ void showMoneyDay(BuildContext context, int day) {
               const Text(
                 'Paket hari ini (opsional)',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 13.5,
                   color: _kNavy,
@@ -2307,7 +2285,7 @@ void showMoneyDay(BuildContext context, int day) {
                     ? 'Tanggal 31 = Hari Bebas (di luar template).'
                     : 'Paket ${(day - 1) ~/ 2 + 1} · ${POLA[k]!.t.replaceAll(' (otot)', '')}',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   height: 1.5,
                   color: _kSlate,
@@ -2322,7 +2300,7 @@ void showMoneyDay(BuildContext context, int day) {
               const Text(
                 'Menu lain hari ini (opsional)',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 13.5,
                   color: _kNavy,
@@ -2332,7 +2310,7 @@ void showMoneyDay(BuildContext context, int day) {
               const Text(
                 'Makanan di luar template? Catat di sini, boleh lebih dari 3.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   height: 1.5,
                   color: _kSlate,
@@ -2379,7 +2357,7 @@ class _DayTxnRow extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: _kNavy,
@@ -2388,7 +2366,7 @@ class _DayTxnRow extends StatelessWidget {
                 Text(
                   t.kat,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     color: _kSlate,
                   ),
@@ -2399,7 +2377,7 @@ class _DayTxnRow extends StatelessWidget {
           Text(
             '${masuk ? '+' : '−'}${rp(t.jml)}',
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontWeight: FontWeight.w700,
               fontSize: 12,
               color: accent,
@@ -2475,12 +2453,12 @@ class _MoneyDayInputState extends State<_MoneyDayInput> {
         filled: true,
         fillColor: _kCanvas,
         labelStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 13,
           color: _kSlate,
         ),
         prefixStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontSize: 14,
           color: _kSlate,
         ),
@@ -2494,25 +2472,21 @@ class _MoneyDayInputState extends State<_MoneyDayInput> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: _kNavy, width: 1.4),
+          borderSide: const BorderSide(color: _kNavyFill, width: 1.4),
         ),
       );
     }
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: _kCard,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: _kBorder),
-      ),
+      decoration: Neu.raised(r: 14, d: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Catat tgl ${widget.day}',
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontWeight: FontWeight.w700,
               fontSize: 13.5,
               color: _kNavy,
@@ -2524,7 +2498,7 @@ class _MoneyDayInputState extends State<_MoneyDayInput> {
             child: CupertinoSlidingSegmentedControl<int>(
               groupValue: isMasuk ? 1 : 0,
               backgroundColor: _kCanvas,
-              thumbColor: Colors.white,
+              thumbColor: Star.surface,
               padding: const EdgeInsets.all(4),
               children: const {
                 0: Padding(
@@ -2532,7 +2506,7 @@ class _MoneyDayInputState extends State<_MoneyDayInput> {
                   child: Text(
                     'Keluar',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: _kNavy,
@@ -2544,7 +2518,7 @@ class _MoneyDayInputState extends State<_MoneyDayInput> {
                   child: Text(
                     'Masuk',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: _kNavy,
@@ -2588,13 +2562,13 @@ class _MoneyDayInputState extends State<_MoneyDayInput> {
             child: FilledButton.icon(
               onPressed: add,
               style: FilledButton.styleFrom(
-                backgroundColor: _kNavy,
-                foregroundColor: Colors.white,
+                backgroundColor: _kNavyFill,
+                foregroundColor: Star.onAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 textStyle: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12.5,
                   fontWeight: FontWeight.w600,
                 ),
@@ -2631,7 +2605,7 @@ class _MoneyRow extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontWeight: bold ? FontWeight.w700 : FontWeight.w500,
               fontSize: 12.5,
               color: _kNavy,
@@ -2641,7 +2615,7 @@ class _MoneyRow extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontWeight: FontWeight.w700,
             fontSize: 13.5,
             color: color,
@@ -2673,7 +2647,7 @@ class _MoneyMealToggle extends StatelessWidget {
           decoration: BoxDecoration(
             color: on ? _kCyanPill : _kCard,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: on ? _kNavy : _kBorder),
+            border: Border.all(color: on ? _kNavyFill : _kBorder),
           ),
           child: Row(
             children: [
@@ -2698,7 +2672,7 @@ class _MoneyMealToggle extends StatelessWidget {
                 child: Text(
                   labels[slot],
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
                     color: _kNavy,
@@ -2708,7 +2682,7 @@ class _MoneyMealToggle extends StatelessWidget {
               Text(
                 on ? 'Tercatat' : 'Belum',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10.5,
                   color: _kSlate,
                 ),
@@ -2748,14 +2722,14 @@ class _MoneyNotesState extends State<_MoneyNotes> {
               child: TextField(
                 controller: note,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 13,
                   color: _kNavy,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Mis. sate 5 tusuk, es teh...',
                   hintStyle: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     color: _kSlate,
                   ),
@@ -2771,7 +2745,7 @@ class _MoneyNotesState extends State<_MoneyNotes> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: _kNavy, width: 1.4),
+                    borderSide: const BorderSide(color: _kNavyFill, width: 1.4),
                   ),
                 ),
               ),
@@ -2785,14 +2759,14 @@ class _MoneyNotesState extends State<_MoneyNotes> {
                   note.clear();
                 },
                 style: FilledButton.styleFrom(
-                  backgroundColor: _kNavy,
-                  foregroundColor: Colors.white,
+                  backgroundColor: _kNavyFill,
+                  foregroundColor: Star.onAccent,
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   textStyle: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -2809,7 +2783,7 @@ class _MoneyNotesState extends State<_MoneyNotes> {
             child: Text(
               'Belum ada catatan hari ini.',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11.5,
                 height: 1.5,
                 color: _kSlate,
@@ -2821,11 +2795,7 @@ class _MoneyNotesState extends State<_MoneyNotes> {
             Container(
               margin: const EdgeInsets.only(bottom: 6),
               padding: const EdgeInsets.fromLTRB(10, 8, 4, 8),
-              decoration: BoxDecoration(
-                color: _kCard,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: _kBorder),
-              ),
+              decoration: Neu.raised(r: 10, d: 3),
               child: Row(
                 children: [
                   const Icon(
@@ -2838,7 +2808,7 @@ class _MoneyNotesState extends State<_MoneyNotes> {
                     child: Text(
                       n.text,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12.5,
                         color: _kNavy,
                       ),
@@ -2877,7 +2847,7 @@ class _MoneyBooster extends StatelessWidget {
       decoration: BoxDecoration(
         color: on ? _kCyanPill : _kCard,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: on ? _kNavy : _kBorder),
+        border: Border.all(color: on ? _kNavyFill : _kBorder),
       ),
       child: Row(
         children: [
@@ -2894,7 +2864,7 @@ class _MoneyBooster extends StatelessWidget {
                 const Text(
                   'Booster hari ini',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
                     color: _kNavy,
@@ -2903,7 +2873,7 @@ class _MoneyBooster extends StatelessWidget {
                 Text(
                   '±1.110 kkal · Protein 33gr · ±Rp10.900',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     height: 1.45,
                     color: on ? _kNavy : _kSlate,

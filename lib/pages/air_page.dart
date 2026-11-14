@@ -55,11 +55,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
         SnackBar(
           content: const Row(
             children: [
-              Icon(
-                Icons.emoji_events_rounded,
-                color: Color(0xffFDE047),
-                size: 18,
-              ),
+              Icon(Icons.emoji_events_rounded, color: Star.star, size: 18),
               SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -68,7 +64,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          backgroundColor: const Color(0xff0284C7),
+          backgroundColor: Star.star,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -112,12 +108,12 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           ),
           title: const Row(
             children: [
-              Icon(Icons.info_outline_rounded, color: Color(0xff0284C7)),
+              Icon(Icons.info_outline_rounded, color: Star.star),
               SizedBox(width: 8),
               Text(
                 'Galon Sudah Tercatat',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 15,
                 ),
@@ -126,7 +122,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           ),
           content: const Text(
             'Anda sudah mencatat pengisian galon baru 19L untuk hari ini (~8 hari sisa). Tetap ingin mereset ulang status galon?',
-            style: TextStyle(fontFamily: 'Inter', fontSize: 12.5),
+            style: TextStyle(fontFamily: 'Manrope', fontSize: 12.5),
           ),
           actions: [
             TextButton(
@@ -138,9 +134,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                 Navigator.pop(ctx);
                 _executeGallonRefill(gallonKey);
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xff0284C7),
-              ),
+              style: FilledButton.styleFrom(backgroundColor: Star.star),
               child: const Text('Reset Ulang'),
             ),
           ],
@@ -162,7 +156,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
       SnackBar(
         content: const Row(
           children: [
-            Icon(Icons.water_drop_rounded, color: Color(0xff38BDF8), size: 18),
+            Icon(Icons.water_drop_rounded, color: Star.star, size: 18),
             SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -171,7 +165,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
-        backgroundColor: const Color(0xff004E71),
+        backgroundColor: Star.star,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -190,7 +184,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           description: 'Setiap teguk air penting untuk performa kalistenik. Animasi cairan dispenser naik secara dinamis seiring kamu mencatat air minum (target 2.500ml per hari).',
           tip: 'Gunakan tombol +250ml (1 Gelas) atau +600ml (Botol Tumbler) untuk mencatat hidrasi seketika.',
           icon: Icons.water_drop_rounded,
-          accentColor: Color(0xff0284C7),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Anti-Spam Log Isi Ulang Galon 19L',
@@ -199,7 +193,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           description: 'Mencatat tanggal isi ulang galon baru 19L. Dilengkapi proteksi anti-spam sehingga saldo galon tidak bisa digandakan berkali-kali dalam satu hari.',
           tip: 'Satu galon 19L rata-rata mencukupi kebutuhan 7-8 hari untuk satu anak kost.',
           icon: Icons.inventory_2_rounded,
-          accentColor: Color(0xff004E71),
+          accentColor: Star.star,
         ),
         TutorialStepItem(
           title: 'Checklist Sirkadian 8 Waktu Minum',
@@ -208,7 +202,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           description: 'Minum air terbagi ke dalam 8 momen penting: bangun tidur, sebelum sarapan, jam kerja fokus, pra-workout, pasca-latihan, hingga menjelang tidur.',
           tip: 'Minum segelas air hangat saat bangun pagi langsung mengaktifkan metabolisme dan melumasi persendian tubuh.',
           icon: Icons.schedule_rounded,
-          accentColor: Color(0xff10B981),
+          accentColor: Star.success,
         ),
       ],
     );
@@ -236,14 +230,14 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                     children: [
                       Icon(
                         Icons.water_drop_rounded,
-                        color: Color(0xff0284C7),
+                        color: Star.star,
                         size: 22,
                       ),
                       SizedBox(width: 8),
                       Text(
                         'Hidrasi Galon Kost',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -254,7 +248,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                   TutorialPillButton(
                     onTap: () => _showAirTutorial(context),
                     label: 'Panduan',
-                    color: const Color(0xff0284C7),
+                    color: Star.star,
                   ),
                 ],
               ),
@@ -265,11 +259,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               // --------------------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  // iOS: satu warna permukaan, tanpa gradien/bayangan.
-                  color: Star.deepSpace,
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                decoration: Neu.raised(r: 22, d: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -283,7 +273,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.16),
+                              color: Star.ink.withValues(alpha: 0.07),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Row(
@@ -292,7 +282,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                 Icon(
                                   Icons.water_drop_rounded,
                                   size: 14,
-                                  color: Color(0xff7DD3FC),
+                                  color: Star.star,
                                 ),
                                 SizedBox(width: 4),
                                 Flexible(
@@ -301,10 +291,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                                      color: Star.ink,
                                     ),
                                   ),
                                 ),
@@ -322,16 +312,16 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.12),
+                              color: Star.ink.withValues(alpha: 0.07),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Text(
                               'Reset Hari Ini',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.white70,
+                                color: Star.mut,
                               ),
                             ),
                           ),
@@ -350,21 +340,20 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.35),
+                              color: Star.ink.withValues(alpha: 0.07),
                               width: 2,
                             ),
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                Colors.white.withValues(alpha: 0.15),
-                                Colors.white.withValues(alpha: 0.05),
+                                Star.ink.withValues(alpha: 0.07),
+                                Star.ink.withValues(alpha: 0.07),
                               ],
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xff38BDF8)
-                                    .withValues(alpha: 0.25),
+                                color: Star.star.withValues(alpha: 0.25),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -379,8 +368,8 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                   painter: _LiquidWavePainter(
                                     progress: progress,
                                     wavePhase: _waveController.value * 2 * pi,
-                                    waveColor: const Color(0xff0284C7),
-                                    highlightColor: const Color(0xff38BDF8),
+                                    waveColor: Star.star,
+                                    highlightColor: Star.star,
                                   ),
                                   child: Center(
                                     child: Column(
@@ -389,17 +378,17 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                       children: [
                                         const Icon(
                                           Icons.water_drop_rounded,
-                                          color: Colors.white,
+                                          color: Star.ink,
                                           size: 20,
                                         ),
                                         const SizedBox(height: 2),
                                         Text(
                                           '$percent%',
                                           style: const TextStyle(
-                                            fontFamily: 'Inter',
+                                            fontFamily: 'Manrope',
                                             fontSize: 14,
                                             fontWeight: FontWeight.w700,
-                                            color: Colors.white,
+                                            color: Star.ink,
                                             shadows: [
                                               Shadow(
                                                 color: Colors.black45,
@@ -433,10 +422,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Manrope',
                                         fontSize: 34,
                                         fontWeight: FontWeight.w700,
-                                        color: Colors.white,
+                                        color: Star.ink,
                                         height: 1.0,
                                       ),
                                     ),
@@ -448,10 +437,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        fontFamily: 'Inter',
+                                        fontFamily: 'Manrope',
                                         fontSize: 12.5,
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.white70,
+                                        color: Star.mut,
                                       ),
                                     ),
                                   ),
@@ -465,15 +454,13 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                 ),
                                 decoration: BoxDecoration(
                                   color: percent >= 100
-                                      ? const Color(0xff10B981)
-                                            .withValues(alpha: 0.25)
-                                      : const Color(0xff38BDF8)
-                                            .withValues(alpha: 0.2),
+                                      ? Star.success.withValues(alpha: 0.25)
+                                      : Star.star.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
                                     color: percent >= 100
-                                        ? const Color(0xff10B981)
-                                        : const Color(0xff38BDF8),
+                                        ? Star.success
+                                        : Star.star,
                                     width: 1.0,
                                   ),
                                 ),
@@ -482,12 +469,12 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                       ? 'Target Tercapai! Tubuh Prima'
                                       : 'Kurang ${((_targetWaterMl - _dailyWaterMl) / 1000).clamp(0.0, 2.5).toStringAsFixed(1)}L lagi',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     color: percent >= 100
-                                        ? const Color(0xff86EFAC)
-                                        : const Color(0xffBAE6FD),
+                                        ? Star.success
+                                        : Paper.amberInk,
                                   ),
                                 ),
                               ),
@@ -495,9 +482,9 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                               const Text(
                                 'Otot mengandung 75% air. Hidrasi optimal melipatgandakan kekuatan repetisi push-up & mencegah nyeri sendi.',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 10,
-                                  color: Colors.white70,
+                                  color: Star.mut,
                                   height: 1.35,
                                 ),
                               ),
@@ -517,7 +504,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             label: '+250ml',
                             sub: 'Gelas Kos',
                             icon: Icons.local_drink_rounded,
-                            accentColor: const Color(0xff38BDF8),
+                            accentColor: Star.star,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -527,7 +514,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             label: '+600ml',
                             sub: 'Tumbler',
                             icon: Icons.sports_gymnastics_rounded,
-                            accentColor: const Color(0xff0D9488),
+                            accentColor: Star.star,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -537,7 +524,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             label: '+1.000ml',
                             sub: 'Botol 1L',
                             icon: Icons.bolt_rounded,
-                            accentColor: const Color(0xffF59E0B),
+                            accentColor: Star.star,
                           ),
                         ),
                       ],
@@ -552,18 +539,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               // --------------------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Star.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Star.lineSoft),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff004E71).withValues(alpha: 0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
+                decoration: Neu.raised(r: 20, d: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -572,13 +548,12 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                         Container(
                           padding: const EdgeInsets.all(7),
                           decoration: BoxDecoration(
-                            color: const Color(0xff0284C7)
-                                .withValues(alpha: 0.12),
+                            color: Star.star.withValues(alpha: 0.12),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
                             Icons.propane_tank_rounded,
-                            color: Color(0xff0284C7),
+                            color: Star.star,
                             size: 18,
                           ),
                         ),
@@ -589,7 +564,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: Star.ink,
@@ -602,17 +577,16 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xff0D9488)
-                                .withValues(alpha: 0.12),
+                            color: Star.star.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             'Sisa ~$_gallonDaysLeft Hari',
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff0D9488),
+                              color: Star.star,
                             ),
                           ),
                         ),
@@ -622,7 +596,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                     const Text(
                       'Satu galon isi ulang 19L mencukupi kebutuhan hidrasi atlet kost selama 7-8 hari penuh.',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         color: Star.mut,
                       ),
@@ -652,20 +626,18 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                   ? '✓ Galon Sudah Diisi Hari Ini'
                                   : 'Beli / Isi Ulang Galon Baru (+19L)',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             style: FilledButton.styleFrom(
                               backgroundColor: alreadyLoggedToday
-                                  ? const Color(0xff10B981)
-                                        .withValues(alpha: 0.15)
-                                  : const Color(0xff0284C7)
-                                        .withValues(alpha: 0.12),
+                                  ? Star.success.withValues(alpha: 0.15)
+                                  : Star.star.withValues(alpha: 0.12),
                               foregroundColor: alreadyLoggedToday
-                                  ? const Color(0xff10B981)
-                                  : const Color(0xff0284C7),
+                                  ? Star.success
+                                  : Star.star,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -685,28 +657,13 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               // --------------------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Star.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Star.lineSoft),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff004E71).withValues(alpha: 0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
+                decoration: Neu.raised(r: 20, d: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Row(
                       children: [
-                        Icon(
-                          Icons.savings_rounded,
-                          color: Color(0xff0D9488),
-                          size: 18,
-                        ),
+                        Icon(Icons.savings_rounded, color: Star.star, size: 18),
                         SizedBox(width: 8),
                         Flexible(
                           child: Text(
@@ -714,7 +671,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: Star.ink,
@@ -727,7 +684,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                     const Text(
                       'Perbandingan pengeluaran riil per bulan untuk kebutuhan hidrasi 75 liter (2,5L/hari):',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         color: Star.mut,
                       ),
@@ -752,14 +709,14 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: const Color(0xff0D9488).withValues(alpha: 0.08),
+                        color: Star.star.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Row(
                         children: [
                           Icon(
                             Icons.check_circle_rounded,
-                            color: Color(0xff0D9488),
+                            color: Star.star,
                             size: 16,
                           ),
                           SizedBox(width: 8),
@@ -767,10 +724,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             child: Text(
                               'Hemat Rp 417.500/bulan! Uang hemat ini cukup untuk 8 papan telur (240 butir protein).',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 10.5,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff0D9488),
+                                color: Star.star,
                               ),
                             ),
                           ),
@@ -787,11 +744,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               // --------------------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Star.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Star.lineSoft),
-                ),
+                decoration: Neu.raised(r: 20, d: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -799,14 +752,14 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                       children: [
                         Icon(
                           Icons.schedule_rounded,
-                          color: Color(0xff0284C7),
+                          color: Star.star,
                           size: 18,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Jadwal Hidrasi Optimal Atlet',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: Star.ink,
@@ -868,9 +821,9 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 4),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.14),
+          color: Star.ink.withValues(alpha: 0.07),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
+          border: Border.all(color: Star.line.withValues(alpha: 0.25)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -880,18 +833,18 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
             Text(
               label,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
+                color: Star.ink,
               ),
             ),
             Text(
               sub,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 8.5,
-                color: Colors.white70,
+                color: Star.mut,
               ),
             ),
           ],
@@ -910,14 +863,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: isWinner
-            ? const Color(0xff0D9488).withValues(alpha: 0.08)
-            : Star.bg,
+        color: isWinner ? Star.star.withValues(alpha: 0.08) : Star.bg,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isWinner
-              ? const Color(0xff0D9488).withValues(alpha: 0.3)
-              : Star.sunken,
+          color: isWinner ? Star.star.withValues(alpha: 0.3) : Star.sunken,
         ),
       ),
       child: Row(
@@ -930,16 +879,16 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                 Text(
                   type,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: isWinner ? const Color(0xff0D9488) : Star.ink,
+                    color: isWinner ? Star.star : Star.ink,
                   ),
                 ),
                 Text(
                   '$formula • $desc',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 9.5,
                     color: Star.mut,
                   ),
@@ -950,12 +899,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           Text(
             cost,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 11.5,
               fontWeight: FontWeight.w700,
-              color: isWinner
-                  ? const Color(0xff0D9488)
-                  : const Color(0xffEF4444),
+              color: isWinner ? Star.star : Star.error,
             ),
           ),
         ],
@@ -985,7 +932,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               content: Text('$title selesai diminum! (+5 XP)'),
               duration: const Duration(milliseconds: 1000),
               behavior: SnackBarBehavior.floating,
-              backgroundColor: const Color(0xff0284C7),
+              backgroundColor: Star.star,
             ),
           );
         } else {
@@ -1010,29 +957,25 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               checked
                   ? Icons.check_circle_rounded
                   : Icons.radio_button_unchecked_rounded,
-              color: checked ? const Color(0xff10B981) : Star.mut,
+              color: checked ? Star.success : Star.mut,
               size: 18,
             ),
             const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color:
-                    (checked
-                            ? const Color(0xff10B981)
-                            : const Color(0xff0284C7))
-                        .withValues(alpha: 0.12),
+                color: (checked ? Star.success : Star.star).withValues(
+                  alpha: 0.12,
+                ),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 time,
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 9.5,
                   fontWeight: FontWeight.w700,
-                  color: checked
-                      ? const Color(0xff10B981)
-                      : const Color(0xff0284C7),
+                  color: checked ? Star.success : Star.star,
                 ),
               ),
             ),
@@ -1047,10 +990,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                         child: Text(
                           title,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 10.5,
                             fontWeight: FontWeight.w700,
-                            color: checked ? const Color(0xff10B981) : Star.ink,
+                            color: checked ? Star.success : Star.ink,
                             decoration: checked
                                 ? TextDecoration.lineThrough
                                 : null,
@@ -1064,17 +1007,16 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             vertical: 1.5,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xff10B981)
-                                .withValues(alpha: 0.12),
+                            color: Star.success.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: const Text(
                             'Sudah Minum ✓',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 8.5,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff10B981),
+                              color: Star.success,
                             ),
                           ),
                         ),
@@ -1083,7 +1025,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                   Text(
                     desc,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 9,
                       color: Star.mut,
                     ),

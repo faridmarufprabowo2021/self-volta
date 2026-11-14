@@ -19,35 +19,31 @@ class _PanduanPageState extends State<PanduanPage> {
   String _selectedCategory = 'all';
 
   final List<({String key, String label, IconData icon})> _categories = [
-    (key: 'all', label: '🌟 Semua Panduan', icon: Icons.apps_rounded),
+    (key: 'all', label: 'Semua Panduan', icon: Icons.apps_rounded),
     (
       key: 'latihan',
-      label: '🏋️ Latihan & Choice Plan',
+      label: 'Latihan & Choice Plan',
       icon: Icons.fitness_center_rounded,
     ),
     (
       key: 'makan',
-      label: '🍱 Pola Makan & Nutrisi',
+      label: 'Pola Makan & Nutrisi',
       icon: Icons.soup_kitchen_rounded,
     ),
     (
       key: 'keuangan',
-      label: '💰 Keuangan & Tabungan',
+      label: 'Keuangan & Tabungan',
       icon: Icons.account_balance_wallet_rounded,
     ),
-    (
-      key: 'booster',
-      label: '⚡ Booster BB & Air Galon',
-      icon: Icons.bolt_rounded,
-    ),
+    (key: 'booster', label: 'Booster BB & Air Galon', icon: Icons.bolt_rounded),
     (
       key: 'profil',
-      label: '🏆 Profil, Level & Medali',
+      label: 'Profil, Level & Medali',
       icon: Icons.emoji_events_rounded,
     ),
     (
       key: 'navigasi',
-      label: '🧭 Navigasi & Alur Cepat',
+      label: 'Navigasi & Alur Cepat',
       icon: Icons.explore_rounded,
     ),
   ];
@@ -80,7 +76,7 @@ class _PanduanPageState extends State<PanduanPage> {
             Text(
               'Panduan Aplikasi',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: Star.ink,
@@ -89,7 +85,7 @@ class _PanduanPageState extends State<PanduanPage> {
             Text(
               'Tutorial Lengkap & Cara Pakai Fitur',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11,
                 color: Star.mut,
                 fontWeight: FontWeight.w500,
@@ -155,38 +151,29 @@ class _PanduanPageState extends State<PanduanPage> {
   Widget _buildHeroBanner() {
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Star.deepSpace,
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: Neu.raised(r: 22, d: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xffFFE599).withValues(alpha: 0.2),
+              color: Paper.amberInk.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(100),
-              border: Border.all(
-                color: const Color(0xffFFE599).withValues(alpha: 0.4),
-              ),
+              border: Border.all(color: Paper.amberInk.withValues(alpha: 0.4)),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.lightbulb_rounded,
-                  size: 14,
-                  color: Color(0xffFFE599),
-                ),
+                Icon(Icons.lightbulb_rounded, size: 14, color: Paper.amberInk),
                 SizedBox(width: 5),
                 Text(
                   'PUSAT PANDUAN & USER FLOW',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xffFFE599),
+                    color: Paper.amberInk,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -195,21 +182,21 @@ class _PanduanPageState extends State<PanduanPage> {
           ),
           const SizedBox(height: 12),
           const Text(
-            'Selamat Datang di SELF VOLTA ⚡',
+            'Selamat Datang di SELF VOLTA',
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Colors.white,
+              color: Star.ink,
             ),
           ),
           const SizedBox(height: 6),
           const Text(
             'Aplikasi pendamping disiplin harian untuk menaikkan berat badan, membangun massa otot kalistenik tanpa alat, dan mengelola keuangan hemat mahasiswa.',
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12,
-              color: Colors.white,
+              color: Star.ink,
               height: 1.4,
             ),
           ),
@@ -239,19 +226,17 @@ class _PanduanPageState extends State<PanduanPage> {
                   setState(() => _selectedCategory = cat.key);
                 }
               },
-              selectedColor: const Color(0xff004E71),
+              selectedColor: Star.star,
               backgroundColor: Star.surface,
               labelStyle: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11.5,
                 fontWeight: isSel ? FontWeight.w700 : FontWeight.w600,
-                color: isSel ? Colors.white : Star.ink,
+                color: isSel ? Star.onAccent : Star.ink,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
-                  color: isSel ? const Color(0xff004E71) : Star.sunken,
-                ),
+                side: BorderSide(color: isSel ? Star.star : Star.sunken),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             ),
@@ -266,9 +251,9 @@ class _PanduanPageState extends State<PanduanPage> {
   // --------------------------------------------------------------------------
   Widget _buildNavigasiGuide() {
     return _buildSectionCard(
-      title: '🧭 Navigasi & Alur Cepat Aplikasi',
+      title: 'Navigasi & Alur Cepat Aplikasi',
       subtitle: 'Memahami letak tombol dan navigasi agar tidak bingung',
-      color: const Color(0xff0284C7),
+      color: Star.star,
       steps: [
         (
           title: 'Menu Samping (Kiri Atas)',
@@ -295,9 +280,9 @@ class _PanduanPageState extends State<PanduanPage> {
   // --------------------------------------------------------------------------
   Widget _buildLatihanGuide() {
     return _buildSectionCard(
-      title: '🏋️ Latihan Kalistenik & Fitur Choice Plan',
+      title: 'Latihan Kalistenik & Fitur Choice Plan',
       subtitle: 'Pembentukan otot terukur tanpa alat & bebas cedera',
-      color: const Color(0xff004E71),
+      color: Star.star,
       steps: [
         (
           title: 'Jadwal 3x Seminggu (Senin, Rabu, Jumat)',
@@ -313,7 +298,7 @@ class _PanduanPageState extends State<PanduanPage> {
         ),
         (
           title: 'Smart Rest Timer (+30s / Lewati)',
-          desc: 'Saat latihan berjalan, selesai satu set akan memicu jeda istirahat visual. Anda bisa ketuk "+30s Tambah Rest" jika napas masih terengah, atau "Lanjut ⏩" untuk langsung ke gerakan berikutnya.',
+          desc: 'Saat latihan berjalan, selesai satu set akan memicu jeda istirahat visual. Anda bisa ketuk "+30s Tambah Rest" jika napas masih terengah, atau "Lanjut" untuk langsung ke gerakan berikutnya.',
         ),
       ],
     );
@@ -325,20 +310,7 @@ class _PanduanPageState extends State<PanduanPage> {
   Widget _buildMakanGuide() {
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xff0D9488).withValues(alpha: 0.3),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xff0D9488).withValues(alpha: 0.08),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -347,12 +319,12 @@ class _PanduanPageState extends State<PanduanPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xff0D9488).withValues(alpha: 0.12),
+                  color: Star.star.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
                   Icons.soup_kitchen_rounded,
-                  color: Color(0xff0D9488),
+                  color: Star.star,
                   size: 20,
                 ),
               ),
@@ -362,9 +334,9 @@ class _PanduanPageState extends State<PanduanPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '🍱 Tips & Panduan Cara Masak Kilat Kost',
+                      'Tips & Panduan Cara Masak Kilat Kost',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13.5,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -373,7 +345,7 @@ class _PanduanPageState extends State<PanduanPage> {
                     Text(
                       'Trik 15 menit makan enak, hemat & tinggi protein di kamar kos',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10,
                         color: Star.mut,
                         fontWeight: FontWeight.w500,
@@ -390,10 +362,10 @@ class _PanduanPageState extends State<PanduanPage> {
           const Text(
             'Alur 3 Langkah Memasak Praktis (15 Menit):',
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 11,
               fontWeight: FontWeight.w700,
-              color: Color(0xff0D9488),
+              color: Star.star,
             ),
           ),
           const SizedBox(height: 8),
@@ -417,46 +389,36 @@ class _PanduanPageState extends State<PanduanPage> {
           // Kost Kitchen Lifehacks
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xff0D9488).withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: const Color(0xff0D9488).withValues(alpha: 0.18),
-              ),
-            ),
+            decoration: Neu.well(r: 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Row(
                   children: [
-                    Icon(
-                      Icons.lightbulb_rounded,
-                      size: 16,
-                      color: Color(0xff0D9488),
-                    ),
+                    Icon(Icons.lightbulb_rounded, size: 16, color: Star.star),
                     SizedBox(width: 6),
                     Text(
                       '3 Lifehacks Dapur Kost Hemat:',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff0D9488),
+                        color: Star.star,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
                 _hackItem(
-                  '⚡ Anti-Njepret Listrik Kos',
+                  'Anti-Njepret Listrik Kos',
                   'Panci listrik gunakan mode 300 Watt saat menumis. Jangan gunakan bersamaan dengan setrika agar saklar MCB tidak turun.',
                 ),
                 _hackItem(
-                  '🥚 Simpan Telur Tanpa Kulkas',
+                  'Simpan Telur Tanpa Kulkas',
                   'Telur ayam tahan 14 hari di suhu ruang. Letakkan di wadah berventilasi (jangan dicuci air sebelum dimasak agar lapisan pelindung cangkang utuh).',
                 ),
                 _hackItem(
-                  '🥬 Segarkan Sayur dengan Air',
+                  'Segarkan Sayur dengan Air',
                   'Rendam batang kangkung/bayam dalam toples berisi 2 cm air seperti tanaman hias. Daun tetap segar dan renyah selama 3 hari tanpa kulkas!',
                 ),
               ],
@@ -471,17 +433,16 @@ class _PanduanPageState extends State<PanduanPage> {
               onPressed: () => _showQuickCookingTimerModal(context),
               icon: const Icon(Icons.timer_rounded, size: 16),
               label: const Text(
-                '⏱️ Buka Stopwatch & Timer Masak Presisi',
+                '⏱Buka Stopwatch & Timer Masak Presisi',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xff0D9488)
-                    .withValues(alpha: 0.14),
-                foregroundColor: const Color(0xff0D9488),
+                backgroundColor: Star.star.withValues(alpha: 0.14),
+                foregroundColor: Star.star,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -505,16 +466,16 @@ class _PanduanPageState extends State<PanduanPage> {
             height: 22,
             alignment: Alignment.center,
             decoration: const BoxDecoration(
-              color: Color(0xff0D9488),
+              color: Star.star,
               shape: BoxShape.circle,
             ),
             child: Text(
               stepNum,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
+                color: Star.onAccent,
               ),
             ),
           ),
@@ -526,7 +487,7 @@ class _PanduanPageState extends State<PanduanPage> {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -536,7 +497,7 @@ class _PanduanPageState extends State<PanduanPage> {
                 Text(
                   desc,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10,
                     color: Star.mut,
                     height: 1.35,
@@ -559,7 +520,7 @@ class _PanduanPageState extends State<PanduanPage> {
           Text(
             title,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10,
               fontWeight: FontWeight.w700,
               color: Star.ink,
@@ -568,7 +529,7 @@ class _PanduanPageState extends State<PanduanPage> {
           Text(
             desc,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 9.5,
               color: Star.mut,
               height: 1.3,
@@ -611,9 +572,9 @@ class _PanduanPageState extends State<PanduanPage> {
                   ),
                   const SizedBox(height: 12),
                   const Text(
-                    '⏱️ Timer Masak Presisi Anak Kost',
+                    '⏱Timer Masak Presisi Anak Kost',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 14.5,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -623,7 +584,7 @@ class _PanduanPageState extends State<PanduanPage> {
                   const Text(
                     'Preset waktu ideal agar masakan matang sempurna & bernutrisi tinggi',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       color: Star.mut,
                     ),
@@ -634,10 +595,10 @@ class _PanduanPageState extends State<PanduanPage> {
                   Text(
                     '$mins:$secs',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 44,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff0D9488),
+                      color: Star.star,
                       letterSpacing: 2,
                     ),
                   ),
@@ -651,13 +612,12 @@ class _PanduanPageState extends State<PanduanPage> {
                         label: const Text(
                           'Telur 1/2 Matang (6m)',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        backgroundColor: const Color(0xff0D9488)
-                            .withValues(alpha: 0.1),
+                        backgroundColor: Star.star.withValues(alpha: 0.1),
                         onPressed: () {
                           iosTapBuzz();
                           setModalState(() => secondsRemaining = 360);
@@ -668,13 +628,12 @@ class _PanduanPageState extends State<PanduanPage> {
                         label: const Text(
                           'Telur Matang (9m)',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        backgroundColor: const Color(0xffE5A910)
-                            .withValues(alpha: 0.15),
+                        backgroundColor: Star.star.withValues(alpha: 0.15),
                         onPressed: () {
                           iosTapBuzz();
                           setModalState(() => secondsRemaining = 540);
@@ -685,13 +644,12 @@ class _PanduanPageState extends State<PanduanPage> {
                         label: const Text(
                           'Sayur (3m)',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        backgroundColor: const Color(0xff10B981)
-                            .withValues(alpha: 0.1),
+                        backgroundColor: Star.success.withValues(alpha: 0.1),
                         onPressed: () {
                           iosTapBuzz();
                           setModalState(() => secondsRemaining = 180);
@@ -709,7 +667,7 @@ class _PanduanPageState extends State<PanduanPage> {
                           content: Text(
                             'Timer masak $mins:$secs telah disetel!',
                           ),
-                          backgroundColor: const Color(0xff0D9488),
+                          backgroundColor: Star.star,
                           behavior: SnackBarBehavior.floating,
                         ),
                       );
@@ -718,13 +676,13 @@ class _PanduanPageState extends State<PanduanPage> {
                     label: const Text(
                       'Gunakan Timer',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xff0D9488),
+                      backgroundColor: Star.star,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -748,12 +706,12 @@ class _PanduanPageState extends State<PanduanPage> {
   // --------------------------------------------------------------------------
   Widget _buildKeuanganGuide() {
     return _buildSectionCard(
-      title: '💰 Keuangan Harian & Tabungan Piano',
+      title: 'Keuangan Harian & Tabungan Piano',
       subtitle: 'Disiplin anggaran Rp50.000/hari & mencapai impian Rp1.500.000',
-      color: const Color(0xff10B981),
+      color: Star.success,
       steps: [
         (
-          title: 'Tombol Kalkulator Melayang (🧮)',
+          title: 'Tombol Kalkulator Melayang ()',
           desc: 'Di halaman Keuangan, ada tombol kalkulator mengambang di pojok layar. Ketuk untuk menghitung dan mencatat pengeluaran secara cepat.',
         ),
         (
@@ -777,9 +735,9 @@ class _PanduanPageState extends State<PanduanPage> {
   // --------------------------------------------------------------------------
   Widget _buildBoosterGuide() {
     return _buildSectionCard(
-      title: '⚡ Booster Berat Badan & Air Galon',
+      title: 'Booster Berat Badan & Air Galon',
       subtitle: 'Nutrisi ekstra pembangun massa tubuh dan hidrasi optimal',
-      color: const Color(0xffD97706),
+      color: Star.star,
       steps: [
         (
           title: 'Kapan Waktu Terbaik Minum Booster?',
@@ -802,9 +760,9 @@ class _PanduanPageState extends State<PanduanPage> {
   // --------------------------------------------------------------------------
   Widget _buildProfilGuide() {
     return _buildSectionCard(
-      title: '🏆 Profil, Level XP, Streak & Medali',
+      title: 'Profil, Level XP, Streak & Medali',
       subtitle: 'Semua gamifikasi terpusat rapi di Profil (Trophy Room)',
-      color: const Color(0xff8B5CF6),
+      color: Star.star,
       steps: [
         (
           title: 'Cara Naik Level (Sistem XP)',
@@ -837,18 +795,7 @@ class _PanduanPageState extends State<PanduanPage> {
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Star.lineSoft),
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 20, d: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -870,7 +817,7 @@ class _PanduanPageState extends State<PanduanPage> {
                     Text(
                       title,
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 14.5,
                         fontWeight: FontWeight.w700,
                         color: color,
@@ -879,7 +826,7 @@ class _PanduanPageState extends State<PanduanPage> {
                     Text(
                       subtitle,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         color: Star.mut,
                       ),
@@ -896,11 +843,7 @@ class _PanduanPageState extends State<PanduanPage> {
             return Container(
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Star.bg,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Star.lineSoft),
-              ),
+              decoration: Neu.raised(r: 14, d: 4),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -915,7 +858,7 @@ class _PanduanPageState extends State<PanduanPage> {
                     child: Text(
                       '${idx + 1}',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: color,
@@ -930,7 +873,7 @@ class _PanduanPageState extends State<PanduanPage> {
                         Text(
                           item.title,
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 12.5,
                             fontWeight: FontWeight.w700,
                             color: Star.ink,
@@ -941,7 +884,7 @@ class _PanduanPageState extends State<PanduanPage> {
                           item.desc,
                           textAlign: TextAlign.justify,
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             color: Star.mut,
                             height: 1.4,
@@ -962,20 +905,10 @@ class _PanduanPageState extends State<PanduanPage> {
   Widget _buildFooterHelpCard() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xff004E71).withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: const Color(0xff004E71).withValues(alpha: 0.12),
-        ),
-      ),
+      decoration: Neu.well(r: 18),
       child: Row(
         children: [
-          const Icon(
-            Icons.support_agent_rounded,
-            size: 28,
-            color: Color(0xff004E71),
-          ),
+          const Icon(Icons.support_agent_rounded, size: 28, color: Star.star),
           const SizedBox(width: 12),
           const Expanded(
             child: Column(
@@ -984,16 +917,16 @@ class _PanduanPageState extends State<PanduanPage> {
                 Text(
                   'Kunci Sukses: Konsistensi Kecil',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff004E71),
+                    color: Star.star,
                   ),
                 ),
                 Text(
                   'Fokus selesaikan 1 checklist tiap hari. Tubuh berotot dan tabungan terbentuk dari kebiasaan kecil yang konsisten.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: Star.ink,
                     height: 1.35,

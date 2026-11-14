@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import '../store.dart';
 import '../widgets.dart';
 import 'todo_page.dart';
+import '../theme.dart';
 
 class StudyPage extends StatefulWidget {
   const StudyPage({super.key});
@@ -129,12 +130,12 @@ class _StudyPageState extends State<StudyPage> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: Star.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text(
           'Hapus mata pelajaran?',
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 16,
             fontWeight: FontWeight.w700,
             color: TodoPal.ink,
@@ -143,7 +144,7 @@ class _StudyPageState extends State<StudyPage> {
         content: Text(
           'Riwayat sesi "${s.name}" ikut dihapus. Tindakan ini tidak bisa dibatalkan.',
           style: const TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 12.5,
             height: 1.4,
             color: TodoPal.sec,
@@ -155,7 +156,7 @@ class _StudyPageState extends State<StudyPage> {
             child: const Text(
               'Batal',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12.5,
                 color: TodoPal.sec,
               ),
@@ -166,7 +167,7 @@ class _StudyPageState extends State<StudyPage> {
             child: const Text(
               'Hapus',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12.5,
                 fontWeight: FontWeight.w700,
                 color: TodoPal.coral,
@@ -234,7 +235,7 @@ class _StudyPageState extends State<StudyPage> {
                       child: Text(
                         'Mata pelajaran',
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.2,
@@ -252,19 +253,15 @@ class _StudyPageState extends State<StudyPage> {
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.add_rounded,
-                              size: 15,
-                              color: TodoPal.mintDeep,
-                            ),
+                            Icon(Icons.add_rounded, size: 15, color: Star.star),
                             SizedBox(width: 3),
                             Text(
                               'Tambah',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w700,
-                                color: TodoPal.mintDeep,
+                                color: Star.star,
                               ),
                             ),
                           ],
@@ -282,11 +279,7 @@ class _StudyPageState extends State<StudyPage> {
                       vertical: 24,
                       horizontal: 20,
                     ),
-                    decoration: BoxDecoration(
-                      color: TodoPal.card,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: TodoPal.hair),
-                    ),
+                    decoration: Neu.raised(r: 16, d: 5),
                     child: Column(
                       children: [
                         Container(
@@ -299,7 +292,7 @@ class _StudyPageState extends State<StudyPage> {
                           child: const Icon(
                             Icons.menu_book_rounded,
                             size: 24,
-                            color: TodoPal.mintDeep,
+                            color: Star.star,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -307,7 +300,7 @@ class _StudyPageState extends State<StudyPage> {
                           'Belum ada mata pelajaran.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             color: TodoPal.sec,
                           ),
@@ -317,7 +310,7 @@ class _StudyPageState extends State<StudyPage> {
                           'Tambahkan satu, lalu mulai sesi fokus 25 menit.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             color: TodoPal.ter,
                           ),
@@ -328,8 +321,8 @@ class _StudyPageState extends State<StudyPage> {
                           child: FilledButton.icon(
                             onPressed: _addSubject,
                             style: FilledButton.styleFrom(
-                              backgroundColor: TodoPal.mint,
-                              foregroundColor: Colors.white,
+                              backgroundColor: TodoPal.header,
+                              foregroundColor: Star.onAccent,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 14,
                               ),
@@ -337,7 +330,7 @@ class _StudyPageState extends State<StudyPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               textStyle: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -401,9 +394,10 @@ class _StudyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: TodoPal.header,
+      decoration: BoxDecoration(
+        color: Star.bg,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(26)),
+        boxShadow: Neu.shadows(d: 6),
       ),
       padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
       child: Column(
@@ -414,32 +408,32 @@ class _StudyHeader extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: .14),
+                  color: Star.ink.withValues(alpha: 0.07),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
                   Icons.school_rounded,
                   size: 16,
-                  color: Colors.white,
+                  color: Star.ink,
                 ),
               ),
               const SizedBox(width: 8),
               const Text(
                 'Study & fokus',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: Star.ink,
                 ),
               ),
               const Spacer(),
               Text(
                 '$sessionsToday sesi hari ini',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
-                  color: Colors.white70,
+                  color: Star.mut,
                 ),
               ),
             ],
@@ -455,9 +449,9 @@ class _StudyHeader extends StatelessWidget {
                     const Text(
                       'Minggu ini',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12,
-                        color: Colors.white70,
+                        color: Star.mut,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -468,12 +462,12 @@ class _StudyHeader extends StatelessWidget {
                         _dur(minutes),
                         maxLines: 1,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 30,
                           height: 1.06,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.7,
-                          color: Colors.white,
+                          color: Star.ink,
                         ),
                       ),
                     ),
@@ -483,9 +477,9 @@ class _StudyHeader extends StatelessWidget {
                           ? 'Belum ada target mingguan'
                           : 'Target ${_dur(target)}',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
-                        color: Colors.white70,
+                        color: Star.mut,
                       ),
                     ),
                   ],
@@ -505,18 +499,16 @@ class _StudyHeader extends StatelessWidget {
                         value: progress,
                         strokeWidth: 5,
                         backgroundColor: Colors.white24,
-                        valueColor: const AlwaysStoppedAnimation(
-                          Color(0xff7FD1BB),
-                        ),
+                        valueColor: const AlwaysStoppedAnimation(Star.success),
                       ),
                     ),
                     Text(
                       '${(progress * 100).round()}%',
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: Star.ink,
                       ),
                     ),
                   ],
@@ -563,26 +555,18 @@ class _FocusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-      decoration: BoxDecoration(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.raised(r: 18, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.timer_outlined,
-                size: 16,
-                color: TodoPal.mintDeep,
-              ),
+              const Icon(Icons.timer_outlined, size: 16, color: Star.star),
               const SizedBox(width: 6),
               const Text(
                 'Sesi fokus',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12.5,
                   fontWeight: FontWeight.w700,
                   color: TodoPal.ink,
@@ -605,10 +589,10 @@ class _FocusCard extends StatelessWidget {
                     child: Text(
                       '$p',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: preset == p ? Colors.white : TodoPal.sec,
+                        color: preset == p ? Star.onAccent : TodoPal.sec,
                       ),
                     ),
                   ),
@@ -622,7 +606,7 @@ class _FocusCard extends StatelessWidget {
                 ? 'Sedang berjalan — fokus sampai selesai.'
                 : 'Pilih pelajaran, lalu mulai.',
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 11,
               color: TodoPal.ter,
             ),
@@ -635,13 +619,13 @@ class _FocusCard extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: onAddSubject,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: TodoPal.mintDeep,
+                  foregroundColor: Star.star,
                   side: const BorderSide(color: TodoPal.mintBorder),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   textStyle: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
@@ -677,10 +661,10 @@ class _FocusCard extends StatelessWidget {
                         s.name,
                         maxLines: 1,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11.5,
                           fontWeight: FontWeight.w600,
-                          color: on ? TodoPal.mintDeep : TodoPal.sec,
+                          color: on ? Star.star : TodoPal.sec,
                         ),
                       ),
                     ),
@@ -703,8 +687,10 @@ class _FocusCard extends StatelessWidget {
                       child: CircularProgressIndicator(
                         value: progress.clamp(0.0, 1.0),
                         strokeWidth: 5,
-                        backgroundColor: const Color(0xffEDE8DF),
-                        valueColor: const AlwaysStoppedAnimation(TodoPal.mint),
+                        backgroundColor: Paper.hair,
+                        valueColor: const AlwaysStoppedAnimation(
+                          TodoPal.header,
+                        ),
                       ),
                     ),
                     FittedBox(
@@ -712,7 +698,7 @@ class _FocusCard extends StatelessWidget {
                       child: Text(
                         timer,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.5,
@@ -736,13 +722,15 @@ class _FocusCard extends StatelessWidget {
                         style: FilledButton.styleFrom(
                           backgroundColor: running
                               ? TodoPal.field
-                              : TodoPal.mint,
-                          foregroundColor: running ? TodoPal.ink : Colors.white,
+                              : TodoPal.header,
+                          foregroundColor: running
+                              ? TodoPal.ink
+                              : Star.onAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           textStyle: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                           ),
@@ -759,7 +747,7 @@ class _FocusCard extends StatelessWidget {
                         style: TextButton.styleFrom(
                           foregroundColor: TodoPal.ter,
                           textStyle: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
                           ),
@@ -789,11 +777,7 @@ class _WeekChart extends StatelessWidget {
     final today = DateTime.now();
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -802,7 +786,7 @@ class _WeekChart extends StatelessWidget {
               const Text(
                 '7 hari terakhir',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12.5,
                   fontWeight: FontWeight.w700,
                   color: TodoPal.ink,
@@ -812,7 +796,7 @@ class _WeekChart extends StatelessWidget {
               Text(
                 total == 0 ? 'belum ada sesi' : '$total menit',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
                   color: TodoPal.ter,
                 ),
@@ -827,7 +811,7 @@ class _WeekChart extends StatelessWidget {
                 'Belum ada sesi tercatat. Mulai timer di atas, menitnya '
                 'otomatis masuk ke grafik ini.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   height: 1.4,
                   color: TodoPal.ter,
@@ -883,10 +867,10 @@ class _Bar extends StatelessWidget {
               '$value',
               maxLines: 1,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 9,
                 fontWeight: FontWeight.w600,
-                color: value == 0 ? TodoPal.ter : TodoPal.mintDeep,
+                color: value == 0 ? TodoPal.ter : Star.star,
               ),
             ),
           ),
@@ -908,7 +892,7 @@ class _Bar extends StatelessWidget {
                     height: h,
                     decoration: BoxDecoration(
                       color: value == 0
-                          ? const Color(0xffEDE8DF)
+                          ? Paper.hair
                           : (isToday ? TodoPal.header : TodoPal.mint),
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -924,7 +908,7 @@ class _Bar extends StatelessWidget {
               label,
               maxLines: 1,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 9,
                 fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
                 color: isToday ? TodoPal.ink : TodoPal.ter,
@@ -956,11 +940,7 @@ class _SubjectRow extends StatelessWidget {
     final p = (minutes / target).clamp(0.0, 1.0);
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 10, 6, 10),
-      decoration: BoxDecoration(
-        color: TodoPal.card,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: TodoPal.hair),
-      ),
+      decoration: Neu.raised(r: 14, d: 4),
       child: Row(
         children: [
           Container(
@@ -973,7 +953,7 @@ class _SubjectRow extends StatelessWidget {
             child: const Icon(
               Icons.menu_book_rounded,
               size: 17,
-              color: TodoPal.mintDeep,
+              color: Star.star,
             ),
           ),
           const SizedBox(width: 10),
@@ -986,7 +966,7 @@ class _SubjectRow extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: TodoPal.ink,
@@ -998,15 +978,15 @@ class _SubjectRow extends StatelessWidget {
                   child: LinearProgressIndicator(
                     value: p.toDouble(),
                     minHeight: 5,
-                    backgroundColor: const Color(0xffEDE8DF),
-                    valueColor: const AlwaysStoppedAnimation(TodoPal.mint),
+                    backgroundColor: Paper.hair,
+                    valueColor: const AlwaysStoppedAnimation(TodoPal.header),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '$minutes / $target menit minggu ini',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10,
                     color: TodoPal.ter,
                   ),
@@ -1027,10 +1007,10 @@ class _SubjectRow extends StatelessWidget {
               child: const Text(
                 '+15',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
-                  color: TodoPal.mintDeep,
+                  color: Star.star,
                 ),
               ),
             ),
@@ -1096,7 +1076,7 @@ class _SubjectSheetState extends State<_SubjectSheet> {
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Star.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
         padding: const EdgeInsets.fromLTRB(18, 12, 18, 18),
@@ -1111,7 +1091,7 @@ class _SubjectSheetState extends State<_SubjectSheet> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: const Color(0xffD9D2C6),
+                    color: Paper.hair,
                     borderRadius: BorderRadius.circular(999),
                   ),
                 ),
@@ -1120,7 +1100,7 @@ class _SubjectSheetState extends State<_SubjectSheet> {
               const Text(
                 'Mata pelajaran baru',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.3,
@@ -1131,7 +1111,7 @@ class _SubjectSheetState extends State<_SubjectSheet> {
               const Text(
                 'Beri nama aktivitas belajar dan target mingguan.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   color: TodoPal.sec,
                 ),
@@ -1143,14 +1123,14 @@ class _SubjectSheetState extends State<_SubjectSheet> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _save(),
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: TodoPal.ink,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Mis. Matematika, Bahasa Inggris, Ngoding',
-                  hintStyle: const TextStyle(color: Color(0xffA9A296)),
+                  hintStyle: const TextStyle(color: Star.mut),
                   filled: true,
                   fillColor: TodoPal.field,
                   contentPadding: const EdgeInsets.symmetric(
@@ -1174,7 +1154,7 @@ class _SubjectSheetState extends State<_SubjectSheet> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: const BorderSide(
-                      color: TodoPal.mint,
+                      color: TodoPal.header,
                       width: 1.5,
                     ),
                   ),
@@ -1184,7 +1164,7 @@ class _SubjectSheetState extends State<_SubjectSheet> {
               const Text(
                 'Target per minggu',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: TodoPal.ter,
@@ -1218,11 +1198,11 @@ class _SubjectSheetState extends State<_SubjectSheet> {
                         child: Text(
                           _labels[i],
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: _targetMin == _targets[i]
-                                ? Colors.white
+                                ? Star.onAccent
                                 : TodoPal.sec,
                           ),
                         ),
@@ -1237,13 +1217,13 @@ class _SubjectSheetState extends State<_SubjectSheet> {
                 child: FilledButton(
                   onPressed: _save,
                   style: FilledButton.styleFrom(
-                    backgroundColor: TodoPal.mint,
-                    foregroundColor: Colors.white,
+                    backgroundColor: TodoPal.header,
+                    foregroundColor: Star.onAccent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13),
                     ),
                     textStyle: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w700,
                     ),

@@ -11,7 +11,7 @@ import 'notif_settings_sheet.dart';
 
 /// Legenda skala BMI (dipakai di Wrap agar tidak ada "·" menggantung).
 const TextStyle _bmiLegend = TextStyle(
-  fontFamily: 'Inter',
+  fontFamily: 'Manrope',
   fontSize: 10.5,
   height: 1.35,
   color: Star.faint,
@@ -90,11 +90,7 @@ class ProfilePage extends StatelessWidget {
   Widget _buildUserHeroCard(AppState st, int currentLvl, int xpInLvl) {
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         children: [
           Row(
@@ -120,7 +116,7 @@ class ProfilePage extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 21,
                         height: 1.2,
                         letterSpacing: -0.5,
@@ -134,7 +130,7 @@ class ProfilePage extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Star.mut,
@@ -152,7 +148,7 @@ class ProfilePage extends StatelessWidget {
                         Text(
                           '${st.streak} hari beruntun',
                           style: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 12.5,
                             fontWeight: FontWeight.w500,
                             color: Star.mut,
@@ -177,7 +173,7 @@ class ProfilePage extends StatelessWidget {
                   Text(
                     'Menuju Level ${currentLvl + 1}',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w400,
                       color: Star.mut,
@@ -186,7 +182,7 @@ class ProfilePage extends StatelessWidget {
                   Text(
                     '$xpInLvl / ${st.targetXpInLevel} XP',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
                       color: Star.ink,
@@ -254,11 +250,7 @@ class ProfilePage extends StatelessWidget {
   }) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 14, d: 4),
       child: Row(
         children: [
           Container(
@@ -279,7 +271,7 @@ class ProfilePage extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     color: Star.mut,
                   ),
@@ -289,7 +281,7 @@ class ProfilePage extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -309,18 +301,7 @@ class ProfilePage extends StatelessWidget {
   Widget _buildWeeklyActivityChart() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xff004E71).withValues(alpha: 0.04),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -334,7 +315,7 @@ class ProfilePage extends StatelessWidget {
                   Text(
                     'Aktivitas 7 Hari Terakhir',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -345,7 +326,7 @@ class ProfilePage extends StatelessWidget {
               Text(
                 'Target 100%',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   fontWeight: FontWeight.w600,
                   color: Star.faint,
@@ -381,7 +362,7 @@ class ProfilePage extends StatelessWidget {
                           return Text(
                             days[i],
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10.5,
                               color: Star.mut,
                             ),
@@ -408,9 +389,9 @@ class ProfilePage extends StatelessWidget {
                   _bar(1, 100, Star.star),
                   _bar(2, 85, Star.nebula),
                   _bar(3, 95, Star.star),
-                  _bar(4, 100, const Color(0xff009E8F)),
+                  _bar(4, 100, Star.star),
                   _bar(5, 75, Star.nebula),
-                  _bar(6, 100, const Color(0xffE5A910)),
+                  _bar(6, 100, Star.star),
                 ],
               ),
             ),
@@ -540,18 +521,7 @@ class ProfilePage extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xff004E71).withValues(alpha: 0.04),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -565,7 +535,7 @@ class ProfilePage extends StatelessWidget {
                   Text(
                     'Pencapaian',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -576,7 +546,7 @@ class ProfilePage extends StatelessWidget {
               Text(
                 '$unlockedCount/${achievements.length} terbuka',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10.5,
                   fontWeight: FontWeight.w600,
                   color: Star.faint,
@@ -654,7 +624,7 @@ class ProfilePage extends StatelessWidget {
                     child: Text(
                       ach.xp,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 8.5,
                         fontWeight: FontWeight.w700,
                         color: Star.star,
@@ -669,7 +639,7 @@ class ProfilePage extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: ach.isUnlocked ? Star.ink : Star.faint,
@@ -691,7 +661,7 @@ class ProfilePage extends StatelessWidget {
             Text(
               ach.isUnlocked ? 'Selesai' : ach.progressText,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 9.5,
                 fontWeight: FontWeight.w700,
                 color: ach.isUnlocked ? Star.star : Star.mut,
@@ -734,7 +704,7 @@ class ProfilePage extends StatelessWidget {
             Text(
               ach.title,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: Star.ink,
@@ -745,7 +715,7 @@ class ProfilePage extends StatelessWidget {
               ach.desc,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 13,
                 color: Star.mut,
               ),
@@ -754,16 +724,16 @@ class ProfilePage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               decoration: BoxDecoration(
-                color: ach.isUnlocked ? const Color(0xffFFF2CC) : Star.sunken,
+                color: ach.isUnlocked ? Paper.amberInk : Star.sunken,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 ach.isUnlocked ? 'Lencana Terbuka • ${ach.xp}' : 'Terkunci',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: ach.isUnlocked ? const Color(0xffA67C00) : Star.mut,
+                  color: ach.isUnlocked ? Star.star : Star.mut,
                 ),
               ),
             ),
@@ -792,140 +762,136 @@ class ProfilePage extends StatelessWidget {
   // -------------------------------------------------------------
   Widget _buildSettingsQuickSection(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Star.lineSoft),
-      ),
-      child: Column(
-        children: [
-          ListTile(
-            leading: const Icon(
-              Icons.notifications_active_rounded,
-              color: Star.star,
-            ),
-            title: const Text(
-              'Notifikasi',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5),
-            ),
-            subtitle: Text(
-              '${TodoNotif.ready && TodoNotif.granted ? 'Aktif' : 'Belum diizinkan'} · '
-              'nada: ${AppState.I.notifSoundLabel} · sisa ${AppState.I.notifSound == 'sistem' ? 'bawaan HP' : 'pilihanmu'}',
-              style: const TextStyle(fontSize: 11),
-            ),
-            trailing: const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: Star.faint,
-            ),
-            onTap: () => showNotifSettingsSheet(context),
-          ),
-          const Divider(height: 1, color: Star.sunken),
-          ListTile(
-            leading: const Icon(Icons.save_alt_rounded, color: Star.star),
-            title: const Text(
-              'Ekspor Data (JSON)',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
-            ),
-            subtitle: const Text(
-              'Simpan salinan seluruh data ke file — wajib sebelum install ulang',
-              style: TextStyle(fontSize: 11),
-            ),
-            trailing: const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: Star.faint,
-            ),
-            onTap: () => _exportData(context),
-          ),
-          const Divider(height: 1, color: Star.sunken),
-          ListTile(
-            leading: const Icon(Icons.file_open_rounded, color: Star.star),
-            title: const Text(
-              'Impor Data (JSON)',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
-            ),
-            subtitle: const Text(
-              'Gabung atau timpa dari file cadangan (data sekarang dicadangkan dulu)',
-              style: TextStyle(fontSize: 11),
-            ),
-            trailing: const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: Star.faint,
-            ),
-            onTap: () => _importData(context),
-          ),
-          const Divider(height: 1, color: Star.sunken),
-          ListTile(
-            title: const Text(
-              'Reset Data Workout',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
-            ),
-            subtitle: const Text(
-              'Hapus centang latihan hari ini (kuota XP menunggu reset 00.00)',
-              style: TextStyle(fontSize: 11),
-            ),
-            trailing: const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: Star.faint,
-            ),
-            onTap: () {
-              AppState.I.resetWorkout();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'Centang latihan hari ini telah dihapus — bonus XP tidak bisa diklaim ulang sampai 00.00',
-                  ),
-                ),
-              );
-            },
-          ),
-          const Divider(height: 1, color: Star.sunken),
-          ListTile(
-            leading: const Icon(
-              Icons.restart_alt_rounded,
-              color: Color(0xffDC2626),
-            ),
-            title: const Text(
-              'Mulai Ulang Program (Reset Total)',
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 13.5,
-                color: Color(0xffDC2626),
+      decoration: Neu.raised(r: 18, d: 5),
+      child: Material(
+        type: MaterialType.transparency,
+        child: Column(
+          children: [
+            ListTile(
+              leading: const Icon(
+                Icons.notifications_active_rounded,
+                color: Star.star,
               ),
+              title: const Text(
+                'Notifikasi',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5),
+              ),
+              subtitle: Text(
+                '${TodoNotif.ready && TodoNotif.granted ? 'Aktif' : 'Belum diizinkan'} · '
+                'nada: ${AppState.I.notifSoundLabel} · sisa ${AppState.I.notifSound == 'sistem' ? 'bawaan HP' : 'pilihanmu'}',
+                style: const TextStyle(fontSize: 11),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: Star.faint,
+              ),
+              onTap: () => showNotifSettingsSheet(context),
             ),
-            subtitle: const Text(
-              'Reset level, XP, centang makan, dan seluruh data ke awal',
-              style: TextStyle(fontSize: 11),
+            const Divider(height: 1, color: Star.sunken),
+            ListTile(
+              leading: const Icon(Icons.save_alt_rounded, color: Star.star),
+              title: const Text(
+                'Ekspor Data (JSON)',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+              ),
+              subtitle: const Text(
+                'Simpan salinan seluruh data ke file — wajib sebelum install ulang',
+                style: TextStyle(fontSize: 11),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: Star.faint,
+              ),
+              onTap: () => _exportData(context),
             ),
-            trailing: const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: Color(0xffDC2626),
+            const Divider(height: 1, color: Star.sunken),
+            ListTile(
+              leading: const Icon(Icons.file_open_rounded, color: Star.star),
+              title: const Text(
+                'Impor Data (JSON)',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+              ),
+              subtitle: const Text(
+                'Gabung atau timpa dari file cadangan (data sekarang dicadangkan dulu)',
+                style: TextStyle(fontSize: 11),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: Star.faint,
+              ),
+              onTap: () => _importData(context),
             ),
-            onTap: () => _showResetConfirmationDialog(context),
-          ),
-          const Divider(height: 1, color: Star.sunken),
-          ListTile(
-            leading: const Icon(Icons.info_outline_rounded, color: Star.star),
-            title: const Text(
-              'Tentang SELF VOLTA',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+            const Divider(height: 1, color: Star.sunken),
+            ListTile(
+              title: const Text(
+                'Reset Data Workout',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+              ),
+              subtitle: const Text(
+                'Hapus centang latihan hari ini (kuota XP menunggu reset 00.00)',
+                style: TextStyle(fontSize: 11),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: Star.faint,
+              ),
+              onTap: () {
+                AppState.I.resetWorkout();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Centang latihan hari ini telah dihapus — bonus XP tidak bisa diklaim ulang sampai 00.00',
+                    ),
+                  ),
+                );
+              },
             ),
-            subtitle: Text(
-              'Versi $APP_VERSION • Offline First & Aman Privasi',
-              style: const TextStyle(fontSize: 11),
+            const Divider(height: 1, color: Star.sunken),
+            ListTile(
+              leading: const Icon(Icons.restart_alt_rounded, color: Star.error),
+              title: const Text(
+                'Mulai Ulang Program (Reset Total)',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.5,
+                  color: Star.error,
+                ),
+              ),
+              subtitle: const Text(
+                'Reset level, XP, centang makan, dan seluruh data ke awal',
+                style: TextStyle(fontSize: 11),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: Star.error,
+              ),
+              onTap: () => _showResetConfirmationDialog(context),
             ),
-            trailing: const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: Star.faint,
+            const Divider(height: 1, color: Star.sunken),
+            ListTile(
+              leading: const Icon(Icons.info_outline_rounded, color: Star.star),
+              title: const Text(
+                'Tentang SELF VOLTA',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+              ),
+              subtitle: Text(
+                'Versi $APP_VERSION • Offline First & Aman Privasi',
+                style: const TextStyle(fontSize: 11),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                size: 20,
+                color: Star.faint,
+              ),
+              onTap: () {},
             ),
-            onTap: () {},
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1003,7 +969,7 @@ class ProfilePage extends StatelessWidget {
               child: Text(
                 'Pulihkan dari file ini?',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
                 ),
@@ -1019,7 +985,7 @@ class ProfilePage extends StatelessWidget {
               Text(
                 summary.description,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 12.5,
                   height: 1.45,
                   fontWeight: FontWeight.w600,
@@ -1045,7 +1011,7 @@ class ProfilePage extends StatelessWidget {
                 'Data sekarang otomatis disalin ke cadangan internal '
                 '(sv_v1_bak) sebelum proses, jadi masih bisa dikembalikan.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   height: 1.4,
                   color: Star.mut,
@@ -1075,7 +1041,7 @@ class ProfilePage extends StatelessWidget {
             child: const Text(
               'Gabung',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -1091,7 +1057,7 @@ class ProfilePage extends StatelessWidget {
             child: const Text(
               'Timpa',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -1147,7 +1113,7 @@ class ProfilePage extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 12.5,
                 ),
@@ -1156,7 +1122,7 @@ class ProfilePage extends StatelessWidget {
               Text(
                 body,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   height: 1.4,
                   color: Star.mut,
@@ -1177,16 +1143,12 @@ class ProfilePage extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
-            Icon(
-              Icons.warning_amber_rounded,
-              color: Color(0xffDC2626),
-              size: 24,
-            ),
+            Icon(Icons.warning_amber_rounded, color: Star.error, size: 24),
             SizedBox(width: 8),
             Text(
               'Reset Total Program?',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
               ),
@@ -1196,7 +1158,7 @@ class ProfilePage extends StatelessWidget {
         content: const Text(
           'Tindakan ini akan mengembalikan level, XP, riwayat centang makan/workout, dan catatan keuangan ke kondisi awal (Fresh Start).\n\nApakah Anda yakin ingin memulai ulang program dari nol?',
           textAlign: TextAlign.justify,
-          style: TextStyle(fontFamily: 'Inter', fontSize: 12.5, height: 1.45),
+          style: TextStyle(fontFamily: 'Manrope', fontSize: 12.5, height: 1.45),
         ),
         actions: [
           TextButton(
@@ -1217,14 +1179,14 @@ class ProfilePage extends StatelessWidget {
                     content: Text(
                       'Seluruh data program dan XP telah berhasil direset ke awal.',
                     ),
-                    backgroundColor: Color(0xffDC2626),
+                    backgroundColor: Star.error,
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
               }
             },
             style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xffDC2626),
+              backgroundColor: Star.error,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -1232,7 +1194,7 @@ class ProfilePage extends StatelessWidget {
             child: const Text(
               'Ya, Reset Total',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -1251,13 +1213,13 @@ class ProfilePage extends StatelessWidget {
 
     Color catColor;
     if (bmi < 18.5) {
-      catColor = const Color(0xff0284C7);
+      catColor = Star.star;
     } else if (bmi < 23.0) {
-      catColor = const Color(0xff16A34A);
+      catColor = Star.success;
     } else if (bmi < 25.0) {
-      catColor = const Color(0xffD97706);
+      catColor = Star.star;
     } else {
-      catColor = const Color(0xffDC2626);
+      catColor = Star.error;
     }
 
     final double spectrumRatio = ((bmi - 14.0) / (30.0 - 14.0)).clamp(
@@ -1267,11 +1229,7 @@ class ProfilePage extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1302,7 +1260,7 @@ class ProfilePage extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               letterSpacing: -0.2,
@@ -1314,7 +1272,7 @@ class ProfilePage extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               color: Star.mut,
                             ),
@@ -1346,7 +1304,7 @@ class ProfilePage extends StatelessWidget {
                   child: const Text(
                     'Ubah',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
                       color: Star.star,
@@ -1364,7 +1322,7 @@ class ProfilePage extends StatelessWidget {
               Text(
                 bmi.toStringAsFixed(1),
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 34,
                   height: 1.0,
                   fontWeight: FontWeight.w700,
@@ -1378,7 +1336,7 @@ class ProfilePage extends StatelessWidget {
                 child: Text(
                   'kg/m²',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w500,
                     color: Star.mut,
@@ -1392,7 +1350,7 @@ class ProfilePage extends StatelessWidget {
                   Text(
                     '${st.weightKg.toStringAsFixed(0)} kg · ${st.heightCm.toStringAsFixed(0)} cm',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
                       color: Star.ink,
@@ -1401,7 +1359,7 @@ class ProfilePage extends StatelessWidget {
                   Text(
                     cat,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: catColor,
@@ -1488,7 +1446,7 @@ class ProfilePage extends StatelessWidget {
                       Text(
                         'Target BB ideal: ${st.minIdealWeight.toStringAsFixed(1)} – ${st.maxIdealWeight.toStringAsFixed(1)} kg',
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
                           color: Star.ink,
@@ -1498,7 +1456,7 @@ class ProfilePage extends StatelessWidget {
                       Text(
                         st.bmiRecommendation,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12,
                           color: Star.mut,
                           height: 1.35,
@@ -1523,18 +1481,14 @@ class ProfilePage extends StatelessWidget {
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: Star.bg,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 14, d: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 13.5,
               fontWeight: FontWeight.w700,
               color: Star.ink,
@@ -1555,7 +1509,7 @@ class ProfilePage extends StatelessWidget {
                   valueStr,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -1586,24 +1540,20 @@ class ProfilePage extends StatelessWidget {
     if (st.fitnessGoal == 'muscle_gain') {
       goalTitle = 'Surplus Bersih Hypertrophy (+300 kkal)';
       goalBadge = 'Bulking Otot';
-      goalColor = const Color(0xff0D9488);
+      goalColor = Star.star;
     } else if (st.fitnessGoal == 'fat_loss') {
       goalTitle = 'Defisit Cutting Aman (-350 kkal)';
       goalBadge = 'Bakar Lemak';
-      goalColor = const Color(0xffEA580C);
+      goalColor = Star.star;
     } else {
       goalTitle = 'Pemeliharaan Seimbang (TDEE)';
       goalBadge = 'Maintenance';
-      goalColor = const Color(0xff0284C7);
+      goalColor = Star.star;
     }
 
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Star.lineSoft),
-      ),
+      decoration: Neu.raised(r: 18, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1636,7 +1586,7 @@ class ProfilePage extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 13.5,
                               fontWeight: FontWeight.w700,
                               color: Star.ink,
@@ -1647,7 +1597,7 @@ class ProfilePage extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10.5,
                               color: Star.mut,
                             ),
@@ -1679,7 +1629,7 @@ class ProfilePage extends StatelessWidget {
                   child: const Text(
                     'Atur',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
                       color: Star.star,
@@ -1713,7 +1663,7 @@ class ProfilePage extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               letterSpacing: 0,
                               fontWeight: FontWeight.w500,
@@ -1731,7 +1681,7 @@ class ProfilePage extends StatelessWidget {
                                 Text(
                                   '${st.dailyCalories}',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 30,
                                     height: 1.05,
                                     letterSpacing: -0.8,
@@ -1743,7 +1693,7 @@ class ProfilePage extends StatelessWidget {
                                 const Text(
                                   'kkal / hari',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 12.5,
                                     fontWeight: FontWeight.w500,
                                     color: Star.mut,
@@ -1770,7 +1720,7 @@ class ProfilePage extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: goalColor,
@@ -1783,7 +1733,7 @@ class ProfilePage extends StatelessWidget {
                 Text(
                   goalTitle,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w400,
                     color: Star.mut,
@@ -1805,7 +1755,7 @@ class ProfilePage extends StatelessWidget {
                             child: Text(
                               'BMR: ${st.bmr} kkal',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w500,
                                 color: Star.ink,
@@ -1830,7 +1780,7 @@ class ProfilePage extends StatelessWidget {
                             child: Text(
                               'TDEE: ${st.tdee} kkal',
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w500,
                                 color: Star.ink,
@@ -1901,11 +1851,7 @@ class ProfilePage extends StatelessWidget {
           // ACUAN RESMI 1 KALI MAKAN (Sesuai Permintaan User)
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Star.surface2,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Star.lineSoft),
-            ),
+            decoration: Neu.raised(r: 14, d: 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1923,7 +1869,7 @@ class ProfilePage extends StatelessWidget {
                         'Acuan 1 Kali Makan (3x Sehari)',
                         maxLines: 2,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           color: Star.ink,
@@ -1957,7 +1903,7 @@ class ProfilePage extends StatelessWidget {
                 const Text(
                   'Acuan ini otomatis disinkronkan ke Planning Makan saat Anda meracik menu kustom, lengkap dengan notice interaktif apakah protein Anda sudah cukup atau masih kurang.',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     color: Star.mut,
                     height: 1.35,
@@ -1984,7 +1930,7 @@ class ProfilePage extends StatelessWidget {
           Text(
             label,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 9.5,
               color: Star.mut,
               fontWeight: FontWeight.w600,
@@ -1994,7 +1940,7 @@ class ProfilePage extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12,
               fontWeight: FontWeight.w700,
               color: color,
@@ -2038,7 +1984,7 @@ class ProfilePage extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     color: Star.mut,
                     fontWeight: FontWeight.w500,
@@ -2049,7 +1995,7 @@ class ProfilePage extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: Star.ink,
@@ -2064,7 +2010,7 @@ class ProfilePage extends StatelessWidget {
                     subStr,
                     maxLines: 1,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       color: Star.mut,
                     ),
@@ -2171,7 +2117,7 @@ class ProfilePage extends StatelessWidget {
                     const Text(
                       'Parameter Fisik & Target Asupan Gizi',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 16.5,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -2181,7 +2127,7 @@ class ProfilePage extends StatelessWidget {
                     const Text(
                       'Data ini digunakan untuk menghitung BMR, TDEE, serta acuan nutrisi saat meracik menu di Planning Makan.',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         color: Star.mut,
                       ),
@@ -2191,14 +2137,7 @@ class ProfilePage extends StatelessWidget {
                     // LIVE PREVIEW HUB
                     Container(
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xff0D9488).withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: const Color(0xff0D9488)
-                              .withValues(alpha: 0.25),
-                        ),
-                      ),
+                      decoration: Neu.well(r: 16),
                       child: Column(
                         children: [
                           Row(
@@ -2209,7 +2148,7 @@ class ProfilePage extends StatelessWidget {
                                   const Text(
                                     'Target Kalori',
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10,
                                       color: Star.mut,
                                     ),
@@ -2217,10 +2156,10 @@ class ProfilePage extends StatelessWidget {
                                   Text(
                                     '$prevCal kkal',
                                     style: const TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff0D9488),
+                                      color: Star.star,
                                     ),
                                   ),
                                 ],
@@ -2228,15 +2167,14 @@ class ProfilePage extends StatelessWidget {
                               Container(
                                 width: 1,
                                 height: 26,
-                                color: const Color(0xff0D9488)
-                                    .withValues(alpha: 0.2),
+                                color: Star.star.withValues(alpha: 0.2),
                               ),
                               Column(
                                 children: [
                                   const Text(
                                     'Target Protein',
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10,
                                       color: Star.mut,
                                     ),
@@ -2244,10 +2182,10 @@ class ProfilePage extends StatelessWidget {
                                   Text(
                                     '${prevPro}g / hari',
                                     style: const TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff0D9488),
+                                      color: Star.star,
                                     ),
                                   ),
                                 ],
@@ -2255,15 +2193,14 @@ class ProfilePage extends StatelessWidget {
                               Container(
                                 width: 1,
                                 height: 26,
-                                color: const Color(0xff0D9488)
-                                    .withValues(alpha: 0.2),
+                                color: Star.star.withValues(alpha: 0.2),
                               ),
                               Column(
                                 children: [
                                   const Text(
                                     '1x Makan',
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10,
                                       color: Star.mut,
                                     ),
@@ -2271,10 +2208,10 @@ class ProfilePage extends StatelessWidget {
                                   Text(
                                     '${prevMealPro}g / ${prevMealCal}k',
                                     style: const TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff0D9488),
+                                      color: Star.star,
                                     ),
                                   ),
                                 ],
@@ -2285,7 +2222,7 @@ class ProfilePage extends StatelessWidget {
                           Text(
                             'BMI: ${previewBmi.toStringAsFixed(1)} • BMR: $prevBmr kkal • TDEE: $prevTdee kkal',
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 10.5,
                               color: Star.mut,
                               fontWeight: FontWeight.w600,
@@ -2355,7 +2292,7 @@ class ProfilePage extends StatelessWidget {
                     const Text(
                       'Jenis Kelamin:',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -2368,10 +2305,10 @@ class ProfilePage extends StatelessWidget {
                           child: ChoiceChip(
                             label: const Center(child: Text('♂ Pria')),
                             selected: tempGender == 'pria',
-                            selectedColor: const Color(0xff0284C7),
+                            selectedColor: Star.star,
                             labelStyle: TextStyle(
                               color: tempGender == 'pria'
-                                  ? Colors.white
+                                  ? Star.onAccent
                                   : Star.ink,
                               fontWeight: FontWeight.w700,
                             ),
@@ -2385,10 +2322,10 @@ class ProfilePage extends StatelessWidget {
                           child: ChoiceChip(
                             label: const Center(child: Text('♀ Wanita')),
                             selected: tempGender == 'wanita',
-                            selectedColor: const Color(0xffEC4899),
+                            selectedColor: Star.star,
                             labelStyle: TextStyle(
                               color: tempGender == 'wanita'
-                                  ? Colors.white
+                                  ? Star.onAccent
                                   : Star.ink,
                               fontWeight: FontWeight.w700,
                             ),
@@ -2407,7 +2344,7 @@ class ProfilePage extends StatelessWidget {
                     const Text(
                       'Tingkat Aktivitas Harian:',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -2420,10 +2357,10 @@ class ProfilePage extends StatelessWidget {
                         ChoiceChip(
                           label: const Text('Santai (Sedentary 1.2x)'),
                           selected: tempActivity == 'sedentary',
-                          selectedColor: const Color(0xff0D9488),
+                          selectedColor: Star.star,
                           labelStyle: TextStyle(
                             color: tempActivity == 'sedentary'
-                                ? Colors.white
+                                ? Star.onAccent
                                 : Star.ink,
                             fontSize: 11,
                           ),
@@ -2436,10 +2373,10 @@ class ProfilePage extends StatelessWidget {
                         ChoiceChip(
                           label: const Text('Rutin Kalistenik 3-4x (1.375x)'),
                           selected: tempActivity == 'moderate',
-                          selectedColor: const Color(0xff0D9488),
+                          selectedColor: Star.star,
                           labelStyle: TextStyle(
                             color: tempActivity == 'moderate'
-                                ? Colors.white
+                                ? Star.onAccent
                                 : Star.ink,
                             fontSize: 11,
                           ),
@@ -2452,10 +2389,10 @@ class ProfilePage extends StatelessWidget {
                         ChoiceChip(
                           label: const Text('Sangat Aktif / Atlet (1.55x)'),
                           selected: tempActivity == 'active',
-                          selectedColor: const Color(0xff0D9488),
+                          selectedColor: Star.star,
                           labelStyle: TextStyle(
                             color: tempActivity == 'active'
-                                ? Colors.white
+                                ? Star.onAccent
                                 : Star.ink,
                             fontSize: 11,
                           ),
@@ -2473,7 +2410,7 @@ class ProfilePage extends StatelessWidget {
                     const Text(
                       'Target Kebugaran / Goal:',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: Star.ink,
@@ -2484,12 +2421,12 @@ class ProfilePage extends StatelessWidget {
                       spacing: 8,
                       children: [
                         ChoiceChip(
-                          label: const Text('💪 Bentuk Otot (+300 kkal)'),
+                          label: const Text('Bentuk Otot (+300 kkal)'),
                           selected: tempGoal == 'muscle_gain',
-                          selectedColor: const Color(0xff0D9488),
+                          selectedColor: Star.star,
                           labelStyle: TextStyle(
                             color: tempGoal == 'muscle_gain'
-                                ? Colors.white
+                                ? Star.onAccent
                                 : Star.ink,
                             fontSize: 11,
                           ),
@@ -2500,12 +2437,12 @@ class ProfilePage extends StatelessWidget {
                           },
                         ),
                         ChoiceChip(
-                          label: const Text('🔥 Bakar Lemak (-350 kkal)'),
+                          label: const Text('Bakar Lemak (-350 kkal)'),
                           selected: tempGoal == 'fat_loss',
-                          selectedColor: const Color(0xffEA580C),
+                          selectedColor: Star.star,
                           labelStyle: TextStyle(
                             color: tempGoal == 'fat_loss'
-                                ? Colors.white
+                                ? Star.onAccent
                                 : Star.ink,
                             fontSize: 11,
                           ),
@@ -2514,12 +2451,12 @@ class ProfilePage extends StatelessWidget {
                           },
                         ),
                         ChoiceChip(
-                          label: const Text('⚡ Jaga Berat / Performa'),
+                          label: const Text('Jaga Berat / Performa'),
                           selected: tempGoal == 'maintenance',
-                          selectedColor: const Color(0xff0284C7),
+                          selectedColor: Star.star,
                           labelStyle: TextStyle(
                             color: tempGoal == 'maintenance'
-                                ? Colors.white
+                                ? Star.onAccent
                                 : Star.ink,
                             fontSize: 11,
                           ),
@@ -2536,17 +2473,13 @@ class ProfilePage extends StatelessWidget {
                     // Dynamic Asupan Notice Box (Insight Kebutuhan Gizi & Choice Meal)
                     Container(
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFFFBEB),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: const Color(0xffFDE68A)),
-                      ),
+                      decoration: Neu.well(r: 14),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Icon(
                             Icons.lightbulb_rounded,
-                            color: Color(0xffD97706),
+                            color: Star.star,
                             size: 18,
                           ),
                           const SizedBox(width: 8),
@@ -2557,20 +2490,20 @@ class ProfilePage extends StatelessWidget {
                                 const Text(
                                   'Insight Asupan Harian Kamu:',
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xff92400E),
+                                    color: Paper.amberInk,
                                   ),
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
                                   '“OHH TERNYATA AKU BUTUH PROTEIN \${prevPro}g & \${prevCal} kkal! Satu porsi makan minimal butuh ~\${prevMealPro}g protein (misal: 2 butir telur + 50g tempe/ayam). Sekarang aku paham target nutrisiku!”',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xffB45309),
+                                    color: Star.star,
                                     height: 1.35,
                                   ),
                                 ),
@@ -2603,13 +2536,13 @@ class ProfilePage extends StatelessWidget {
                               content: Text(
                                 'Parameter gizi diperbarui! Target: $prevCal kkal • ${prevPro}g Protein (1x Makan: ~${prevMealPro}g)',
                               ),
-                              backgroundColor: const Color(0xff0D9488),
+                              backgroundColor: Star.star,
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
                         },
                         style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xff0D9488),
+                          backgroundColor: Star.star,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -2617,10 +2550,10 @@ class ProfilePage extends StatelessWidget {
                         child: const Text(
                           'Simpan Parameter Gizi & Biometrik',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: Star.onAccent,
                           ),
                         ),
                       ),

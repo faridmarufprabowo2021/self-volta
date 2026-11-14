@@ -90,9 +90,7 @@ class _HomeShellState extends State<HomeShell> {
               rec.recoveredFromBackup
                   ? Icons.restore_rounded
                   : Icons.report_problem_rounded,
-              color: rec.recoveredFromBackup
-                  ? const Color(0xffB45309)
-                  : Star.error,
+              color: rec.recoveredFromBackup ? Star.star : Star.error,
               size: 24,
             ),
             const SizedBox(width: 8),
@@ -100,7 +98,7 @@ class _HomeShellState extends State<HomeShell> {
               child: Text(
                 'Data sempat rusak',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
                 ),
@@ -120,7 +118,7 @@ class _HomeShellState extends State<HomeShell> {
                     'Segera pulihkan dari file cadangan terakhir lewat '
                     'Profil → Impor Data.',
           style: const TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 12.5,
             height: 1.45,
           ),
@@ -131,7 +129,7 @@ class _HomeShellState extends State<HomeShell> {
             child: const Text(
               'Mengerti',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -142,7 +140,7 @@ class _HomeShellState extends State<HomeShell> {
             label: const Text(
               'Ekspor sekarang',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -205,7 +203,7 @@ class _HomeShellState extends State<HomeShell> {
               'Tengah malam — progres latihan direset otomatis dan bonus XP harian terbuka lagi.',
             ),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Color(0xff0D9488),
+            backgroundColor: Star.star,
           ),
         );
     }
@@ -229,7 +227,7 @@ class _HomeShellState extends State<HomeShell> {
 
     ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
-        backgroundColor: const Color(0xffFBF9F5),
+        backgroundColor: Star.bg,
         surfaceTintColor: Colors.transparent,
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -237,7 +235,7 @@ class _HomeShellState extends State<HomeShell> {
             children: [
               const Icon(
                 Icons.notifications_active_rounded,
-                color: Color(0xff2E8B70),
+                color: Star.success,
                 size: 20,
               ),
               const SizedBox(width: 10),
@@ -248,10 +246,10 @@ class _HomeShellState extends State<HomeShell> {
                     const Text(
                       'Pengingat tugas',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff6f6a61),
+                        color: Star.mut,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -260,10 +258,10 @@ class _HomeShellState extends State<HomeShell> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13.5,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff1d1b16),
+                        color: Star.ink,
                       ),
                     ),
                   ],
@@ -287,7 +285,7 @@ class _HomeShellState extends State<HomeShell> {
                           : 'Tugas selesai',
                     ),
                     behavior: SnackBarBehavior.floating,
-                    backgroundColor: const Color(0xff2E8B70),
+                    backgroundColor: Star.success,
                   ),
                 );
               }
@@ -295,9 +293,9 @@ class _HomeShellState extends State<HomeShell> {
             child: const Text(
               'Selesai',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w700,
-                color: Color(0xff2E8B70),
+                color: Star.success,
               ),
             ),
           ),
@@ -315,7 +313,7 @@ class _HomeShellState extends State<HomeShell> {
             child: const Text(
               'Tunda 10 menit',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -368,7 +366,7 @@ class _HomeShellState extends State<HomeShell> {
         SnackBar(
           content: const Row(
             children: [
-              Icon(Icons.touch_app_rounded, color: Colors.white, size: 20),
+              Icon(Icons.touch_app_rounded, color: Star.star, size: 20),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -378,7 +376,7 @@ class _HomeShellState extends State<HomeShell> {
               ),
             ],
           ),
-          backgroundColor: Star.deepSpace,
+          backgroundColor: Star.surface2,
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 2),
           shape: RoundedRectangleBorder(
@@ -410,9 +408,6 @@ class _HomeShellState extends State<HomeShell> {
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: isPaperPage ? Paper.canvas : null,
-          shape: isPaperPage
-              ? const Border(bottom: BorderSide(color: Paper.hair, width: 1))
-              : null,
           leading: IconButton(
             icon: const Icon(Icons.menu_rounded),
             tooltip: 'Menu Utama',

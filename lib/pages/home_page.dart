@@ -16,14 +16,16 @@ import '../store.dart';
 import '../widgets.dart';
 import 'notif_settings_sheet.dart';
 import 'todo_page.dart';
+import '../theme.dart';
 
-const Color _canvas = Color(0xFFF8F9FA);
-const Color _card = Color(0xFFFFFFFF);
-const Color _border = Color(0xFFE8ECEF);
-const Color _navy = Color(0xFF143E48);
-const Color _slate = Color(0xFF6B7280);
-const Color _amber = Color(0xFFF5A623);
-const Color _amberDark = Color(0xFFB45309);
+const Color _canvas = Star.bg;
+const Color _card = Star.surface;
+const Color _border = Paper.hair;
+const Color _navy = Star.ink;
+const Color _navyFill = Star.star;
+const Color _slate = Star.mut;
+const Color _amber = Star.star;
+const Color _amberDark = Paper.amberInk;
 
 class HomePage extends StatefulWidget {
   final ValueChanged<String> onNavigate;
@@ -143,7 +145,7 @@ class _HomePageState extends State<HomePage> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 12,
             letterSpacing: 0.8,
             fontWeight: FontWeight.w600,
@@ -160,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 26,
                   height: 1.1,
                   fontWeight: FontWeight.w700,
@@ -177,18 +179,14 @@ class _HomePageState extends State<HomePage> {
                   horizontal: 10,
                   vertical: 5,
                 ),
-                decoration: BoxDecoration(
-                  color: _card,
-                  borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: _border),
-                ),
+                decoration: Neu.raised(r: 999, d: 6),
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
                     'Lv ${st.level} · ${st.xp} XP',
                     maxLines: 1,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: _slate,
@@ -229,10 +227,7 @@ class _HomePageState extends State<HomePage> {
 
         return Container(
           padding: const EdgeInsets.fromLTRB(18, 16, 18, 14),
-          decoration: BoxDecoration(
-            color: _navy,
-            borderRadius: BorderRadius.circular(16),
-          ),
+          decoration: Neu.raised(r: 26, d: 7),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -241,11 +236,11 @@ class _HomePageState extends State<HomePage> {
                   const Text(
                     'BERIKUTNYA',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11,
                       letterSpacing: 1.2,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white70,
+                      color: Star.mut,
                     ),
                   ),
                   const Spacer(),
@@ -264,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(
                       Icons.notifications_active_outlined,
                       size: 18,
-                      color: Colors.white70,
+                      color: Star.mut,
                     ),
                   ),
                   const SizedBox(width: 2),
@@ -279,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                           const Icon(
                             Icons.location_on_outlined,
                             size: 13,
-                            color: Colors.white70,
+                            color: Star.mut,
                           ),
                           const SizedBox(width: 3),
                           ConstrainedBox(
@@ -289,17 +284,17 @@ class _HomePageState extends State<HomePage> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                fontFamily: 'Inter',
+                                fontFamily: 'Manrope',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.white70,
+                                color: Star.mut,
                               ),
                             ),
                           ),
                           const Icon(
                             Icons.keyboard_arrow_down_rounded,
                             size: 15,
-                            color: Colors.white70,
+                            color: Star.mut,
                           ),
                         ],
                       ),
@@ -324,23 +319,23 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 next.name,
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 24,
                                   height: 1,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: -0.5,
-                                  color: Colors.white,
+                                  color: Star.ink,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 next.time,
                                 style: const TextStyle(
-                                  fontFamily: 'Inter',
+                                  fontFamily: 'Manrope',
                                   fontSize: 24,
                                   height: 1,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: Star.ink,
                                   fontFeatures: [FontFeature.tabularFigures()],
                                 ),
                               ),
@@ -355,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                           vertical: 5,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.12),
+                          color: Star.sunken,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: FittedBox(
@@ -364,10 +359,10 @@ class _HomePageState extends State<HomePage> {
                             remText,
                             maxLines: 1,
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                              color: Star.ink,
                               fontFeatures: [FontFeature.tabularFigures()],
                             ),
                           ),
@@ -378,15 +373,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               const SizedBox(height: 13),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  minHeight: 4,
-                  backgroundColor: Colors.white.withValues(alpha: 0.15),
-                  valueColor: const AlwaysStoppedAnimation<Color>(_amber),
-                ),
-              ),
+              GradBar(progress * 100, height: 7),
               const SizedBox(height: 14),
               Row(
                 children: [
@@ -420,10 +407,10 @@ class _HomePageState extends State<HomePage> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white.withValues(alpha: 0.72),
+                            color: Star.mut,
                             fontFeatures: const [FontFeature.tabularFigures()],
                           ),
                         ),
@@ -433,7 +420,7 @@ class _HomePageState extends State<HomePage> {
                             ? Icons.keyboard_arrow_up_rounded
                             : Icons.keyboard_arrow_down_rounded,
                         size: 16,
-                        color: Colors.white70,
+                        color: Star.mut,
                       ),
                     ],
                   ),
@@ -447,7 +434,7 @@ class _HomePageState extends State<HomePage> {
                     vertical: 9,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.08),
+                    color: Star.sunken,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
@@ -474,10 +461,9 @@ class _HomePageState extends State<HomePage> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 1.5),
       padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-      decoration: BoxDecoration(
-        color: active ? Colors.white : Colors.transparent,
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: active
+          ? Neu.well(r: 12)
+          : BoxDecoration(borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: [
           FittedBox(
@@ -486,10 +472,10 @@ class _HomePageState extends State<HomePage> {
               name,
               maxLines: 1,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
                 fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-                color: active ? _navy : Colors.white.withValues(alpha: 0.74),
+                color: active ? Star.star : Star.mut,
               ),
             ),
           ),
@@ -500,10 +486,10 @@ class _HomePageState extends State<HomePage> {
               time,
               maxLines: 1,
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 11.5,
                 fontWeight: FontWeight.w700,
-                color: active ? _navy : Colors.white.withValues(alpha: 0.92),
+                color: active ? Star.star : Star.ink,
                 fontFeatures: const [FontFeature.tabularFigures()],
               ),
             ),
@@ -520,19 +506,19 @@ class _HomePageState extends State<HomePage> {
           Text(
             label,
             style: TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10,
-              color: Colors.white.withValues(alpha: 0.68),
+              color: Star.mut,
             ),
           ),
           const SizedBox(height: 2),
           Text(
             time,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 12,
               fontWeight: FontWeight.w700,
-              color: Colors.white,
+              color: Star.ink,
               fontFeatures: [FontFeature.tabularFigures()],
             ),
           ),
@@ -552,11 +538,7 @@ class _HomePageState extends State<HomePage> {
     final ratio = total == 0 ? 0.0 : (done / total).clamp(0.0, 1.0);
     final nowMin = now.hour * 60 + now.minute;
     return Container(
-      decoration: BoxDecoration(
-        color: _card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _border),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -567,7 +549,7 @@ class _HomePageState extends State<HomePage> {
                 const Text(
                   'HARI INI',
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     letterSpacing: 0.8,
                     fontWeight: FontWeight.w700,
@@ -578,7 +560,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   '$done / $total',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: _navy,
@@ -620,7 +602,7 @@ class _HomePageState extends State<HomePage> {
             child: Text(
               'KEBIASAAN',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
                 letterSpacing: 0.7,
                 fontWeight: FontWeight.w600,
@@ -645,7 +627,7 @@ class _HomePageState extends State<HomePage> {
             child: Text(
               'TUGAS & TO-DO',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 10.5,
                 letterSpacing: 0.7,
                 fontWeight: FontWeight.w600,
@@ -659,7 +641,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'Belum ada tugas hari ini.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 13,
                   color: _slate,
                 ),
@@ -690,7 +672,7 @@ class _HomePageState extends State<HomePage> {
                         ? 'Lihat semua tugas (${tasks.length})'
                         : 'Kelola semua tugas',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
                       color: _navy,
@@ -701,7 +683,7 @@ class _HomePageState extends State<HomePage> {
                     const Text(
                       'Tambah tugas',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                         color: _slate,
@@ -752,7 +734,7 @@ class _HomePageState extends State<HomePage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                       letterSpacing: -0.2,
@@ -766,7 +748,7 @@ class _HomePageState extends State<HomePage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13,
                       color: _slate,
                     ),
@@ -812,7 +794,7 @@ class _HomePageState extends State<HomePage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                       letterSpacing: -0.2,
@@ -826,7 +808,7 @@ class _HomePageState extends State<HomePage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13,
                       color: _slate,
                     ),
@@ -845,7 +827,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         time,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
                           color: t.done ? _slate : _amberDark,
@@ -874,7 +856,7 @@ class _HomePageState extends State<HomePage> {
                   const Text(
                     'Terlewat',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
                       color: _amberDark,
@@ -897,7 +879,7 @@ class _HomePageState extends State<HomePage> {
         shape: BoxShape.circle,
         color: done ? _amber : Colors.transparent,
         border: Border.all(
-          color: done ? _amber : _navy.withValues(alpha: 0.55),
+          color: done ? _amber : _navyFill.withValues(alpha: 0.55),
           width: 1.5,
         ),
       ),
@@ -934,7 +916,7 @@ class _HomePageState extends State<HomePage> {
         const Text(
           'AKSI CEPAT',
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 10.5,
             letterSpacing: 0.8,
             fontWeight: FontWeight.w600,
@@ -950,14 +932,14 @@ class _HomePageState extends State<HomePage> {
                 icon: const Icon(Icons.add_rounded, size: 18),
                 label: const Text('Catat uang'),
                 style: FilledButton.styleFrom(
-                  backgroundColor: _navy,
-                  foregroundColor: Colors.white,
+                  backgroundColor: _navyFill,
+                  foregroundColor: Star.onAccent,
                   minimumSize: const Size(0, 46),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   textStyle: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
                   ),
@@ -986,7 +968,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   textStyle: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
                   ),
@@ -1019,11 +1001,7 @@ class _HomePageState extends State<HomePage> {
                         width: 40,
                         height: 40,
                         alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: _card,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: _border),
-                        ),
+                        decoration: Neu.raised(r: 10, d: 3),
                         child: Icon(s.icon, size: 19, color: _navy),
                       ),
                       const SizedBox(height: 5),
@@ -1033,7 +1011,7 @@ class _HomePageState extends State<HomePage> {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                           color: _slate,
@@ -1067,11 +1045,7 @@ class _HomePageState extends State<HomePage> {
     final image = 'assets/images/paket_${key.toLowerCase()}.png';
 
     return Container(
-      decoration: BoxDecoration(
-        color: _card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: _border),
-      ),
+      decoration: Neu.raised(r: 16, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1083,7 +1057,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     'MENU MAKANAN',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 10.5,
                       letterSpacing: 0.8,
                       fontWeight: FontWeight.w600,
@@ -1094,7 +1068,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   'Paket $key',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
                     color: _navy,
@@ -1128,11 +1102,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   width: 70,
                   height: 70,
-                  decoration: BoxDecoration(
-                    color: _canvas,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: _border),
-                  ),
+                  decoration: Neu.raised(r: 12, d: 3),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.asset(
@@ -1156,7 +1126,7 @@ class _HomePageState extends State<HomePage> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 14,
                           height: 1.25,
                           fontWeight: FontWeight.w700,
@@ -1170,7 +1140,7 @@ class _HomePageState extends State<HomePage> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 11,
                           color: _slate,
                         ),
@@ -1198,7 +1168,7 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     'Buka resep & bahan',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
                       color: _navy,
@@ -1227,17 +1197,17 @@ class _HomePageState extends State<HomePage> {
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? _navy : _card,
+          color: selected ? _navyFill : _card,
           borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: selected ? _navy : _border),
+          border: Border.all(color: selected ? _navyFill : _border),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontFamily: 'Inter',
+            fontFamily: 'Manrope',
             fontSize: 11,
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            color: selected ? Colors.white : _slate,
+            color: selected ? Star.onAccent : _slate,
           ),
         ),
       ),
@@ -1250,11 +1220,7 @@ class _HomePageState extends State<HomePage> {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
-        decoration: BoxDecoration(
-          color: _card,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: _border),
-        ),
+        decoration: Neu.raised(r: 16, d: 5),
         child: Row(
           children: [
             Container(
@@ -1280,7 +1246,7 @@ class _HomePageState extends State<HomePage> {
                   const Text(
                     'Rutinitas bulan ini',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.2,
@@ -1293,7 +1259,7 @@ class _HomePageState extends State<HomePage> {
                         ? 'Belum ada hari yang tercatat.'
                         : '$days hari tuntas · lihat tracker',
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 11.5,
                       color: _slate,
                     ),
@@ -1344,7 +1310,7 @@ class _HomePageState extends State<HomePage> {
             return Container(
               padding: EdgeInsets.fromLTRB(18, 14, 18, 18 + inset),
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: Star.surface,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Column(
@@ -1365,7 +1331,7 @@ class _HomePageState extends State<HomePage> {
                   const Text(
                     'Catat pengeluaran',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
                       color: _navy,
@@ -1380,7 +1346,7 @@ class _HomePageState extends State<HomePage> {
                       ThousandsSeparatorInputFormatter(),
                     ],
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: _navy,
@@ -1391,7 +1357,7 @@ class _HomePageState extends State<HomePage> {
                   TextField(
                     controller: note,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13,
                       color: _navy,
                     ),
@@ -1412,14 +1378,14 @@ class _HomePageState extends State<HomePage> {
                           label: Text(c.value),
                           selected: cat == c.key,
                           onSelected: (_) => setSheet(() => cat = c.key),
-                          selectedColor: _navy,
+                          selectedColor: _navyFill,
                           backgroundColor: _canvas,
                           side: const BorderSide(color: _border),
                           labelStyle: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
-                            color: cat == c.key ? Colors.white : _slate,
+                            color: cat == c.key ? Star.onAccent : _slate,
                           ),
                           showCheckmark: false,
                         ),
@@ -1453,18 +1419,18 @@ class _HomePageState extends State<HomePage> {
                               SnackBar(
                                 content: Text('Tercatat ${rp(value)} · $desc'),
                                 behavior: SnackBarBehavior.floating,
-                                backgroundColor: _navy,
+                                backgroundColor: _navyFill,
                               ),
                             );
                         }
                       },
                       style: FilledButton.styleFrom(
-                        backgroundColor: _navy,
+                        backgroundColor: _navyFill,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         textStyle: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 13.5,
                           fontWeight: FontWeight.w700,
                         ),
@@ -1486,12 +1452,12 @@ class _HomePageState extends State<HomePage> {
         hintText: hint,
         prefixText: prefix,
         prefixStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           fontWeight: FontWeight.w700,
           color: _navy,
         ),
         hintStyle: const TextStyle(
-          fontFamily: 'Inter',
+          fontFamily: 'Manrope',
           color: _slate,
           fontSize: 13,
         ),
@@ -1511,7 +1477,7 @@ class _HomePageState extends State<HomePage> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: _navy, width: 1.5),
+          borderSide: const BorderSide(color: _navyFill, width: 1.5),
         ),
       );
 
@@ -1529,7 +1495,7 @@ class _HomePageState extends State<HomePage> {
           ),
           padding: const EdgeInsets.fromLTRB(18, 14, 18, 22),
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: Star.surface,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -1550,7 +1516,7 @@ class _HomePageState extends State<HomePage> {
               const Text(
                 'Pilih kota sholat',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: _navy,
@@ -1560,7 +1526,7 @@ class _HomePageState extends State<HomePage> {
               const Text(
                 'Jadwal dihitung astronomis, standar Kemenag RI.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   color: _slate,
                 ),
@@ -1587,7 +1553,7 @@ class _HomePageState extends State<HomePage> {
                       title: Text(
                         city.name,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 13,
                           fontWeight: selected
                               ? FontWeight.w700
@@ -1769,7 +1735,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
       ),
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 20),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Star.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SafeArea(
@@ -1792,7 +1758,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
               const Text(
                 'Rutinitas bulanan',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.3,
@@ -1803,7 +1769,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
               Text(
                 '${marks.length} catatan · ${days.length} hari tuntas',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 11.5,
                   color: _slate,
                 ),
@@ -1820,7 +1786,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                       '${_bulan[_month]} $_year',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
                         color: _navy,
@@ -1841,7 +1807,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                         h,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontFamily: 'Inter',
+                          fontFamily: 'Manrope',
                           fontSize: 9.5,
                           fontWeight: FontWeight.w600,
                           color: _slate,
@@ -1878,7 +1844,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: selected
-                            ? _navy
+                            ? _navyFill
                             : done
                             ? _amber.withValues(alpha: 0.16)
                             : null,
@@ -1895,13 +1861,13 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                           Text(
                             '$day',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 11,
                               fontWeight: done
                                   ? FontWeight.w700
                                   : FontWeight.w500,
                               color: selected
-                                  ? Colors.white
+                                  ? Star.onAccent
                                   : done
                                   ? _navy
                                   : _slate,
@@ -1913,7 +1879,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                               height: 3,
                               margin: const EdgeInsets.only(top: 1),
                               decoration: BoxDecoration(
-                                color: selected ? Colors.white : _amberDark,
+                                color: selected ? Star.surface : _amberDark,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -1928,7 +1894,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                 Text(
                   '$_selectedDay ${_bulan[_month]} $_year',
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: _slate,
@@ -1952,7 +1918,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12.5,
                               color: _navy,
                             ),
@@ -1967,15 +1933,11 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: _canvas,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: _border),
-                  ),
+                  decoration: Neu.raised(r: 12, d: 3),
                   child: const Text(
                     'Tandai tugas sebagai rutinitas atau selesaikan alarm untuk mulai mencatat bulan ini.',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 12,
                       height: 1.4,
                       color: _slate,
@@ -1986,7 +1948,7 @@ class _RoutineSheetState extends State<_RoutineSheet> {
               const Text(
                 'Aktifkan "Rutinitas bulanan" di editor tugas, atau alarm layar penuh otomatis mencatat saat kamu menyelesaikannya.',
                 style: TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10.5,
                   height: 1.4,
                   color: _slate,

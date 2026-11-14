@@ -64,7 +64,7 @@ Control, Font, Image & Icon, Window for iOS) + artikel 4-point spacing
   saat tap di luar field; input angka pakai keyboard numerik (sudah) +
   pertahankan dropdown kategori.
 
-## 10. Warna & kontras (palet SVG user, tema terang sejak 1.0.6+7)
+## 10. [DIGANTIKAN oleh §13] Warna & kontras (tema terang lama)
 - Primer Allports `#006C95`, aksen Picton `#0781D1`, highlight Cyan `#01BEAF`,
   ungu Thistle, krem China Ivory; scaffold Black Haze `#F6F8F7`, kartu putih.
 - Teks di atas terang ≥4.5:1 (`ink #14323F`, `mut #4E6E7C`). Error tetap merah
@@ -79,7 +79,7 @@ Control, Font, Image & Icon, Window for iOS) + artikel 4-point spacing
   --allow-asset-diffs`. Patch auto-apply saat app dibuka dengan internet
   (butuh 1–2x buka-tutup). Naik versi bila ganti tema/aset besar.
 
-## 12. Area jurnal (Beranda, To-Do, Study) — palet `Paper`
+## 12. [DIGANTIKAN oleh §13] Area jurnal — palet `Paper` lama
 - Kanvas krem `#FBF9F5`, kartu putih, hairline hangat `#E7E2DA`; tanpa bayangan.
 - Jangkar hijau tua `#16594C`; progres mint `#2E8B70`; amber `#A67C00` hanya
   untuk target/uang; coral `#C96F5C` hanya untuk keterlambatan.
@@ -89,3 +89,20 @@ Control, Font, Image & Icon, Window for iOS) + artikel 4-point spacing
 - Teks sekunder `Paper.sec`; `Paper.ter` hanya untuk ikon/chevron. Angka
   memakai `FontFeature.tabularFigures()`.
 - Dilarang: gradien dekoratif, ungu, emoji di UI, dan bayangan kartu.
+
+## 13. Dark Neumorphism (berlaku untuk seluruh aplikasi)
+- **Satu nada dasar** grafit dingin `Star.bg #22262B`. Kartu, kanvas, dan sheet
+  SAMA warnanya; kedalaman hanya dari sepasang bayangan (gelap kanan-bawah,
+  terang kiri-atas). Satu arah cahaya di seluruh app.
+- **Helper di `theme.dart`**: `Neu.raised()` (blok utama, CTA), `Neu.well()` /
+  `NeuWell` (input, jalur progres, item terpilih, panel info), `Neu.flat()`.
+  Baris di dalam kartu tetap datar; jangan menimbulkan semua chip.
+- **Satu aksen**: amber redup `Star.star #D9A55B`. Hijau sage (`Star.success`)
+  hanya untuk "selesai", koral (`Star.error`) hanya untuk error/terlambat.
+  Tanpa ungu, tanpa gradien dekoratif, tanpa emoji di UI.
+- Teks di atas aksen memakai `Star.onAccent`. Varian `*Ink` pada `Paper` kini
+  teks TERANG di atas tint gelap (`*Soft`).
+- Kontras: `ink` 12:1, `mut` 6:1, `faint` 3.4:1 di atas `bg`. Status terpilih
+  harus terlihat dari warna aksen, bukan hanya kedalaman bayangan.
+- Font: Manrope (variabel) untuk semua teks; angka memakai tabular figures.
+- Halaman per-fitur tidak lagi punya warna sendiri (`Themes.*` diseragamkan).

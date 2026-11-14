@@ -211,7 +211,7 @@ class _AlarmPageState extends State<AlarmPage> {
                     const Text(
                       'SELF VOLTA',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 1.8,
@@ -222,7 +222,7 @@ class _AlarmPageState extends State<AlarmPage> {
                     Text(
                       soundLabel.toUpperCase(),
                       style: const TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 9,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 1.2,
@@ -237,7 +237,7 @@ class _AlarmPageState extends State<AlarmPage> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 1.4,
@@ -252,7 +252,7 @@ class _AlarmPageState extends State<AlarmPage> {
                     clock,
                     maxLines: 1,
                     style: const TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 104,
                       height: 0.95,
                       fontWeight: FontWeight.w200,
@@ -285,7 +285,7 @@ class _AlarmPageState extends State<AlarmPage> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 23,
                               height: 1.2,
                               fontWeight: FontWeight.w600,
@@ -301,7 +301,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                       '${widget.data.repeat.substring(1)} · '
                                       '${widget.data.timeLabel}',
                             style: const TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 12,
                               color: _slate,
                             ),
@@ -327,7 +327,7 @@ class _AlarmPageState extends State<AlarmPage> {
                             borderRadius: BorderRadius.circular(14),
                           ),
                           textStyle: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -347,7 +347,7 @@ class _AlarmPageState extends State<AlarmPage> {
                             borderRadius: BorderRadius.circular(14),
                           ),
                           textStyle: const TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -362,7 +362,7 @@ class _AlarmPageState extends State<AlarmPage> {
                   'Geser ke kanan untuk menyelesaikan rutinitas ini.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10.5,
                     color: _slate,
                   ),
@@ -419,7 +419,7 @@ class _AlarmPageState extends State<AlarmPage> {
                     child: const Text(
                       'Selesaikan',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0.2,
@@ -486,7 +486,7 @@ class _SuccessDialog extends StatelessWidget {
             const Text(
               'Rutinitas selesai!',
               style: TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 21,
                 fontWeight: FontWeight.w700,
                 letterSpacing: -0.3,
@@ -498,7 +498,7 @@ class _SuccessDialog extends StatelessWidget {
               'High five! "$title" sudah tuntas dan tercatat di rutinitas bulan ini.',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontFamily: 'Inter',
+                fontFamily: 'Manrope',
                 fontSize: 12.5,
                 height: 1.45,
                 color: Color(0xFF9AA3A9),
@@ -517,7 +517,7 @@ class _SuccessDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   textStyle: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                   ),

@@ -31,10 +31,7 @@ class BoosterPage extends StatelessWidget {
               // --------------------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xffEA580C),
-                  borderRadius: BorderRadius.circular(16),
-                ),
+                decoration: Neu.raised(r: 22, d: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -48,7 +45,7 @@ class BoosterPage extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.18),
+                              color: Star.ink.withValues(alpha: 0.07),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Row(
@@ -57,7 +54,7 @@ class BoosterPage extends StatelessWidget {
                                 Icon(
                                   Icons.bolt_rounded,
                                   size: 15,
-                                  color: Color(0xffFDE047),
+                                  color: Star.star,
                                 ),
                                 SizedBox(width: 4),
                                 Flexible(
@@ -66,10 +63,10 @@ class BoosterPage extends StatelessWidget {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                                      color: Star.ink,
                                     ),
                                   ),
                                 ),
@@ -90,7 +87,7 @@ class BoosterPage extends StatelessWidget {
                                   content: Text(
                                     'Booster hari ini dicatat! (+20 XP)',
                                   ),
-                                  backgroundColor: Color(0xffEA580C),
+                                  backgroundColor: Star.star,
                                   behavior: SnackBarBehavior.floating,
                                 ),
                               );
@@ -104,8 +101,8 @@ class BoosterPage extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: hasBoosterLogged
-                                  ? const Color(0xff10B981)
-                                  : Colors.white.withValues(alpha: 0.16),
+                                  ? Star.success
+                                  : Star.ink.withValues(alpha: 0.07),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -116,7 +113,7 @@ class BoosterPage extends StatelessWidget {
                                       ? Icons.check_circle_rounded
                                       : Icons.radio_button_unchecked_rounded,
                                   size: 13,
-                                  color: Colors.white,
+                                  color: Star.ink,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
@@ -124,10 +121,10 @@ class BoosterPage extends StatelessWidget {
                                       ? 'Tercatat Hari Ini'
                                       : 'Catat Booster',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                                    color: Star.ink,
                                   ),
                                 ),
                               ],
@@ -140,19 +137,19 @@ class BoosterPage extends StatelessWidget {
                     const Text(
                       'Kenapa Perlu Booster?',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: Star.ink,
                       ),
                     ),
                     const SizedBox(height: 6),
                     const Text(
                       'Pola makan pokok kost hanya memberi ~1.260 kkal. Untuk menaikkan berat badan dan membentuk otot kalistenik tebal, tubuh wajib surplus hingga ~2.370 kkal & 75-80g protein murni.',
                       style: TextStyle(
-                        fontFamily: 'Inter',
+                        fontFamily: 'Manrope',
                         fontSize: 11.5,
-                        color: Colors.white,
+                        color: Star.ink,
                         height: 1.45,
                       ),
                     ),
@@ -180,10 +177,10 @@ class BoosterPage extends StatelessWidget {
                                     '+1.110 kkal',
                                     maxLines: 1,
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xffFDE047),
+                                      color: Star.star,
                                     ),
                                   ),
                                 ),
@@ -193,9 +190,9 @@ class BoosterPage extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 9.5,
-                                    color: Colors.white70,
+                                    color: Star.mut,
                                   ),
                                 ),
                               ],
@@ -219,10 +216,10 @@ class BoosterPage extends StatelessWidget {
                                     '+33g Protein',
                                     maxLines: 1,
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white,
+                                      color: Star.ink,
                                     ),
                                   ),
                                 ),
@@ -232,9 +229,9 @@ class BoosterPage extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 9.5,
-                                    color: Colors.white70,
+                                    color: Star.mut,
                                   ),
                                 ),
                               ],
@@ -258,10 +255,10 @@ class BoosterPage extends StatelessWidget {
                                     'Rp 10.900',
                                     maxLines: 1,
                                     style: TextStyle(
-                                      fontFamily: 'Inter',
+                                      fontFamily: 'Manrope',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff86EFAC),
+                                      color: Star.success,
                                     ),
                                   ),
                                 ),
@@ -271,9 +268,9 @@ class BoosterPage extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 9.5,
-                                    color: Colors.white70,
+                                    color: Star.mut,
                                   ),
                                 ),
                               ],
@@ -292,11 +289,7 @@ class BoosterPage extends StatelessWidget {
               // --------------------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Star.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Star.lineSoft),
-                ),
+                decoration: Neu.raised(r: 20, d: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -308,7 +301,7 @@ class BoosterPage extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.local_fire_department_rounded,
-                                color: Color(0xffEA580C),
+                                color: Star.star,
                                 size: 18,
                               ),
                               SizedBox(width: 6),
@@ -318,7 +311,7 @@ class BoosterPage extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700,
                                     color: Star.ink,
@@ -335,18 +328,17 @@ class BoosterPage extends StatelessWidget {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xffEA580C)
-                                .withValues(alpha: 0.1),
+                            color: Star.star.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text(
                             '+50 XP / 3 Hari',
                             maxLines: 1,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              fontFamily: 'Manrope',
                               fontSize: 9.5,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xffEA580C),
+                              color: Star.star,
                             ),
                           ),
                         ),
@@ -370,15 +362,14 @@ class BoosterPage extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               color: isDone
-                                  ? const Color(0xffEA580C)
+                                  ? Star.star
                                   : isTodayDay
-                                  ? const Color(0xffEA580C)
-                                        .withValues(alpha: 0.12)
+                                  ? Star.star.withValues(alpha: 0.12)
                                   : Star.bg,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: isDone || isTodayDay
-                                    ? const Color(0xffEA580C)
+                                    ? Star.star
                                     : Star.sunken,
                                 width: isTodayDay ? 1.5 : 1.0,
                               ),
@@ -388,10 +379,10 @@ class BoosterPage extends StatelessWidget {
                                 Text(
                                   ['Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb', 'Mg'][i],
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
+                                    fontFamily: 'Manrope',
                                     fontSize: 9.5,
                                     fontWeight: FontWeight.w700,
-                                    color: isDone ? Colors.white70 : Star.mut,
+                                    color: isDone ? Star.onAccent70 : Star.mut,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -400,7 +391,7 @@ class BoosterPage extends StatelessWidget {
                                       ? Icons.check_circle_rounded
                                       : Icons.radio_button_unchecked_rounded,
                                   size: 14,
-                                  color: isDone ? Colors.white : Star.mut,
+                                  color: isDone ? Star.onAccent : Star.mut,
                                 ),
                               ],
                             ),
@@ -418,16 +409,12 @@ class BoosterPage extends StatelessWidget {
               // --------------------------------------------------------------
               const Row(
                 children: [
-                  Icon(
-                    Icons.restaurant_rounded,
-                    color: Color(0xffEA580C),
-                    size: 18,
-                  ),
+                  Icon(Icons.restaurant_rounded, color: Star.star, size: 18),
                   SizedBox(width: 8),
                   Text(
                     '3 Menu Booster Praktis Anak Kost',
                     style: TextStyle(
-                      fontFamily: 'Inter',
+                      fontFamily: 'Manrope',
                       fontSize: 13.5,
                       fontWeight: FontWeight.w700,
                       color: Star.ink,
@@ -450,7 +437,7 @@ class BoosterPage extends StatelessWidget {
                   'Susu UHT / Kedelai',
                   'Oatmeal Instan',
                 ],
-                accentColor: const Color(0xff0D9488),
+                accentColor: Star.star,
                 groceryKey: 'gro_booster_shake',
               ),
               const SizedBox(height: 10),
@@ -464,7 +451,7 @@ class BoosterPage extends StatelessWidget {
                 cost: 'Rp 4.500',
                 desc: 'Rebus 2 butir telur ayam di panci listrik selama 8 menit. Makan bersama 2 pisang sebagai camilan sore sebelum jam 5.',
                 ingredients: ['2 Butir Telur Ayam', '2 Buah Pisang'],
-                accentColor: const Color(0xffE5A910),
+                accentColor: Star.star,
                 groceryKey: 'gro_booster_egg_banana',
               ),
               const SizedBox(height: 10),
@@ -482,7 +469,7 @@ class BoosterPage extends StatelessWidget {
                   'Kecap Manis',
                   'Nasi Tambahan +150g',
                 ],
-                accentColor: const Color(0xff004E71),
+                accentColor: Star.star,
                 groceryKey: 'gro_booster_tempe_rice',
               ),
               const SizedBox(height: 16),
@@ -492,11 +479,7 @@ class BoosterPage extends StatelessWidget {
               // --------------------------------------------------------------
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Star.surface,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Star.lineSoft),
-                ),
+                decoration: Neu.raised(r: 20, d: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -504,14 +487,14 @@ class BoosterPage extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.lightbulb_rounded,
-                          color: Color(0xffF59E0B),
+                          color: Star.star,
                           size: 18,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Tips Anti-Begah Makan Surplus Kalori',
                           style: TextStyle(
-                            fontFamily: 'Inter',
+                            fontFamily: 'Manrope',
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: Star.ink,
@@ -558,18 +541,7 @@ class BoosterPage extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Star.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: accentColor.withValues(alpha: 0.3)),
-        boxShadow: [
-          BoxShadow(
-            color: accentColor.withValues(alpha: 0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
+      decoration: Neu.raised(r: 18, d: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -580,7 +552,7 @@ class BoosterPage extends StatelessWidget {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
                     color: Star.ink,
@@ -599,7 +571,7 @@ class BoosterPage extends StatelessWidget {
                 child: Text(
                   cost,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
                     color: accentColor,
@@ -617,16 +589,16 @@ class BoosterPage extends StatelessWidget {
                   vertical: 1.5,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xffFDE047).withValues(alpha: 0.25),
+                  color: Star.star.withValues(alpha: 0.25),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  '🔥 $cal',
+                  cal,
                   style: const TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 9.5,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff854D0E),
+                    color: Paper.amberInk,
                   ),
                 ),
               ),
@@ -641,9 +613,9 @@ class BoosterPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  '💪 $protein',
+                  protein,
                   style: TextStyle(
-                    fontFamily: 'Inter',
+                    fontFamily: 'Manrope',
                     fontSize: 9.5,
                     fontWeight: FontWeight.w700,
                     color: accentColor,
@@ -656,7 +628,7 @@ class BoosterPage extends StatelessWidget {
           Text(
             desc,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10.5,
               color: Star.ink,
               height: 1.4,
@@ -697,18 +669,16 @@ class BoosterPage extends StatelessWidget {
                     ? 'Bahan Sudah Ada di Daftar Belanja ✓'
                     : '+ Tambah Bahan Resep ke Belanja',
                 style: const TextStyle(
-                  fontFamily: 'Inter',
+                  fontFamily: 'Manrope',
                   fontSize: 10.5,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               style: FilledButton.styleFrom(
                 backgroundColor: isAdded
-                    ? const Color(0xff10B981).withValues(alpha: 0.15)
+                    ? Star.success.withValues(alpha: 0.15)
                     : accentColor.withValues(alpha: 0.12),
-                foregroundColor: isAdded
-                    ? const Color(0xff10B981)
-                    : accentColor,
+                foregroundColor: isAdded ? Star.success : accentColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -730,7 +700,7 @@ class BoosterPage extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: Star.ink,
@@ -740,7 +710,7 @@ class BoosterPage extends StatelessWidget {
           Text(
             desc,
             style: const TextStyle(
-              fontFamily: 'Inter',
+              fontFamily: 'Manrope',
               fontSize: 10,
               color: Star.mut,
               height: 1.35,
