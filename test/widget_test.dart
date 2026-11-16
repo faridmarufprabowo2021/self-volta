@@ -384,7 +384,7 @@ void main() {
     await tester.pumpWidget(const SelfVoltaApp());
     await tester.pumpAndSettle();
     expect(find.text('SELF VOLTA'), findsWidgets);
-    expect(find.text('HARI INI'), findsOneWidget);
+    expect(find.text('PILAR HARIAN'), findsOneWidget);
   });
 
   testWidgets('semua halaman ke-render tanpa exception', (
@@ -400,7 +400,7 @@ void main() {
     }
 
     await viaNav('Latihan', 'Latihan & Pembentukan Otot');
-    await viaNav('Beranda', 'HARI INI');
+    await viaNav('Beranda', 'PILAR HARIAN');
     await viaNav('Uang', 'Laporan & Keuangan');
     await viaNav('Makan', 'Planning Makan Kost');
 
@@ -436,7 +436,7 @@ void main() {
       expect(find.text(judul), mayRepeat ? findsWidgets : findsOneWidget);
     }
 
-    await viaDrawer('Beranda', 'HARI INI');
+    await viaDrawer('Beranda', 'PILAR HARIAN');
     await viaDrawer('To-Do Harian', 'Hari ini', mayRepeat: true);
     await viaDrawer('Study & Fokus', 'Study & fokus');
     await viaDrawer('Latihan Utama', 'Latihan & Pembentukan Otot');
@@ -473,7 +473,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const SelfVoltaApp());
     await tester.pumpAndSettle();
-    expect(find.text('HARI INI'), findsOneWidget);
+    expect(find.text('PILAR HARIAN'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.menu_rounded).first);
     await tester.pumpAndSettle();
@@ -501,7 +501,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const SelfVoltaApp());
     await tester.pumpAndSettle();
-    expect(find.text('HARI INI'), findsOneWidget);
+    expect(find.text('PILAR HARIAN'), findsOneWidget);
 
     // Beranda -> Planning via tab bawah.
     await tester.tap(find.text('Makan').last);
@@ -511,7 +511,7 @@ void main() {
     // Planning -> Beranda via tab bawah.
     await tester.tap(find.text('Beranda').last);
     await tester.pumpAndSettle();
-    expect(find.text('HARI INI'), findsOneWidget);
+    expect(find.text('PILAR HARIAN'), findsOneWidget);
 
     // Shell tetap hidup.
     expect(find.text('Uang'), findsOneWidget);

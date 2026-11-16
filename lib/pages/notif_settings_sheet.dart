@@ -8,6 +8,7 @@ import '../services/todo_notifications.dart';
 import '../store.dart';
 import '../theme.dart';
 import '../widgets.dart';
+import '../widgets/custom_alarm_card.dart';
 import 'workout_reminder_sheet.dart';
 
 Future<void> showNotifSettingsSheet(BuildContext context) {
@@ -408,6 +409,23 @@ class _NotifSettingsSheetState extends State<_NotifSettingsSheet> {
                   'Android 14+ meminta izin khusus agar alarm bisa membuka '
                   'layar saat HP terkunci. Tanpa izin, alarm tetap berbunyi '
                   'sebagai notifikasi biasa.',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 10.5,
+                    height: 1.4,
+                    color: Star.faint,
+                  ),
+                ),
+                const SizedBox(height: 18),
+
+                // ---- nada alarm kustom ----
+                const _SecLabel('Nada alarm kustom'),
+                const SizedBox(height: 8),
+                const CustomAlarmCard(dense: true),
+                const SizedBox(height: 6),
+                const Text(
+                  'Hanya untuk alarm layar penuh. Notifikasi biasa tetap memakai '
+                  'nada di atas karena kanal Android mengunci suaranya.',
                   style: TextStyle(
                     fontFamily: 'Manrope',
                     fontSize: 10.5,

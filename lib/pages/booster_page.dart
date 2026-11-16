@@ -201,10 +201,7 @@ class BoosterPage extends StatelessWidget {
                           SizedBox(width: 4),
                           Text(
                             '|',
-                            style: TextStyle(
-                              color: Colors.white24,
-                              fontSize: 20,
-                            ),
+                            style: TextStyle(color: Star.line, fontSize: 20),
                           ),
                           SizedBox(width: 4),
                           Expanded(
@@ -240,10 +237,7 @@ class BoosterPage extends StatelessWidget {
                           SizedBox(width: 4),
                           Text(
                             '|',
-                            style: TextStyle(
-                              color: Colors.white24,
-                              fontSize: 20,
-                            ),
+                            style: TextStyle(color: Star.line, fontSize: 20),
                           ),
                           SizedBox(width: 4),
                           Expanded(
@@ -346,54 +340,74 @@ class BoosterPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(7, (i) {
                         final d = i + 1;
                         final isDone = st.hasBoosterDay(d);
                         final isTodayDay = currentDay == d;
-                        return InkWell(
-                          onTap: () {
-                            iosTapBuzz();
-                            st.toggleBoosterDay(d);
-                          },
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            width: 40,
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            decoration: BoxDecoration(
-                              color: isDone
-                                  ? Star.star
-                                  : isTodayDay
-                                  ? Star.star.withValues(alpha: 0.12)
-                                  : Star.bg,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: isDone || isTodayDay
-                                    ? Star.star
-                                    : Star.sunken,
-                                width: isTodayDay ? 1.5 : 1.0,
-                              ),
+                        return Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: i == 6 ? 0 : 4,
+                              left: i == 0 ? 0 : 0,
                             ),
-                            child: Column(
-                              children: [
-                                Text(
-                                  ['Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb', 'Mg'][i],
-                                  style: TextStyle(
-                                    fontFamily: 'Manrope',
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w700,
-                                    color: isDone ? Star.onAccent70 : Star.mut,
+                            child: InkWell(
+                              onTap: () {
+                                iosTapBuzz();
+                                st.toggleBoosterDay(d);
+                              },
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isDone
+                                      ? Star.star
+                                      : isTodayDay
+                                      ? Star.star.withValues(alpha: 0.12)
+                                      : Star.bg,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: isDone || isTodayDay
+                                        ? Star.star
+                                        : Star.sunken,
+                                    width: isTodayDay ? 1.5 : 1.0,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                Icon(
-                                  isDone
-                                      ? Icons.check_circle_rounded
-                                      : Icons.radio_button_unchecked_rounded,
-                                  size: 14,
-                                  color: isDone ? Star.onAccent : Star.mut,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      [
+                                        'Sn',
+                                        'Sl',
+                                        'Rb',
+                                        'Km',
+                                        'Jm',
+                                        'Sb',
+                                        'Mg',
+                                      ][i],
+                                      style: TextStyle(
+                                        fontFamily: 'Manrope',
+                                        fontSize: 9.5,
+                                        fontWeight: FontWeight.w700,
+                                        color: isDone
+                                            ? Star.onAccent70
+                                            : Star.mut,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Icon(
+                                      isDone
+                                          ? Icons.check_circle_rounded
+                                          : Icons
+                                                .radio_button_unchecked_rounded,
+                                      size: 14,
+                                      color: isDone ? Star.onAccent : Star.mut,
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         );
@@ -411,13 +425,15 @@ class BoosterPage extends StatelessWidget {
                 children: [
                   Icon(Icons.restaurant_rounded, color: Star.star, size: 18),
                   SizedBox(width: 8),
-                  Text(
-                    '3 Menu Booster Praktis Anak Kost',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.w700,
-                      color: Star.ink,
+                  Expanded(
+                    child: Text(
+                      '3 Menu Booster Praktis Anak Kost',
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w700,
+                        color: Star.ink,
+                      ),
                     ),
                   ),
                 ],
@@ -491,13 +507,15 @@ class BoosterPage extends StatelessWidget {
                           size: 18,
                         ),
                         SizedBox(width: 8),
-                        Text(
-                          'Tips Anti-Begah Makan Surplus Kalori',
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: Star.ink,
+                        Expanded(
+                          child: Text(
+                            'Tips Anti-Begah Makan Surplus Kalori',
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: Star.ink,
+                            ),
                           ),
                         ),
                       ],

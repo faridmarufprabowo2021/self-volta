@@ -418,22 +418,29 @@ class _StudyHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
-                'Study & fokus',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: Star.ink,
+              const Expanded(
+                child: Text(
+                  'Study & fokus',
+                  maxLines: 2,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Star.ink,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Text(
-                '$sessionsToday sesi hari ini',
-                style: const TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11,
-                  color: Star.mut,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  '$sessionsToday sesi hari ini',
+                  maxLines: 2,
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 11,
+                    color: Star.mut,
+                  ),
                 ),
               ),
             ],
@@ -498,8 +505,8 @@ class _StudyHeader extends StatelessWidget {
                       child: CircularProgressIndicator(
                         value: progress,
                         strokeWidth: 5,
-                        backgroundColor: Colors.white24,
-                        valueColor: const AlwaysStoppedAnimation(Star.success),
+                        backgroundColor: Star.line,
+                        valueColor: const AlwaysStoppedAnimation(Star.study),
                       ),
                     ),
                     Text(
@@ -572,32 +579,40 @@ class _FocusCard extends StatelessWidget {
                   color: TodoPal.ink,
                 ),
               ),
-              const Spacer(),
-              for (final p in presets) ...[
-                GestureDetector(
-                  onTap: () => onPreset(p),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    margin: const EdgeInsets.only(left: 4),
-                    decoration: BoxDecoration(
-                      color: preset == p ? TodoPal.header : TodoPal.field,
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                    child: Text(
-                      '$p',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: preset == p ? Star.onAccent : TodoPal.sec,
+              const SizedBox(width: 8),
+              Expanded(
+                child: Wrap(
+                  alignment: WrapAlignment.end,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: [
+                    for (final p in presets)
+                      GestureDetector(
+                        onTap: () => onPreset(p),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: preset == p ? TodoPal.header : TodoPal.field,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: Text(
+                            '$p',
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: preset == p ? Star.onAccent : TodoPal.sec,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ],
           ),
           const SizedBox(height: 4),
@@ -783,22 +798,29 @@ class _WeekChart extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text(
-                '7 hari terakhir',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w700,
-                  color: TodoPal.ink,
+              const Expanded(
+                child: Text(
+                  '7 hari terakhir',
+                  maxLines: 2,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w700,
+                    color: TodoPal.ink,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Text(
-                total == 0 ? 'belum ada sesi' : '$total menit',
-                style: const TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11,
-                  color: TodoPal.ter,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  total == 0 ? 'belum ada sesi' : '$total menit',
+                  maxLines: 2,
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 11,
+                    color: TodoPal.ter,
+                  ),
                 ),
               ),
             ],

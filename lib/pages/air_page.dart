@@ -55,7 +55,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
         SnackBar(
           content: const Row(
             children: [
-              Icon(Icons.emoji_events_rounded, color: Star.star, size: 18),
+              Icon(Icons.emoji_events_rounded, color: Star.onAccent, size: 18),
               SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -64,7 +64,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          backgroundColor: Star.star,
+          backgroundColor: Star.water,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -108,7 +108,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           ),
           title: const Row(
             children: [
-              Icon(Icons.info_outline_rounded, color: Star.star),
+              Icon(Icons.info_outline_rounded, color: Star.water),
               SizedBox(width: 8),
               Text(
                 'Galon Sudah Tercatat',
@@ -134,7 +134,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                 Navigator.pop(ctx);
                 _executeGallonRefill(gallonKey);
               },
-              style: FilledButton.styleFrom(backgroundColor: Star.star),
+              style: FilledButton.styleFrom(backgroundColor: Star.water),
               child: const Text('Reset Ulang'),
             ),
           ],
@@ -156,7 +156,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
       SnackBar(
         content: const Row(
           children: [
-            Icon(Icons.water_drop_rounded, color: Star.star, size: 18),
+            Icon(Icons.water_drop_rounded, color: Star.onAccent, size: 18),
             SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -165,7 +165,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
-        backgroundColor: Star.star,
+        backgroundColor: Star.water,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -184,7 +184,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           description: 'Setiap teguk air penting untuk performa kalistenik. Animasi cairan dispenser naik secara dinamis seiring kamu mencatat air minum (target 2.500ml per hari).',
           tip: 'Gunakan tombol +250ml (1 Gelas) atau +600ml (Botol Tumbler) untuk mencatat hidrasi seketika.',
           icon: Icons.water_drop_rounded,
-          accentColor: Star.star,
+          accentColor: Star.water,
         ),
         TutorialStepItem(
           title: 'Anti-Spam Log Isi Ulang Galon 19L',
@@ -193,7 +193,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           description: 'Mencatat tanggal isi ulang galon baru 19L. Dilengkapi proteksi anti-spam sehingga saldo galon tidak bisa digandakan berkali-kali dalam satu hari.',
           tip: 'Satu galon 19L rata-rata mencukupi kebutuhan 7-8 hari untuk satu anak kost.',
           icon: Icons.inventory_2_rounded,
-          accentColor: Star.star,
+          accentColor: Star.water,
         ),
         TutorialStepItem(
           title: 'Checklist Sirkadian 8 Waktu Minum',
@@ -226,29 +226,25 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Row(
-                    children: [
-                      Icon(
-                        Icons.water_drop_rounded,
-                        color: Star.star,
-                        size: 22,
+                  Icon(Icons.water_drop_rounded, color: Star.water, size: 22),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Hidrasi Galon Kost',
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Star.ink,
                       ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Hidrasi Galon Kost',
-                        style: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Star.ink,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
+                  SizedBox(width: 8),
                   TutorialPillButton(
                     onTap: () => _showAirTutorial(context),
                     label: 'Panduan',
-                    color: Star.star,
+                    color: Star.water,
                   ),
                 ],
               ),
@@ -282,7 +278,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                 Icon(
                                   Icons.water_drop_rounded,
                                   size: 14,
-                                  color: Star.star,
+                                  color: Star.water,
                                 ),
                                 SizedBox(width: 4),
                                 Flexible(
@@ -340,20 +336,17 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Star.ink.withValues(alpha: 0.07),
+                              color: const Color(0xFFA5F3FC),
                               width: 2,
                             ),
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
-                              colors: [
-                                Star.ink.withValues(alpha: 0.07),
-                                Star.ink.withValues(alpha: 0.07),
-                              ],
+                              colors: [Star.waterSoft, Star.waterSoft],
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Star.star.withValues(alpha: 0.25),
+                                color: Star.water.withValues(alpha: 0.12),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -368,8 +361,8 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                   painter: _LiquidWavePainter(
                                     progress: progress,
                                     wavePhase: _waveController.value * 2 * pi,
-                                    waveColor: Star.star,
-                                    highlightColor: Star.star,
+                                    waveColor: Star.water,
+                                    highlightColor: Star.water,
                                   ),
                                   child: Center(
                                     child: Column(
@@ -384,17 +377,21 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                         const SizedBox(height: 2),
                                         Text(
                                           '$percent%',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontFamily: 'Manrope',
                                             fontSize: 14,
                                             fontWeight: FontWeight.w700,
-                                            color: Star.ink,
-                                            shadows: [
-                                              Shadow(
-                                                color: Colors.black45,
-                                                blurRadius: 4,
-                                              ),
-                                            ],
+                                            color: progress >= 0.35
+                                                ? Star.onAccent
+                                                : Star.ink,
+                                            shadows: progress >= 0.35
+                                                ? null
+                                                : const [
+                                                    Shadow(
+                                                      color: Colors.black26,
+                                                      blurRadius: 2,
+                                                    ),
+                                                  ],
                                           ),
                                         ),
                                       ],
@@ -455,12 +452,12 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                   color: percent >= 100
                                       ? Star.success.withValues(alpha: 0.25)
-                                      : Star.star.withValues(alpha: 0.2),
+                                      : Star.water.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
                                     color: percent >= 100
                                         ? Star.success
-                                        : Star.star,
+                                        : Star.water,
                                     width: 1.0,
                                   ),
                                 ),
@@ -474,7 +471,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                     fontWeight: FontWeight.w700,
                                     color: percent >= 100
                                         ? Star.success
-                                        : Paper.amberInk,
+                                        : Star.water,
                                   ),
                                 ),
                               ),
@@ -488,6 +485,13 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                   color: Star.mut,
                                   height: 1.5,
                                 ),
+                              ),
+                              const SizedBox(height: 10),
+                              SegmentTrack(
+                                count: 10,
+                                active: (progress * 10).round().clamp(0, 10),
+                                color: Star.water,
+                                gap: 2,
                               ),
                             ],
                           ),
@@ -505,7 +509,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             label: '+250ml',
                             sub: 'Gelas Kos',
                             icon: Icons.local_drink_rounded,
-                            accentColor: Star.star,
+                            accentColor: Star.water,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -515,7 +519,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             label: '+600ml',
                             sub: 'Tumbler',
                             icon: Icons.sports_gymnastics_rounded,
-                            accentColor: Star.star,
+                            accentColor: Star.water,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -525,7 +529,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             label: '+1.000ml',
                             sub: 'Botol 1L',
                             icon: Icons.bolt_rounded,
-                            accentColor: Star.star,
+                            accentColor: Star.water,
                           ),
                         ),
                       ],
@@ -549,12 +553,12 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                         Container(
                           padding: const EdgeInsets.all(7),
                           decoration: BoxDecoration(
-                            color: Star.star.withValues(alpha: 0.12),
+                            color: Star.water.withValues(alpha: 0.12),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
                             Icons.propane_tank_rounded,
-                            color: Star.star,
+                            color: Star.water,
                             size: 18,
                           ),
                         ),
@@ -578,7 +582,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: Star.star.withValues(alpha: 0.12),
+                            color: Star.water.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -587,7 +591,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                               fontFamily: 'Manrope',
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
-                              color: Star.star,
+                              color: Star.water,
                             ),
                           ),
                         ),
@@ -635,10 +639,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             style: FilledButton.styleFrom(
                               backgroundColor: alreadyLoggedToday
                                   ? Star.success.withValues(alpha: 0.15)
-                                  : Star.star.withValues(alpha: 0.12),
+                                  : Star.water.withValues(alpha: 0.12),
                               foregroundColor: alreadyLoggedToday
                                   ? Star.success
-                                  : Star.star,
+                                  : Star.water,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -664,7 +668,11 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.savings_rounded, color: Star.star, size: 18),
+                        Icon(
+                          Icons.savings_rounded,
+                          color: Star.water,
+                          size: 18,
+                        ),
                         SizedBox(width: 8),
                         Flexible(
                           child: Text(
@@ -710,14 +718,14 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Star.star.withValues(alpha: 0.08),
+                        color: Star.water.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Row(
                         children: [
                           Icon(
                             Icons.check_circle_rounded,
-                            color: Star.star,
+                            color: Star.water,
                             size: 16,
                           ),
                           SizedBox(width: 8),
@@ -729,7 +737,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w600,
                                 height: 1.45,
-                                color: Star.star,
+                                color: Star.water,
                               ),
                             ),
                           ),
@@ -750,21 +758,23 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.schedule_rounded,
-                          color: Star.star,
+                          color: Star.water,
                           size: 18,
                         ),
-                        SizedBox(width: 8),
-                        Text(
-                          'Jadwal Hidrasi Optimal Atlet',
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: Star.ink,
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Jadwal Hidrasi Optimal Atlet',
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: Star.ink,
+                            ),
                           ),
                         ),
                       ],
@@ -865,10 +875,10 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: isWinner ? Star.star.withValues(alpha: 0.08) : Star.bg,
+        color: isWinner ? Star.water.withValues(alpha: 0.08) : Star.bg,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isWinner ? Star.star.withValues(alpha: 0.3) : Star.sunken,
+          color: isWinner ? Star.water.withValues(alpha: 0.3) : Star.sunken,
         ),
       ),
       child: Row(
@@ -884,7 +894,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                     fontFamily: 'Manrope',
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: isWinner ? Star.star : Star.ink,
+                    color: isWinner ? Star.water : Star.ink,
                   ),
                 ),
                 Text(
@@ -904,7 +914,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               fontFamily: 'Manrope',
               fontSize: 11.5,
               fontWeight: FontWeight.w700,
-              color: isWinner ? Star.star : Star.error,
+              color: isWinner ? Star.water : Star.error,
             ),
           ),
         ],
@@ -934,7 +944,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
               content: Text('$title selesai diminum! (+5 XP)'),
               duration: const Duration(milliseconds: 1000),
               behavior: SnackBarBehavior.floating,
-              backgroundColor: Star.star,
+              backgroundColor: Star.water,
             ),
           );
         } else {
@@ -966,7 +976,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: (checked ? Star.success : Star.star).withValues(
+                color: (checked ? Star.success : Star.water).withValues(
                   alpha: 0.12,
                 ),
                 borderRadius: BorderRadius.circular(6),
@@ -977,7 +987,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                   fontFamily: 'Manrope',
                   fontSize: 10.5,
                   fontWeight: FontWeight.w700,
-                  color: checked ? Star.success : Star.star,
+                  color: checked ? Star.success : Star.water,
                 ),
               ),
             ),

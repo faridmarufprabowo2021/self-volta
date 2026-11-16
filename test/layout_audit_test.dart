@@ -12,6 +12,7 @@ import 'package:self_volta/pages/buat_page.dart';
 import 'package:self_volta/pages/choice_plan_page.dart';
 import 'package:self_volta/pages/home_page.dart';
 import 'package:self_volta/pages/ingin_page.dart';
+import 'package:self_volta/pages/jadwal_page.dart';
 import 'package:self_volta/pages/keuangan_page.dart';
 import 'package:self_volta/pages/minggu_page.dart';
 import 'package:self_volta/pages/panduan_page.dart';
@@ -49,6 +50,7 @@ void main() {
     'Tips': () => const TipsPage(),
     'Panduan': () => const PanduanPage(),
     'To-Do': () => TodoPage(onNavigate: (_) {}),
+    'Jadwal': () => JadwalPage(onNavigate: (_) {}),
     'Study': () => const StudyPage(),
     'Choice Plan': () => const ChoicePlanPage(),
     'Ingin': () => const InginPage(),
@@ -474,7 +476,7 @@ void main() {
     expect(find.text('Rp19.000 /hari'), findsOneWidget);
   });
 
-  testWidgets('Beranda: Lihat semua membuka To-Do lalu Planning', (
+  testWidgets('Beranda: Lihat semua membuka Jadwal lalu Planning', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(360, 900);
@@ -492,7 +494,7 @@ void main() {
 
     await tester.tap(find.text('Lihat semua').first);
     await tester.pump(const Duration(milliseconds: 60));
-    expect(nav, 'todo');
+    expect(nav, 'jadwal');
 
     await tester.ensureVisible(find.text('Lihat semua').last);
     await tester.pump(const Duration(milliseconds: 100));

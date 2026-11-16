@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data.dart';
+import 'services/alarm_audio.dart';
 import 'services/todo_notifications.dart';
 
 class Txn {
@@ -383,6 +384,12 @@ class AppState extends ChangeNotifier {
   String notifSound = 'sistem'; // 'sistem' | 'ding' | 'chime' | 'lembut'
   bool notifVibrate = true;
 
+  // Nama file nada alarm kustom milik user. File audionya disalin native ke
+  // penyimpanan app; string ini hanya untuk ditampilkan di UI.
+  String customAlarmName = '';
+
+  bool get hasCustomAlarm => customAlarmName.trim().isNotEmpty;
+
   static const notifSounds = ['sistem', 'ding', 'chime', 'lembut'];
 
   String get notifSoundLabel => switch (notifSound) {
@@ -391,6 +398,21 @@ class AppState extends ChangeNotifier {
     'lembut' => 'Lembut',
     _ => 'Nada sistem',
   };
+
+  /// Simpan nama file nada alarm kustom setelah berhasil diimpor.
+  Future<void> setCustomAlarmName(String name) async {
+    customAlarmName = name.trim();
+    notifyListeners();
+    await save();
+  }
+
+  /// Hapus nada alarm kustom dari app sekaligus dari penyimpanan native.
+  Future<void> clearCustomAlarm() async {
+    customAlarmName = '';
+    await AlarmAudio.clearCustom();
+    notifyListeners();
+    await save();
+  }
 
   /// Ubah nada/getar lalu jadwalkan ulang semua pengingat (kanal Android
   /// mengunci nada saat dibuat, jadi kanal baru harus dipakai).
@@ -828,6 +850,8 @@ class AppState extends ChangeNotifier {
     unawaited(TodoNotif.cancelAll());
     final p = await SharedPreferences.getInstance();
     await p.remove(prefKey);
+    customAlarmName = '';
+    await AlarmAudio.clearCustom();
     notifyListeners();
   }
 
@@ -994,6 +1018,7 @@ class AppState extends ChangeNotifier {
     workoutReminderMin = 16 * 60 + 30;
     notifSound = 'sistem';
     notifVibrate = true;
+    customAlarmName = '';
     studySubjects = [];
     studySessions = [];
     final now = DateTime.now();
@@ -1052,6 +1077,7 @@ class AppState extends ChangeNotifier {
     final ns = j['notifSound'] as String?;
     if (ns != null && notifSounds.contains(ns)) notifSound = ns;
     notifVibrate = j['notifVibrate'] as bool? ?? true;
+    customAlarmName = (j['customAlarmName'] as String? ?? '').trim();
     TodoNotif.configure(sound: notifSound, vibrate: notifVibrate);
     studySubjects = (j['studySubjects'] as List? ?? [])
         .map((e) => StudySubject.fromJson(e as Map<String, dynamic>))
@@ -1166,6 +1192,7 @@ class AppState extends ChangeNotifier {
     'workoutReminderMin': workoutReminderMin,
     'notifSound': notifSound,
     'notifVibrate': notifVibrate,
+    'customAlarmName': customAlarmName,
     'studySubjects': studySubjects.map((s) => s.toJson()).toList(),
     'studySessions': studySessions.map((s) => s.toJson()).toList(),
     'xp': xp,

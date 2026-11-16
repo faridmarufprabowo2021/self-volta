@@ -46,8 +46,9 @@ class AppIcon extends StatelessWidget {
   }
 }
 
-/// Logo V SELF VOLTA: kotak putih + huruf V sea + glow lembut.
-/// Dipakai di AppBar & header drawer (satu glow per elemen).
+/// Logo SELF VOLTA bergaya "Kinetic Volt": squircle gelap premium dengan
+/// huruf V miring bergradien cyan→amber dan glow tipis. Dipakai di AppBar,
+/// drawer, dan profil — satu glow per elemen.
 class VLogo extends StatelessWidget {
   final double size;
   final double fontSize;
@@ -58,15 +59,50 @@ class VLogo extends StatelessWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: Neu.raised(r: size / 3, d: 2.5),
-      child: Text(
-        'V',
-        style: const TextStyle(
-          fontFamily: 'Manrope',
-          fontWeight: FontWeight.w800,
-          height: 1.0,
-          color: Star.star,
-        ).copyWith(fontSize: fontSize),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(math.min(14, size * .42)),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF0F172A), Color(0xFF1E293B)],
+        ),
+        border: Border.all(color: const Color(0x3338BDF8)),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF38BDF8).withValues(alpha: .30),
+            blurRadius: size * .52,
+            spreadRadius: size * .03,
+          ),
+          BoxShadow(
+            color: const Color(0xFFF59E0B).withValues(alpha: .16),
+            blurRadius: size * .34,
+            offset: Offset(0, size * .10),
+          ),
+        ],
+      ),
+      child: ShaderMask(
+        blendMode: BlendMode.srcIn,
+        shaderCallback: (rect) => const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF38BDF8), Color(0xFF22D3EE), Color(0xFFF59E0B)],
+          stops: [0, .42, 1],
+        ).createShader(rect),
+        child: Transform.translate(
+          offset: Offset(0, -size * .015),
+          child: Text(
+            'V',
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontWeight: FontWeight.w900,
+              fontStyle: FontStyle.italic,
+              fontSize: fontSize,
+              height: 1.0,
+              letterSpacing: -1.2,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -240,6 +276,7 @@ class HRow extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: 14,
                   height: 1.25,
+                  color: Star.ink,
                 ),
               ),
               const SizedBox(height: 2),
@@ -325,6 +362,46 @@ class GradBar extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Trek progres tersegmentasi (bukan gradien): jumlah segmen tetap supaya
+/// perbandingan antar kartu terbaca cepat. Dipakai Beranda, Latihan, Air,
+/// dan Uang agar bahasa visual progres sama di seluruh aplikasi.
+class SegmentTrack extends StatelessWidget {
+  final int count;
+  final int active;
+  final Color color;
+  final double gap;
+  final double height;
+
+  const SegmentTrack({
+    super.key,
+    required this.count,
+    required this.active,
+    required this.color,
+    this.gap = 3,
+    this.height = 6,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (var i = 0; i < count; i++) ...[
+          Expanded(
+            child: Container(
+              height: height,
+              decoration: BoxDecoration(
+                color: i < active ? color : Star.line,
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
+          ),
+          if (i < count - 1) SizedBox(width: gap),
+        ],
+      ],
     );
   }
 }
@@ -566,15 +643,19 @@ class _RuleLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          text.toUpperCase(),
-          style: const TextStyle(
-            fontFamily: 'Manrope',
-            fontSize: 10.5,
-            fontWeight: FontWeight.w700,
-            height: 1.2,
-            letterSpacing: 0.9,
-            color: Star.star,
+        Flexible(
+          child: Text(
+            text.toUpperCase(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 10.5,
+              fontWeight: FontWeight.w700,
+              height: 1.2,
+              letterSpacing: 0.9,
+              color: Star.star,
+            ),
           ),
         ),
         const SizedBox(width: 8),
@@ -1526,25 +1607,32 @@ class MuscleFocusCard extends StatelessWidget {
                     ),
                     child: Icon(icon, color: Star.onAccent, size: 22),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 7,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Star.star.withValues(alpha: 0.18),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Star.star.withValues(alpha: 0.4),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 3,
                       ),
-                    ),
-                    child: Text(
-                      xpTag,
-                      style: const TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: Paper.amberInk,
+                      decoration: BoxDecoration(
+                        color: Star.star.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: Star.star.withValues(alpha: 0.4),
+                        ),
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          xpTag,
+                          style: const TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Paper.amberInk,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -1600,26 +1688,29 @@ class MuscleFocusCard extends StatelessWidget {
                   color: Star.star,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.play_circle_fill_rounded,
-                      color: Star.onAccent,
-                      size: 16,
-                    ),
-                    SizedBox(width: 6),
-                    Text(
-                      'Mulai Sesi',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
+                child: const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.play_circle_fill_rounded,
                         color: Star.onAccent,
-                        letterSpacing: 0.3,
+                        size: 16,
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 6),
+                      Text(
+                        'Mulai Sesi',
+                        style: TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Star.onAccent,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -2148,9 +2239,9 @@ class _InteractiveSpotlightDialogState
                       border: Border.all(color: Star.overlay),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
+                          color: Colors.black.withValues(alpha: 0.18),
+                          blurRadius: 24,
+                          offset: const Offset(0, 10),
                         ),
                       ],
                     ),

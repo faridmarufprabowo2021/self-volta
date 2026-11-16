@@ -87,24 +87,31 @@ class _HeroRing extends StatelessWidget {
           _PianoRing(pct),
           const SizedBox(height: 16),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Terkumpul: ${rp(got)}',
-                style: const TextStyle(
-                  color: Star.ink,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13,
-                  height: 1.7,
+              Expanded(
+                child: Text(
+                  'Terkumpul: ${rp(got)}',
+                  maxLines: 2,
+                  style: const TextStyle(
+                    color: Star.ink,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    height: 1.7,
+                  ),
                 ),
               ),
-              Text(
-                left == 0 ? 'LUNAS!' : 'Sisa: ${rp(left)}',
-                style: const TextStyle(
-                  color: Star.star,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13,
-                  height: 1.7,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  left == 0 ? 'LUNAS!' : 'Sisa: ${rp(left)}',
+                  maxLines: 2,
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    color: Star.star,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    height: 1.7,
+                  ),
                 ),
               ),
             ],

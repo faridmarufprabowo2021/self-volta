@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '../services/todo_notifications.dart';
 import '../store.dart';
 import '../widgets.dart';
+import '../widgets/custom_alarm_card.dart';
 import 'notif_settings_sheet.dart';
 import '../theme.dart';
 
@@ -324,6 +325,7 @@ class _TodoPageState extends State<TodoPage> {
                   done: doneHere.length,
                   onAdd: () => _openEditor(date: _day),
                   onNotif: () => showNotifSettingsSheet(context),
+                  onSchedule: () => widget.onNavigate('jadwal'),
                 ),
               ),
               SliverToBoxAdapter(
@@ -532,6 +534,7 @@ class _Header extends StatelessWidget {
   final int count, done;
   final VoidCallback onAdd;
   final VoidCallback onNotif;
+  final VoidCallback onSchedule;
 
   const _Header({
     required this.title,
@@ -540,6 +543,7 @@ class _Header extends StatelessWidget {
     required this.done,
     required this.onAdd,
     required this.onNotif,
+    required this.onSchedule,
   });
 
   @override
@@ -558,17 +562,39 @@ class _Header extends StatelessWidget {
           Row(
             children: [
               const Icon(Icons.grid_view_rounded, size: 16, color: Star.mut),
-              const Spacer(),
-              Text(
-                dateStr,
-                style: const TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w600,
-                  color: Star.mut,
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  dateStr,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                    color: Star.mut,
+                  ),
                 ),
               ),
-              const Spacer(),
+              const SizedBox(width: 8),
+              InkWell(
+                key: const Key('todo-schedule-btn'),
+                onTap: () {
+                  iosTapBuzz();
+                  onSchedule();
+                },
+                borderRadius: BorderRadius.circular(20),
+                child: const SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Icon(
+                    Icons.calendar_view_day_rounded,
+                    size: 20,
+                    color: Star.ink,
+                  ),
+                ),
+              ),
               InkWell(
                 key: const Key('todo-notif-btn'),
                 onTap: () {
@@ -2040,6 +2066,22 @@ class _TodoEditorState extends State<_TodoEditor> {
                         selected: _sound == s,
                       ),
                   ],
+                ),
+                const SizedBox(height: 12),
+
+                _label('Nada alarm kustom'),
+                const SizedBox(height: 7),
+                const CustomAlarmCard(dense: true),
+                const SizedBox(height: 6),
+                const Text(
+                  'Berlaku untuk semua alarm layar penuh. Notifikasi biasa tetap '
+                  'memakai nada pengingat di atas.',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 10.5,
+                    height: 1.4,
+                    color: TodoPal.ter,
+                  ),
                 ),
                 const SizedBox(height: 10),
 

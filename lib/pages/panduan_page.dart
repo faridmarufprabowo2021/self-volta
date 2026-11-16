@@ -162,19 +162,25 @@ class _PanduanPageState extends State<PanduanPage> {
               borderRadius: BorderRadius.circular(100),
               border: Border.all(color: Paper.amberInk.withValues(alpha: 0.4)),
             ),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.lightbulb_rounded, size: 14, color: Paper.amberInk),
-                SizedBox(width: 5),
-                Text(
-                  'PUSAT PANDUAN & USER FLOW',
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 10.5,
-                    fontWeight: FontWeight.w700,
-                    color: Paper.amberInk,
-                    letterSpacing: 0.5,
+                const Icon(
+                  Icons.lightbulb_rounded,
+                  size: 14,
+                  color: Paper.amberInk,
+                ),
+                const SizedBox(width: 5),
+                Flexible(
+                  child: Text(
+                    'PUSAT PANDUAN & USER FLOW',
+                    style: const TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w700,
+                      color: Paper.amberInk,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ),
               ],
@@ -394,17 +400,23 @@ class _PanduanPageState extends State<PanduanPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.lightbulb_rounded, size: 16, color: Star.star),
-                    SizedBox(width: 6),
-                    Text(
-                      '3 Lifehacks Dapur Kost Hemat:',
-                      style: TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Star.star,
+                    const Icon(
+                      Icons.lightbulb_rounded,
+                      size: 16,
+                      color: Star.star,
+                    ),
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        '3 Lifehacks Dapur Kost Hemat:',
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Star.star,
+                        ),
                       ),
                     ),
                   ],

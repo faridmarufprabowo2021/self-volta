@@ -47,7 +47,7 @@ class SharpVBottomNavBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 62,
+          height: 62 + (MediaQuery.textScalerOf(context).scale(1) - 1) * 14,
           child: Row(
             children: List.generate(items.length, (index) {
               final item = items[index];

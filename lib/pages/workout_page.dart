@@ -73,16 +73,16 @@ class WorkoutPage extends StatelessWidget {
         Color todayStatusColor;
         if (now.weekday == 1) {
           todayStatus = 'Hari Latihan: Sesi 1 (Pull & Push)';
-          todayStatusColor = Star.star;
+          todayStatusColor = Star.workout;
         } else if (now.weekday == 3) {
           todayStatus = 'Hari Latihan: Sesi 2 (Wide & Legs)';
-          todayStatusColor = Star.star;
+          todayStatusColor = Star.workout;
         } else if (now.weekday == 5) {
           todayStatus = 'Hari Latihan: Sesi 3 (Upper & Core)';
-          todayStatusColor = Star.star;
+          todayStatusColor = Star.workout;
         } else {
           todayStatus = 'Hari Pemulihan & Mobilitas (Rest Day)';
-          todayStatusColor = Star.star;
+          todayStatusColor = Star.study;
         }
 
         return ListView(
@@ -484,17 +484,20 @@ class WorkoutPage extends StatelessWidget {
           const SizedBox(height: 12),
           // Progress Bar Volume Mingguan
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Progres Volume Gerakan Mingguan',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11.5,
-                  color: Star.mut,
-                  fontWeight: FontWeight.w500,
+              const Expanded(
+                child: Text(
+                  'Progres Volume Gerakan Mingguan',
+                  maxLines: 2,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 11.5,
+                    color: Star.mut,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '${(weeklyProgress * 100).toInt()}%',
                 style: const TextStyle(
@@ -507,14 +510,10 @@ class WorkoutPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: LinearProgressIndicator(
-              value: weeklyProgress,
-              minHeight: 6,
-              backgroundColor: Star.sunken,
-              valueColor: AlwaysStoppedAnimation(statusColor),
-            ),
+          SegmentTrack(
+            count: 12,
+            active: workoutDoneCount.clamp(0, 12),
+            color: statusColor,
           ),
         ],
       ),
@@ -531,7 +530,7 @@ class WorkoutPage extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Icon(icon, color: Star.nebula, size: 22),
+        Icon(icon, color: Star.workout, size: 22),
         const SizedBox(width: 8),
         Expanded(
           child: Column(
@@ -871,7 +870,7 @@ class WorkoutPage extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 136,
+      height: 136 + (MediaQuery.textScalerOf(context).scale(1) - 1) * 40,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
@@ -1934,16 +1933,19 @@ class _WorkoutRestTimerState extends State<_WorkoutRestTimer> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          _isRunning ? 'Waktu Istirahat' : 'Siap Mulai',
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 11,
-                            color: Star.mut,
+                        Expanded(
+                          child: Text(
+                            _isRunning ? 'Waktu Istirahat' : 'Siap Mulai',
+                            maxLines: 2,
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 11,
+                              color: Star.mut,
+                            ),
                           ),
                         ),
+                        const SizedBox(width: 8),
                         Text(
                           '${_secondsLeft}s',
                           style: TextStyle(
@@ -2311,34 +2313,43 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Star.star.withValues(alpha: 0.14),
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.schedule_rounded,
-                          size: 12,
-                          color: Star.star,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          _countdown(),
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Star.star.withValues(alpha: 0.14),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.schedule_rounded,
+                            size: 12,
                             color: Star.star,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                _countdown(),
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: Star.star,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -2382,13 +2393,16 @@ class _DailyResetCardState extends State<_DailyResetCard> {
                             color: st.isClaimed(src) ? Star.star : Star.mut,
                           ),
                           const SizedBox(width: 4),
-                          Text(
-                            label,
-                            style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w700,
-                              color: st.isClaimed(src) ? Star.star : Star.mut,
+                          Flexible(
+                            child: Text(
+                              label,
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w700,
+                                color: st.isClaimed(src) ? Star.star : Star.mut,
+                              ),
                             ),
                           ),
                         ],

@@ -16,10 +16,10 @@ const Color _kBorder = Paper.hair;
 const Color _kNavy = Star.ink;
 const Color _kNavyFill = Star.star;
 const Color _kSlate = Star.mut;
-const Color _kAmber = Star.star;
-const Color _kAmberDark = Paper.amberInk;
-const Color _kCyan = Star.star;
-const Color _kCyanPill = Star.sunken;
+const Color _kAmber = Star.finance;
+const Color _kAmberDark = Paper.mintDeep;
+const Color _kCyan = Star.info;
+const Color _kCyanPill = Star.financeSoft;
 
 /// Kartu putih dasar halaman Uang. Dibuat lokal agar halaman lain yang masih
 /// memakai tema lama tidak ikut berubah.
@@ -501,16 +501,11 @@ class KeuanganPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 14),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: LinearProgressIndicator(
-                        value: usedRatio,
-                        minHeight: 5,
-                        backgroundColor: Star.ink.withValues(alpha: 0.07),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          _kAmber,
-                        ),
-                      ),
+                    SegmentTrack(
+                      count: 10,
+                      active: (usedRatio * 10).ceil().clamp(0, 10),
+                      color: _kAmber,
+                      gap: 2,
                     ),
                     const SizedBox(height: 14),
                     Container(
@@ -610,8 +605,10 @@ class KeuanganPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 9),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      spacing: 8,
+                      runSpacing: 2,
                       children: [
                         Text(
                           'Terkumpul ${rp(st.pianoTotal)}',
@@ -1617,7 +1614,7 @@ class _DayGrid extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         SizedBox(
-          height: 56,
+          height: 56 + (MediaQuery.textScalerOf(context).scale(1) - 1) * 18,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.zero,

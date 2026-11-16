@@ -27,9 +27,8 @@ Control, Font, Image & Icon, Window for iOS) + artikel 4-point spacing
 ## 4. Font
 - Body **14–17pt**, minimum terbaca **12pt** (app: body 13.5, sekunder 12 —
   dalam batas, jangan turunkan lagi).
-- Satu family headline + satu body (app: Poppins + Inter, pengganti
-  Fredoka/DM Sans yang tak ter-bundle). Kalau TTF Fredoka/DM Sans tersedia,
-  mapping ulang di `pubspec.yaml` + `theme.dart`.
+- Satu family untuk semua teks: **Manrope** (sudah ter-bundle di
+  `pubspec.yaml`). Jangan menambah family headline terpisah.
 - Sisakan ruang ekstra untuk teks (beda platform beda lebar render) —
   jangan hardcode lebar pas-pasan untuk label.
 
@@ -64,13 +63,24 @@ Control, Font, Image & Icon, Window for iOS) + artikel 4-point spacing
   saat tap di luar field; input angka pakai keyboard numerik (sudah) +
   pertahankan dropdown kategori.
 
-## 10. [DIGANTIKAN oleh §13] Warna & kontras (tema terang lama)
-- Primer Allports `#006C95`, aksen Picton `#0781D1`, highlight Cyan `#01BEAF`,
-  ungu Thistle, krem China Ivory; scaffold Black Haze `#F6F8F7`, kartu putih.
-- Teks di atas terang ≥4.5:1 (`ink #14323F`, `mut #4E6E7C`). Error tetap merah
-  baku (`#D64545`) demi kejelasan semantik.
-- Radius: kartu 16, box inset 12, chip/input 12, badge 8, tombol pill 9999,
-  glow hemat (satu per elemen, hanya logo V + momen achievement).
+## 10. Warna & kontras (Modern Clean / Editorial)
+- Kanvas `Star.bg #F8FAFC`, kartu `Star.surface #FFFFFF`, garis rambut
+  `Star.line #E2E8F0`, isian tenang `Star.sunken #F1F5F9`.
+- Teks: `Star.ink #143E48` (utama), `Star.mut #6B7280` (sekunder),
+  `Star.faint #8A94A6` (ikon/chevron). Jangan memakai hitam murni.
+- Radius: kartu **16** (blok besar maks 22), kontrol 12–14, chip pil 999.
+  Sheet bawah radius 24.
+- Kedalaman hanya dari border tipis + satu bayangan sangat lembut
+  (`Neu.shadows`). Bukan neumorphism, bukan glow, bukan gradien dekoratif.
+- Warna semantik:
+  - Workout — amber `#D97706` / `#F59E0B`, badge `#FEF3C7`.
+  - Air — cyan `#0891B2` / `#06B6D4`, badge `#ECFEFF`.
+  - Keuangan — emerald `#059669` / `#10B981`, badge `#ECFDF5`.
+  - Study — teal `#0D9488`, badge `#F0FDFA`.
+  - Navigasi, tautan, dan CTA memakai teal netral `Star.star #0F766E`.
+- Teks di atas bidang aksen memakai `Star.onAccent` (putih). Untuk teks kecil
+  di atas tint terang gunakan varian `*Ink` (mis. `Paper.mintDeep`), bukan
+  aksen mentah, agar kontras ≥4.5:1.
 
 ## 11. Rilis & OTA (Shorebird)
 - Release: `shorebird release android --artifact apk --target-platform
@@ -79,30 +89,34 @@ Control, Font, Image & Icon, Window for iOS) + artikel 4-point spacing
   --allow-asset-diffs`. Patch auto-apply saat app dibuka dengan internet
   (butuh 1–2x buka-tutup). Naik versi bila ganti tema/aset besar.
 
-## 12. [DIGANTIKAN oleh §13] Area jurnal — palet `Paper` lama
-- Kanvas krem `#FBF9F5`, kartu putih, hairline hangat `#E7E2DA`; tanpa bayangan.
-- Jangkar hijau tua `#16594C`; progres mint `#2E8B70`; amber `#A67C00` hanya
-  untuk target/uang; coral `#C96F5C` hanya untuk keterlambatan.
-- Radius: blok/kartu **20**, tile kecil 12–14, chip pil 999.
-- App bar halaman berkanvas krem ikut `Paper.canvas` (bukan `Star.bg`) agar
-  tidak ada sambungan dua nada; hairline bawah `Paper.hair`.
-- Teks sekunder `Paper.sec`; `Paper.ter` hanya untuk ikon/chevron. Angka
-  memakai `FontFeature.tabularFigures()`.
-- Dilarang: gradien dekoratif, ungu, emoji di UI, dan bayangan kartu.
+## 12. Area jurnal — palet `Paper`
+- `Paper` kini alias ke token `Star`; tidak ada lagi kanvas krem/hijau tua.
+  `Paper.header` = `Star.ink`, `Paper.mint` = `Star.finance`,
+  `Paper.amber` = `Star.workout`, `Paper.hair` = `Star.line`.
+- Angka memakai `FontFeature.tabularFigures()`. Teks sekunder `Paper.sec`,
+  ikon/chevron `Paper.ter`.
+- Dilarang: ungu, emoji di UI (pengecualian: chip streak `🔥` dan XP `⚡` di
+  header Beranda), dan bayangan kartu ganda.
 
-## 13. Dark Neumorphism (berlaku untuk seluruh aplikasi)
-- **Satu nada dasar** grafit dingin `Star.bg #22262B`. Kartu, kanvas, dan sheet
-  SAMA warnanya; kedalaman hanya dari sepasang bayangan (gelap kanan-bawah,
-  terang kiri-atas). Satu arah cahaya di seluruh app.
-- **Helper di `theme.dart`**: `Neu.raised()` (blok utama, CTA), `Neu.well()` /
-  `NeuWell` (input, jalur progres, item terpilih, panel info), `Neu.flat()`.
+## 13. Komponen bersama (berlaku untuk seluruh aplikasi)
+- **Helper di `theme.dart`**: `Neu.raised()` = kartu putih + border + bayangan
+  lembut; `NeuWell` = bidang slate datar (input/jalur); `Neu.flat()` = hairline.
   Baris di dalam kartu tetap datar; jangan menimbulkan semua chip.
-- **Satu aksen**: amber redup `Star.star #D9A55B`. Hijau sage (`Star.success`)
-  hanya untuk "selesai", koral (`Star.error`) hanya untuk error/terlambat.
-  Tanpa ungu, tanpa gradien dekoratif, tanpa emoji di UI.
-- Teks di atas aksen memakai `Star.onAccent`. Varian `*Ink` pada `Paper` kini
-  teks TERANG di atas tint gelap (`*Soft`).
-- Kontras: `ink` 12:1, `mut` 6:1, `faint` 3.4:1 di atas `bg`. Status terpilih
-  harus terlihat dari warna aksen, bukan hanya kedalaman bayangan.
-- Font: Manrope (variabel) untuk semua teks; angka memakai tabular figures.
-- Halaman per-fitur tidak lagi punya warna sendiri (`Themes.*` diseragamkan).
+- **Progres**: pakai `SegmentTrack` (segmen tetap, mis. 4/10/12) untuk progres
+  harian/mingguan. Jangan gradien atau bar polos tanpa alasan.
+- **Tombol aksi sekunder**: latar `Star.fill`, border `Star.line`, teks tebal
+  `Star.ink`; ikon panah memakai aksen pilar.
+- **Header padat**: judul + badge + tautan memakai `Wrap` (bukan `Row` kaku)
+  supaya turun baris di scale 2.0. Badge dalam kotak tetap wajib `FittedBox`.
+- **Status terpilih** terlihat dari warna aksen + label, bukan hanya bayangan.
+- Font Manrope untuk semua teks; halaman tidak boleh punya hex sendiri —
+  gunakan `Star`/`Paper`/`Themes.*`.
+- **Pengecualian gelap yang disengaja**: layar alarm penuh (`alarm_page.dart`)
+  memakai latar OLED hitam karena muncul saat tidur/malam. Jangan dicerahkan.
+
+## 14. Responsif & aksesibilitas teks
+- Wajib bebas overflow di lebar **320 / 360 / 412 px**, text scale **1.3 / 2.0**,
+  layar pendek, dan landscape. Uji lewat `test/layout_stress_test.dart`.
+- Jangan mengunci tinggi kartu yang berisi teks; gunakan `IntrinsicHeight`,
+  `Wrap`, `FittedBox`, atau tinggi minimum — bukan tinggi mati.
+- Target sentuh ≥48dp; ikon saja tanpa label wajib punya `Tooltip`/Semantics.

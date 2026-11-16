@@ -2,88 +2,119 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Token warna DARK NEUMORPHISM.
+/// Token warna MODERN CLEAN / EDITORIAL (terang).
 ///
-/// Prinsip (supaya tidak jadi "plastik" / slop):
-///  * Satu nada dasar grafit dingin. Kartu, kanvas, dan sheet SAMA warnanya —
-///    kedalaman hanya datang dari sepasang bayangan (gelap kanan-bawah, terang
-///    kiri-atas) dengan satu arah cahaya di seluruh aplikasi.
-///  * Satu aksen: amber redup. Hijau sage hanya untuk "selesai", koral hanya
-///    untuk error / keterlambatan. Tanpa ungu, tanpa gradien dekoratif.
-///  * Timbul (raised) hanya untuk blok utama & CTA; cekung (well) untuk input,
-///    jalur progres, dan toggle terpilih. Baris di dalam kartu tetap datar.
+/// Prinsip (supaya tidak jadi "AI slop"):
+///  * Kanvas dingin hampir putih, kartu putih murni, garis rambut slate.
+///    Kedalaman datang dari border tipis + satu bayangan sangat lembut —
+///    bukan neumorphism gelap, bukan gradien dekoratif.
+///  * Tinta utama deep teal; teks sekunder abu slate. Satu aksen netral
+///    (teal) untuk navigasi & CTA, lalu aksen semantik per pilar:
+///    workout amber, air cyan, keuangan emerald.
+///  * Radius 16 untuk kartu, 12–14 untuk kontrol. Tanpa ungu, tanpa glow.
 class Star {
   // --- Permukaan ---------------------------------------------------------
-  static const bg = Color(0xff22262B);
-  static const deepSpace = Color(0xff191C20);
-  static const sunken = Color(0xff1C1F23);
-  static const surface = Color(0xff22262B);
-  static const surface2 = Color(0xff272C32);
-  static const overlay = Color(0xff3A4048);
+  static const bg = Color(0xFFF8FAFC);
+  static const canvas = bg;
+  static const deepSpace = Color(0xFF0B2A31);
+  static const sunken = Color(0xFFF1F5F9);
+  static const surface = Color(0xFFFFFFFF);
+  static const surface2 = Color(0xFFF1F5F9);
+  static const overlay = Color(0xFFCBD5E1);
 
   // --- Aksen & semantik --------------------------------------------------
-  /// Aksen utama (amber redup, saturasi < 60%).
-  static const nebula = Color(0xffD9A55B);
-  static const star = Color(0xffD9A55B);
+  /// Aksen netral aplikasi (teal). Dipakai untuk navigasi, tautan, CTA.
+  static const nebula = Color(0xFF0D9488);
+  static const star = Color(0xFF0F766E);
 
   /// Teks / ikon di ATAS permukaan aksen.
-  static const onAccent = Color(0xff1B1D21);
-  static const onAccent70 = Color(0xB31B1D21);
-  static const onAccent54 = Color(0x8A1B1D21);
-  static const success = Color(0xff7DB894);
-  static const warning = Color(0xffD9A55B);
-  static const error = Color(0xffE27B6C);
-  static const info = Color(0xff8D9AA8);
+  static const onAccent = Color(0xFFFFFFFF);
+  static const onAccent70 = Color(0xB3FFFFFF);
+  static const onAccent54 = Color(0x8AFFFFFF);
+  static const success = Color(0xFF059669);
+  static const warning = Color(0xFFD97706);
+  static const error = Color(0xFFDC2626);
+  static const info = Color(0xFF0284C7);
 
-  // --- Teks (kontras di atas bg: ink 12:1, mut 6:1, faint 3.4:1) ---------
-  static const ink = Color(0xffE8EAED);
-  static const mut = Color(0xff9BA3AD);
-  static const faint = Color(0xff727A85);
+  // --- Aksen semantik pilar ----------------------------------------------
+  /// Workout — amber.
+  static const workout = Color(0xFFD97706);
+  static const workoutBright = Color(0xFFF59E0B);
+  static const workoutSoft = Color(0xFFFEF3C7);
 
-  /// Garis rambut & isian (dipakai sangat hemat).
-  static const line = Color(0x24FFFFFF);
-  static const lineSoft = Color(0x12FFFFFF);
-  static const fill = Color(0xFF1E2125);
-  static const fillStrong = Color(0xFF181B1E);
+  /// Air minum — cyan.
+  static const water = Color(0xFF0891B2);
+  static const waterBright = Color(0xFF06B6D4);
+  static const waterSoft = Color(0xFFECFEFF);
 
-  /// Glow tidak lagi dipakai di neumorphism; dibiarkan sebagai bayangan
-  /// halus berwarna aksen agar call-site lama tetap valid.
-  static BoxShadow glowNebulaSm({double opacity = .3}) =>
-      BoxShadow(color: nebula.withValues(alpha: opacity * .5), blurRadius: 10);
-  static BoxShadow glowStarSm({double opacity = .35}) =>
-      BoxShadow(color: star.withValues(alpha: opacity * .5), blurRadius: 10);
-  static BoxShadow glowStarMd({double opacity = .5}) =>
-      BoxShadow(color: star.withValues(alpha: opacity * .5), blurRadius: 18);
+  /// Keuangan — emerald.
+  static const finance = Color(0xFF059669);
+  static const financeBright = Color(0xFF10B981);
+  static const financeSoft = Color(0xFFECFDF5);
+
+  /// Study & fokus — teal.
+  static const study = Color(0xFF0D9488);
+  static const studySoft = Color(0xFFF0FDFA);
+
+  // --- Teks (kontras di atas putih: ink 11:1, mut 4.8:1, faint 3.1:1) ----
+  static const ink = Color(0xFF143E48);
+  static const mut = Color(0xFF6B7280);
+  static const faint = Color(0xFF8A94A6);
+
+  /// Garis rambut & isian.
+  static const line = Color(0xFFE2E8F0);
+  static const lineSoft = Color(0xFFEDF1F5);
+  static const fill = Color(0xFFF8FAFC);
+  static const fillStrong = Color(0xFFF1F5F9);
+  static const cardBorder = line;
+  static const track = Color(0xFFE2E8F0);
+
+  /// Bayangan lembut pengganti glow. Dibiarkan berwarna aksen agar
+  /// call-site lama tetap valid, tetapi opacity-nya sangat rendah.
+  static BoxShadow glowNebulaSm({double opacity = .3}) => BoxShadow(
+    color: nebula.withValues(alpha: opacity * .10),
+    blurRadius: 16,
+    offset: const Offset(0, 6),
+  );
+  static BoxShadow glowStarSm({double opacity = .35}) => BoxShadow(
+    color: star.withValues(alpha: opacity * .10),
+    blurRadius: 16,
+    offset: const Offset(0, 6),
+  );
+  static BoxShadow glowStarMd({double opacity = .5}) => BoxShadow(
+    color: star.withValues(alpha: opacity * .12),
+    blurRadius: 24,
+    offset: const Offset(0, 10),
+  );
 
   static const rSm = 8.0;
   static const rMd = 12.0;
   static const rLg = 16.0;
 }
 
-/// Palet area jurnal (Beranda, To-Do, Study). Nilai disamakan dengan [Star]
-/// supaya seluruh aplikasi satu bahasa visual.
+/// Palet area jurnal (Beranda, To-Do, Jadwal, Study). Nilai disamakan dengan
+/// [Star] supaya seluruh aplikasi satu bahasa visual.
 ///
-/// Konvensi "Ink": varian `*Ink` = warna TEKS terang di atas `*Soft`
-/// (tint gelap), bukan lagi teks gelap di atas pastel.
+/// Konvensi "Ink": varian `*Ink` = warna TEKS di atas `*Soft` (tint terang).
 class Paper {
   static const canvas = Star.bg;
   static const card = Star.surface;
 
-  /// Dulunya hijau tua jangkar; kini = aksen (isian terpilih / jangkar).
-  static const header = Star.star;
-  static const mint = Color(0xff7DB894);
-  static const mintDeep = Color(0xff9ACDAF);
-  static const mintSoft = Color(0xff29352F);
-  static const amber = Star.star;
-  static const amberInk = Color(0xffE9C48A);
-  static const amberSoft = Color(0xff342F27);
-  static const coral = Color(0xffE27B6C);
-  static const coralInk = Color(0xffF0A296);
-  static const coralSoft = Color(0xff3A2C2C);
+  /// Jangkar teks / tombol utama (deep teal), bukan aksen amber lagi.
+  static const header = Star.ink;
+  static const mint = Star.finance;
+  static const mintDeep = Color(0xFF047857);
+  static const mintSoft = Star.financeSoft;
+  static const amber = Star.workout;
+  static const amberInk = Color(0xFFB45309);
+  static const amberSoft = Star.workoutSoft;
+  static const coral = Star.error;
+  static const coralInk = Color(0xFFB91C1C);
+  static const coralSoft = Color(0xFFFEF2F2);
   static const ink = Star.ink;
   static const sec = Star.mut;
   static const ter = Star.faint;
-  static const hair = Color(0xff30353B);
+  static const hair = Star.line;
   static const field = Star.sunken;
 }
 
@@ -92,36 +123,68 @@ class Cat {
   const Cat(this.acc, this.accBg, this.accTx, this.head1, this.head2);
 }
 
-/// Aksen per halaman — sengaja DISERAGAMKAN ke satu aksen. Pembeda antar
-/// halaman datang dari ikon & judul, bukan dari pelangi warna.
+/// Aksen per halaman. Netral teal untuk halaman umum; tiga pilar utama
+/// memakai warna semantiknya sendiri agar badge & progres langsung terbaca.
 class Themes {
-  static const _c = Cat(
+  static const _base = Cat(
     Star.star,
-    Color(0xff332F28),
-    Color(0xffE9C48A),
+    Star.studySoft,
+    Color(0xFF115E59),
     Star.star,
-    Star.star,
+    Color(0xFF14B8A6),
   );
-  static const planning = _c;
-  static const workout = _c;
-  static const keuangan = _c;
-  static const ingin = _c;
-  static const minggu1 = _c;
-  static const minggu2 = _c;
-  static const booster = _c;
-  static const tips = _c;
-  static const air = _c;
-  static const buat = _c;
-  static const kombinasi = _c;
-  static const todo = _c;
+  static const _workout = Cat(
+    Star.workout,
+    Star.workoutSoft,
+    Color(0xFF92400E),
+    Star.workout,
+    Star.workoutBright,
+  );
+  static const _air = Cat(
+    Star.water,
+    Star.waterSoft,
+    Color(0xFF155E75),
+    Star.water,
+    Star.waterBright,
+  );
+  static const _finance = Cat(
+    Star.finance,
+    Star.financeSoft,
+    Color(0xFF065F46),
+    Star.finance,
+    Star.financeBright,
+  );
+
+  static const planning = _base;
+  static const workout = _workout;
+  static const keuangan = _finance;
+  static const ingin = _base;
+  static const minggu1 = _base;
+  static const minggu2 = _finance;
+  static const booster = _finance;
+  static const tips = _workout;
+  static const air = _air;
+  static const buat = _base;
+  static const kombinasi = _workout;
+  static const todo = _base;
 }
 
-Color accOf(String page) => Star.star;
+/// Aksen halaman berdasarkan id yang dipakai [SecHead]/[HRow].
+Color accOf(String page) => switch (page) {
+  'workout' => Themes.workout.acc,
+  'air' => Themes.air.acc,
+  'keuangan' => Themes.keuangan.acc,
+  'study' => Star.study,
+  'tips' => Themes.tips.acc,
+  'booster' => Themes.booster.acc,
+  'kombinasi' => Themes.kombinasi.acc,
+  _ => Star.star,
+};
 
 /// Alias kompatibilitas ke token lama.
 class CustomColors {
   static const navy = Star.deepSpace;
-  static const primaryBlue = Star.nebula;
+  static const primaryBlue = Star.star;
   static const bgWhite = Star.surface;
   static const bgGrey = Star.sunken;
   static const textPrimary = Star.ink;
@@ -129,29 +192,27 @@ class CustomColors {
   static const success = Star.success;
   static const ink = Star.ink;
   static const mut = Star.mut;
-  static const hair = Star.overlay;
+  static const hair = Star.line;
 }
 
-/// Bahasa bentuk neumorphism. Satu sumber cahaya: kiri-atas.
+/// Bahasa bentuk "kartu bersih": permukaan putih, border slate tipis, dan
+/// bayangan yang nyaris tak terlihat. `raised` tetap dipakai luas oleh
+/// halaman lama, jadi API-nya dipertahankan.
 class Neu {
-  static const shadowDark = Color(0xff14161A);
-  static const shadowLight = Color(0xff30363D);
+  static const shadowDark = Color(0xFF94A3B8);
+  static const shadowLight = Color(0xFFFFFFFF);
 
-  /// Bayangan timbul. [d] = jarak offset (6 kartu, 3 chip kecil).
+  /// Bayangan kartu: satu lapis sangat lembut, bukan glow.
   static List<BoxShadow> shadows({double d = 6}) => [
     BoxShadow(
-      color: shadowDark.withValues(alpha: .85),
-      offset: Offset(d, d),
-      blurRadius: d * 2.2,
-    ),
-    BoxShadow(
-      color: shadowLight.withValues(alpha: .75),
-      offset: Offset(-d * .8, -d * .8),
-      blurRadius: d * 2,
+      color: const Color(0xFF0F172A).withValues(alpha: .045),
+      offset: Offset(0, (d * .45).clamp(1, 8)),
+      blurRadius: d * 2.4,
+      spreadRadius: -2,
     ),
   ];
 
-  /// Dekorasi TIMBUL: blok utama, CTA, kartu hero.
+  /// Dekorasi kartu utama: putih, border #E2E8F0, radius 16–22.
   static BoxDecoration raised({
     double r = 20,
     double d = 6,
@@ -160,25 +221,21 @@ class Neu {
   }) {
     final base = color ?? Star.surface;
     return BoxDecoration(
-      color: base,
+      // Warna bertint (mis. amber-50) dibuat opak agar tidak menimpa
+      // kanvas di belakangnya secara aneh.
+      color: Color.alphaBlend(base, Star.surface),
       borderRadius: BorderRadius.circular(r),
-      gradient: (gradient && color == null)
-          ? const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xff262B31), Color(0xff1F2327)],
-            )
-          : null,
+      border: Border.all(color: Star.line),
       boxShadow: shadows(d: d),
     );
   }
 
-  /// Dekorasi CEKUNG sederhana (tanpa bayangan dalam sejati) — untuk elemen
-  /// kecil / di dalam list. Untuk cekung sejati pakai [NeuWell].
+  /// Dekorasi cekung: isian slate muda + border tipis. Untuk input, jalur
+  /// progres, dan toggle terpilih.
   static BoxDecoration well({double r = 14, Color? color}) => BoxDecoration(
     color: color ?? Star.sunken,
     borderRadius: BorderRadius.circular(r),
-    border: Border.all(color: const Color(0x0DFFFFFF)),
+    border: Border.all(color: Star.line),
   );
 
   /// Datar: hanya hairline. Untuk baris di dalam kartu.
@@ -188,8 +245,9 @@ class Neu {
   );
 }
 
-/// Permukaan CEKUNG sejati: bayangan dalam gelap di tepi kiri-atas dan
-/// sorot terang di tepi kanan-bawah. Untuk jalur progres, input, toggle.
+/// Permukaan cekung sederhana (isian slate + border). Dulu memakai bayangan
+/// dalam ala neumorphism; pada tema terang efek itu terlihat kotor, jadi
+/// diganti bidang datar yang bersih. API dipertahankan.
 class NeuWell extends StatelessWidget {
   final Widget? child;
   final double radius;
@@ -210,55 +268,19 @@ class NeuWell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: CustomPaint(
-        foregroundPainter: _InsetPainter(radius, depth),
-        child: Container(
-          width: width,
-          height: height,
-          padding: padding,
-          color: color ?? Star.sunken,
-          child: child,
-        ),
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: color ?? Star.sunken,
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color: Star.lineSoft),
       ),
+      child: child,
     );
   }
-}
-
-class _InsetPainter extends CustomPainter {
-  final double radius, depth;
-  const _InsetPainter(this.radius, this.depth);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
-    final rr = RRect.fromRectAndRadius(rect, Radius.circular(radius));
-    canvas.save();
-    canvas.clipRRect(rr);
-    final outer = Path()..addRect(rect.inflate(depth * 6));
-    void shade(Offset shift, Color c) {
-      final hole = Path()..addRRect(rr.shift(shift));
-      final ring = Path.combine(PathOperation.difference, outer, hole);
-      canvas.drawPath(
-        ring,
-        Paint()
-          ..color = c
-          ..maskFilter = MaskFilter.blur(BlurStyle.normal, depth * 1.2),
-      );
-    }
-
-    shade(Offset(depth, depth), Neu.shadowDark.withValues(alpha: .95));
-    shade(
-      Offset(-depth * .8, -depth * .8),
-      Neu.shadowLight.withValues(alpha: .55),
-    );
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(_InsetPainter old) =>
-      old.radius != radius || old.depth != depth;
 }
 
 /// Skala tipografi aplikasi — satu keluarga (Manrope). Judul 700-800 rapat,
@@ -347,19 +369,20 @@ class AppText {
 
 const _sysOverlay = SystemUiOverlayStyle(
   statusBarColor: Colors.transparent,
-  statusBarIconBrightness: Brightness.light,
-  statusBarBrightness: Brightness.dark,
+  statusBarIconBrightness: Brightness.dark,
+  statusBarBrightness: Brightness.light,
   systemNavigationBarColor: Star.bg,
-  systemNavigationBarIconBrightness: Brightness.light,
+  systemNavigationBarDividerColor: Star.bg,
+  systemNavigationBarIconBrightness: Brightness.dark,
 );
 
-/// Dipanggil sekali saat start agar ikon status bar terang di atas gelap.
+/// Dipanggil sekali saat start agar ikon status bar gelap di atas kanvas terang.
 void applySystemOverlay() => SystemChrome.setSystemUIOverlayStyle(_sysOverlay);
 
 ThemeData buildTheme() {
   final base = ThemeData(
     useMaterial3: true,
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     platform: TargetPlatform.iOS,
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
@@ -367,15 +390,25 @@ ThemeData buildTheme() {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       },
     ),
-    colorScheme: const ColorScheme.dark(
+    colorScheme: const ColorScheme.light(
       primary: Star.star,
       onPrimary: Star.onAccent,
-      secondary: Star.nebula,
+      primaryContainer: Star.studySoft,
+      onPrimaryContainer: Star.ink,
+      secondary: Star.workout,
       onSecondary: Star.onAccent,
+      secondaryContainer: Star.workoutSoft,
+      onSecondaryContainer: Star.ink,
+      tertiary: Star.finance,
+      onTertiary: Star.onAccent,
+      tertiaryContainer: Star.financeSoft,
+      onTertiaryContainer: Star.ink,
       surface: Star.surface,
       onSurface: Star.ink,
       error: Star.error,
       onError: Star.onAccent,
+      outline: Star.line,
+      outlineVariant: Star.lineSoft,
     ),
     scaffoldBackgroundColor: Star.bg,
     canvasColor: Star.bg,
@@ -426,33 +459,38 @@ ThemeData buildTheme() {
         letterSpacing: -0.4,
         color: Star.ink,
       ),
-      iconTheme: IconThemeData(color: Star.star, size: 22),
-      actionsIconTheme: IconThemeData(color: Star.star, size: 22),
+      iconTheme: IconThemeData(color: Star.ink, size: 22),
+      actionsIconTheme: IconThemeData(color: Star.ink, size: 22),
     ),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: Star.surface2,
+      // Teal tua: teks putih selalu terbaca, termasuk saat halaman
+      // menimpanya dengan warna aksen/error.
+      backgroundColor: Star.ink,
       contentTextStyle: const TextStyle(
-        color: Star.ink,
+        color: Star.onAccent,
         fontFamily: 'Manrope',
         fontWeight: FontWeight.w600,
         fontSize: 13.5,
       ),
-      actionTextColor: Star.star,
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      actionTextColor: Star.workoutBright,
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       insetPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
     ),
     cardTheme: CardThemeData(
       elevation: 0,
       color: Star.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: Star.line),
+      ),
       shadowColor: Colors.transparent,
     ),
     dividerTheme: const DividerThemeData(color: Star.lineSoft, thickness: 1),
     splashFactory: InkRipple.splashFactory,
-    splashColor: const Color(0x1AD9A55B),
+    splashColor: const Color(0x140F766E),
     highlightColor: Colors.transparent,
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
@@ -461,17 +499,17 @@ ThemeData buildTheme() {
         foregroundColor: Star.onAccent,
         textStyle: AppText.button,
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(64, 50),
         foregroundColor: Star.ink,
-        backgroundColor: Star.surface,
+        backgroundColor: Star.fill,
         side: const BorderSide(color: Star.line, width: 1),
         textStyle: AppText.button,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -482,10 +520,10 @@ ThemeData buildTheme() {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
-    // Input = sumur cekung: isian lebih gelap dari kanvas, tanpa outline.
+    // Input: isian slate muda + border tipis; fokus teal.
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Star.sunken,
+      fillColor: Star.fill,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
       labelStyle: const TextStyle(
         color: Star.mut,
@@ -499,20 +537,20 @@ ThemeData buildTheme() {
       ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0x0DFFFFFF)),
+        borderSide: const BorderSide(color: Star.line),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0x0DFFFFFF)),
+        borderSide: const BorderSide(color: Star.line),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Star.star, width: 1.2),
+        borderSide: const BorderSide(color: Star.star, width: 1.4),
       ),
     ),
     checkboxTheme: CheckboxThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-      side: const BorderSide(color: Star.faint, width: 1.5),
+      side: const BorderSide(color: Star.overlay, width: 1.5),
       fillColor: WidgetStateProperty.resolveWith(
         (s) =>
             s.contains(WidgetState.selected) ? Star.star : Colors.transparent,
@@ -521,10 +559,10 @@ ThemeData buildTheme() {
     ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith(
-        (s) => s.contains(WidgetState.selected) ? Star.onAccent : Star.mut,
+        (s) => s.contains(WidgetState.selected) ? Star.onAccent : Star.surface,
       ),
       trackColor: WidgetStateProperty.resolveWith(
-        (s) => s.contains(WidgetState.selected) ? Star.star : Star.sunken,
+        (s) => s.contains(WidgetState.selected) ? Star.star : Star.overlay,
       ),
       trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
     ),
@@ -544,7 +582,7 @@ ThemeData buildTheme() {
         fontSize: 14,
         height: 1.45,
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Star.surface,
@@ -553,7 +591,7 @@ ThemeData buildTheme() {
       showDragHandle: false,
       dragHandleColor: Star.overlay,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
     ),
     datePickerTheme: const DatePickerThemeData(
@@ -566,19 +604,19 @@ ThemeData buildTheme() {
       hourMinuteColor: Star.sunken,
     ),
     popupMenuTheme: const PopupMenuThemeData(
-      color: Star.surface2,
+      color: Star.surface,
       surfaceTintColor: Colors.transparent,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: Star.star,
-      linearTrackColor: Star.sunken,
+      linearTrackColor: Star.track,
     ),
     tooltipTheme: TooltipThemeData(
       decoration: BoxDecoration(
-        color: Star.surface2,
-        borderRadius: BorderRadius.circular(10),
+        color: Star.ink,
+        borderRadius: BorderRadius.circular(8),
       ),
-      textStyle: const TextStyle(color: Star.ink, fontSize: 12),
+      textStyle: const TextStyle(color: Star.onAccent, fontSize: 12),
     ),
     listTileTheme: ListTileThemeData(
       textColor: Star.ink,

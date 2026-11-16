@@ -118,7 +118,9 @@ class _AlarmPageState extends State<AlarmPage> {
       ),
     );
     AlarmAudio.setAlarmMode(true);
-    AlarmAudio.start(sound: widget.data.sound);
+    AlarmAudio.start(
+      sound: AppState.I.hasCustomAlarm ? 'kustom' : widget.data.sound,
+    );
   }
 
   @override
@@ -189,7 +191,9 @@ class _AlarmPageState extends State<AlarmPage> {
         .where((t) => t.id == widget.data.id)
         .firstOrNull;
     final title = task?.title ?? widget.data.title;
-    final soundLabel = widget.data.sound.isEmpty
+    final soundLabel = AppState.I.hasCustomAlarm
+        ? 'Nada kustom'
+        : widget.data.sound.isEmpty
         ? 'Nada setelan'
         : TodoNotif.soundLabel(widget.data.sound);
 

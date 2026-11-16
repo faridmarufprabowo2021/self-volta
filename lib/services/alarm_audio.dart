@@ -15,10 +15,15 @@ class AlarmAudio {
 
   static bool get _supported => !kIsWeb && Platform.isAndroid;
 
+  /// Penanda preview aktif; start/stop lain membatalkan preview agar alarm
+  /// sungguhan tidak ikut dimatikan oleh timer preview.
+  static int _previewToken = 0;
+
   /// Mulai nada alarm berulang. `sound` = '', 'sistem', 'ding', 'chime',
-  /// atau 'lembut'.
+  /// 'lembut', atau 'kustom'.
   static Future<void> start({String sound = ''}) async {
     if (!_supported) return;
+    _previewToken++;
     try {
       await _channel.invokeMethod<void>('start', {'sound': sound});
     } catch (_) {}
@@ -26,6 +31,50 @@ class AlarmAudio {
 
   static Future<void> stop() async {
     if (!_supported) return;
+    _previewToken++;
+    try {
+      await _channel.invokeMethod<void>('stop');
+    } catch (_) {}
+  }
+
+  /// Buka pemilih file audio milik user, lalu simpan sebagai nada alarm.
+  ///
+  /// Mengembalikan nama file yang dipilih, `null` bila user batal, atau
+  /// melempar [PlatformException] bila file terlalu besar / tidak terbaca.
+  static Future<String?> pickCustom() async {
+    if (!_supported) return null;
+    return _channel.invokeMethod<String>('pickCustom');
+  }
+
+  /// Hapus file nada kustom dari penyimpanan app.
+  static Future<void> clearCustom() async {
+    if (!_supported) return;
+    try {
+      await _channel.invokeMethod<void>('clearCustom');
+    } catch (_) {}
+  }
+
+  /// Putar nada kustom ±6 detik sebagai contoh, lalu berhenti sendiri.
+  static Future<void> previewCustom() async {
+    if (!_supported) return;
+    final token = ++_previewToken;
+    try {
+      await _channel.invokeMethod<void>('start', {'sound': 'kustom'});
+    } catch (_) {
+      return;
+    }
+    await Future<void>.delayed(const Duration(seconds: 6));
+    if (token != _previewToken) return;
+    _previewToken++;
+    try {
+      await _channel.invokeMethod<void>('stop');
+    } catch (_) {}
+  }
+
+  /// Hentikan preview nada kustom tanpa menyentuh alarm yang sedang tampil.
+  static Future<void> stopPreview() async {
+    if (!_supported) return;
+    _previewToken++;
     try {
       await _channel.invokeMethod<void>('stop');
     } catch (_) {}

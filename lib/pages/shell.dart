@@ -14,6 +14,7 @@ import 'booster_page.dart';
 import 'buat_page.dart';
 import 'home_page.dart';
 import 'ingin_page.dart';
+import 'jadwal_page.dart';
 import 'keuangan_page.dart';
 import 'minggu_page.dart';
 import 'planning_page.dart';
@@ -396,7 +397,11 @@ class _HomeShellState extends State<HomeShell> {
     final theme = Theme.of(context);
     // Beranda, To-Do, dan Study memakai kanvas kertas hangat; app bar ikut
     // kanvas itu agar tidak ada sambungan dua nada abu-krem di bagian atas.
-    final isPaperPage = _page == 'home' || _page == 'todo' || _page == 'study';
+    final isPaperPage =
+        _page == 'home' ||
+        _page == 'todo' ||
+        _page == 'jadwal' ||
+        _page == 'study';
 
     return PopScope(
       canPop: false,
@@ -580,6 +585,12 @@ class _HomeShellState extends State<HomeShell> {
                     'Tugas, pengingat & bonus XP',
                   ),
                   (
+                    'jadwal',
+                    'Jadwal Harian',
+                    Icons.calendar_view_day_rounded,
+                    'Baca timeline tugas hari ini',
+                  ),
+                  (
                     'study',
                     'Study & Fokus',
                     Icons.school_rounded,
@@ -687,6 +698,8 @@ class _HomeShellState extends State<HomeShell> {
         return HomePage(onNavigate: _set);
       case 'todo':
         return TodoPage(onNavigate: _set);
+      case 'jadwal':
+        return JadwalPage(onNavigate: _set);
       case 'study':
         return const StudyPage();
       case 'workout':

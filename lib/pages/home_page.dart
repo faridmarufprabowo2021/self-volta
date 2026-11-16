@@ -1,22 +1,25 @@
-// Beranda "Kertas & Tinta" SELF VOLTA.
+// Beranda SELF VOLTA — dashboard terang bergaya editorial.
 //
-// Satu kartu jangkar navy untuk sholat, satu kartu putih untuk Hari Ini
-// (kebiasaan + To-Do), lalu aksi cepat dan menu makanan bergaya monokrom.
-// Data selalu nyata: jadwal sholat dihitung PrayerService, cuaca tidak
-// dikarang, dan streak palsu tidak ditampilkan.
+// Susunan mengikuti mockup_beranda.html: header sapaan + XP, hero 2x2
+// (jadwal sholat & cuaca nyata), Pilar Harian 2x2 dengan trek progres
+// tersegmentasi, kebiasaan, tugas, resep hemat, lalu menu cepat.
+// Data tetap nyata: jadwal sholat dari PrayerService, cuaca dari Open-Meteo,
+// progres latihan/air/keuangan/study dari AppState.
 
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../data.dart';
 import '../services/prayer_service.dart';
+import '../services/weather_service.dart';
 import '../store.dart';
+import '../theme.dart';
 import '../widgets.dart';
 import 'notif_settings_sheet.dart';
 import 'todo_page.dart';
-import '../theme.dart';
 
 const Color _canvas = Star.bg;
 const Color _card = Star.surface;
@@ -26,6 +29,11 @@ const Color _navyFill = Star.star;
 const Color _slate = Star.mut;
 const Color _amber = Star.star;
 const Color _amberDark = Paper.amberInk;
+
+/// Mode hero Beranda: dua kartu sejajar (2×2), kartu sholat melebar penuh
+/// 4×2, atau kartu cuaca melebar penuh 4×2. Kartu yang tidak aktif digeser
+/// keluar layar, bukan disembunyikan mendadak.
+enum HeroBentoMode { split, prayer4x2, weather4x2 }
 
 class HomePage extends StatefulWidget {
   final ValueChanged<String> onNavigate;
@@ -37,8 +45,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _showPrayerDetails = false;
   String _mealCategory = 'semua';
+  HeroBentoMode _heroMode = HeroBentoMode.split;
+  double _heroDragDx = 0;
+  Timer? _clockTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Orbit matahari/bulan dan hitung mundur sholat ikut berjalan tanpa
+    // menunggu interaksi lain.
+    _clockTimer = Timer.periodic(const Duration(minutes: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _clockTimer?.cancel();
+    super.dispose();
+  }
 
   String _greeting(int hour) {
     if (hour >= 4 && hour < 11) return 'Selamat Pagi';
@@ -98,10 +124,7 @@ class _HomePageState extends State<HomePage> {
             }
             return b.pri.compareTo(a.pri);
           });
-        final doneHabits = habits.where((h) => h.done).length;
         final doneTasks = todayTasks.where((t) => t.done).length;
-        final total = habits.length + todayTasks.length;
-        final done = doneHabits + doneTasks;
         final monthKey = '${now.year}-${now.month.toString().padLeft(2, '0')}';
         final routineDays = st.routineDaysIn(monthKey);
 
@@ -112,22 +135,25 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 36),
             children: [
               _header(now, st),
-              const SizedBox(height: 16),
-              _prayerCard(now),
-              const SizedBox(height: 16),
-              _todayCard(
-                now: now,
-                habits: habits,
-                tasks: todayTasks,
-                done: done,
-                total: total,
+              const SizedBox(height: 14),
+              ListenableBuilder(
+                listenable: PrayerService.instance,
+                builder: (_, _) => _heroBento(now),
               ),
+              const SizedBox(height: 18),
+              _sectionLabel('Pilar Harian'),
+              const SizedBox(height: 10),
+              _pilarGrid(now, st),
               const SizedBox(height: 16),
-              _quickActions(now),
-              const SizedBox(height: 16),
+              _habitStrip(habits),
+              const SizedBox(height: 18),
+              _tasksSection(now, todayTasks, doneTasks),
+              const SizedBox(height: 18),
               _mealCard(now),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               _routineStrip(routineDays, monthKey),
+              const SizedBox(height: 16),
+              _quickMenu(),
             ],
           ),
         );
@@ -146,350 +172,608 @@ class _HomePageState extends State<HomePage> {
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             fontFamily: 'Manrope',
-            fontSize: 12,
-            letterSpacing: 0.8,
-            fontWeight: FontWeight.w600,
+            fontSize: 10.5,
+            letterSpacing: 1.0,
+            fontWeight: FontWeight.w700,
             color: _slate,
           ),
         ),
-        const SizedBox(height: 5),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+        const SizedBox(height: 6),
+        Text(
+          _greeting(now.hour),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 26,
+            height: 1.08,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.9,
+            color: _navy,
+          ),
+        ),
+        const SizedBox(height: 9),
+        // Streak & XP selalu terlihat dan terhubung langsung ke AppState.
+        // Wrap supaya dua chip turun baris di layar sempit / skala teks 2.0.
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
           children: [
-            Expanded(
-              child: Text(
-                _greeting(now.hour),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 26,
-                  height: 1.1,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.7,
-                  color: _navy,
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 128),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
-                decoration: Neu.raised(r: 999, d: 6),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'Lv ${st.level} · ${st.xp} XP',
-                    maxLines: 1,
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: _slate,
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            _headerChip('🔥 ${st.streak} Hari Aktif'),
+            _headerChip('⚡ Level ${st.level} · ${st.xp} XP'),
           ],
         ),
       ],
     );
   }
 
-  // --------------------------------------------------------------- prayer
-  Widget _prayerCard(DateTime now) {
-    return ListenableBuilder(
-      listenable: PrayerService.instance,
-      builder: (context, _) {
-        final ps = PrayerService.instance;
-        final sched = ps.getTodaySchedule();
-        final current = ps.now;
-        final city = ps.selectedCity.name.split(' (').first.split(' /').first;
-        final next = _nextWajib(sched, current);
-        final prev = _previousWajib(sched, next, current);
-        final totalSec = next.at.difference(prev.at).inSeconds;
-        final elapsedSec = current.difference(prev.at).inSeconds;
-        final progress = totalSec <= 0
-            ? 0.0
-            : (elapsedSec / totalSec).clamp(0.0, 1.0);
-        final rem = next.at.difference(current);
-        final remText = rem.isNegative
-            ? 'sekarang'
-            : rem.inHours > 0
-            ? '${rem.inHours} j ${rem.inMinutes % 60} m lagi'
-            : '${rem.inMinutes} mnt lagi';
+  Widget _headerChip(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: _card,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: _border),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0F172A).withValues(alpha: .04),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Text(
+        text,
+        maxLines: 1,
+        style: const TextStyle(
+          fontFamily: 'Manrope',
+          fontSize: 10.5,
+          fontWeight: FontWeight.w800,
+          color: _navy,
+          fontFeatures: [FontFeature.tabularFigures()],
+        ),
+      ),
+    );
+  }
 
-        return Container(
-          padding: const EdgeInsets.fromLTRB(18, 16, 18, 14),
-          decoration: Neu.raised(r: 26, d: 7),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Text(
-                    'BERIKUTNYA',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 11,
-                      letterSpacing: 1.2,
-                      fontWeight: FontWeight.w700,
-                      color: Star.mut,
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      iosTapBuzz();
-                      showNotifSettingsSheet(context);
-                    },
-                    visualDensity: VisualDensity.compact,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(
-                      minWidth: 30,
-                      minHeight: 30,
-                    ),
-                    tooltip: 'Setelan alarm & notifikasi',
-                    icon: const Icon(
-                      Icons.notifications_active_outlined,
-                      size: 18,
-                      color: Star.mut,
-                    ),
-                  ),
-                  const SizedBox(width: 2),
-                  InkWell(
-                    onTap: () => _showCitySelector(context),
-                    borderRadius: BorderRadius.circular(6),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.location_on_outlined,
-                            size: 13,
-                            color: Star.mut,
-                          ),
-                          const SizedBox(width: 3),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 88),
-                            child: Text(
-                              city,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Star.mut,
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.keyboard_arrow_down_rounded,
-                            size: 15,
-                            color: Star.mut,
-                          ),
-                        ],
+  // ------------------------------------------------------------------ hero
+  /// Hero bento 2×2 ↔ 4×2. Tinggi tetap 195 (ditambah ruang saat teks
+  /// diperbesar) dan posisi kartu dianimasikan, jadi kartu benar-benar
+  /// bergeser keluar layar seperti mockup — bukan sekadar ditukar.
+  Widget _heroBento(DateTime now) {
+    final scale = MediaQuery.textScalerOf(context).scale(1);
+    final heroHeight = 195 + (scale - 1).clamp(0.0, 1.0) * 51;
+    final celestial = _celestialPosition(now);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final totalWidth = constraints.maxWidth;
+        final halfWidth = (totalWidth - 10) / 2;
+        final prayerExpanded = _heroMode == HeroBentoMode.prayer4x2;
+        final weatherExpanded = _heroMode == HeroBentoMode.weather4x2;
+        final prayerLeft = weatherExpanded ? -totalWidth - 30.0 : 0.0;
+        final weatherLeft = prayerExpanded
+            ? totalWidth + 30.0
+            : weatherExpanded
+            ? 0.0
+            : halfWidth + 10;
+        final prayerWidth = prayerExpanded ? totalWidth : halfWidth;
+        final weatherWidth = weatherExpanded ? totalWidth : halfWidth;
+
+        return GestureDetector(
+          key: const Key('hero-bento'),
+          behavior: HitTestBehavior.translucent,
+          onHorizontalDragStart: (_) => _heroDragDx = 0,
+          onHorizontalDragUpdate: (d) => _heroDragDx += d.delta.dx,
+          onHorizontalDragEnd: _onHeroDragEnd,
+          child: SizedBox(
+            height: heroHeight,
+            child: Stack(
+              clipBehavior: Clip.hardEdge,
+              children: [
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 430),
+                  curve: Curves.easeOutCubic,
+                  left: prayerLeft,
+                  top: 0,
+                  width: prayerWidth,
+                  height: heroHeight,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 240),
+                    curve: Curves.easeOut,
+                    opacity: weatherExpanded ? 0 : 1,
+                    child: IgnorePointer(
+                      ignoring: weatherExpanded,
+                      child: _prayerHero(
+                        now,
+                        heroHeight,
+                        expanded: prayerExpanded,
+                        celestial: celestial,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              LayoutBuilder(
-                builder: (context, box) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                            textBaseline: TextBaseline.alphabetic,
-                            children: [
-                              Text(
-                                next.name,
-                                style: const TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 24,
-                                  height: 1,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: -0.5,
-                                  color: Star.ink,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                next.time,
-                                style: const TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 24,
-                                  height: 1,
-                                  fontWeight: FontWeight.w700,
-                                  color: Star.ink,
-                                  fontFeatures: [FontFeature.tabularFigures()],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 9,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Star.sunken,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            remText,
-                            maxLines: 1,
-                            style: const TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Star.ink,
-                              fontFeatures: [FontFeature.tabularFigures()],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 13),
-              GradBar(progress * 100, height: 7),
-              const SizedBox(height: 14),
-              Row(
-                children: [
-                  for (final p in _wajibList(sched))
-                    Expanded(
-                      child: _prayerSlot(
-                        name: p.name,
-                        time: p.time,
-                        active: p.name == next.name,
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              InkWell(
-                onTap: () {
-                  iosTapBuzz();
-                  setState(() => _showPrayerDetails = !_showPrayerDetails);
-                },
-                borderRadius: BorderRadius.circular(8),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          _showPrayerDetails
-                              ? 'Sembunyikan detail'
-                              : 'Imsak ${sched.imsak}  ·  Terbit ${sched.terbit}  ·  Dhuha ${sched.dhuha}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: Star.mut,
-                            fontFeatures: const [FontFeature.tabularFigures()],
-                          ),
-                        ),
-                      ),
-                      Icon(
-                        _showPrayerDetails
-                            ? Icons.keyboard_arrow_up_rounded
-                            : Icons.keyboard_arrow_down_rounded,
-                        size: 16,
-                        color: Star.mut,
-                      ),
-                    ],
                   ),
                 ),
-              ),
-              if (_showPrayerDetails) ...[
-                const SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 9,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Star.sunken,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      _extraPrayer('Imsak', sched.imsak),
-                      _extraPrayer('Terbit', sched.terbit),
-                      _extraPrayer('Dhuha', sched.dhuha),
-                    ],
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 430),
+                  curve: Curves.easeOutCubic,
+                  left: weatherLeft,
+                  top: 0,
+                  width: weatherWidth,
+                  height: heroHeight,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 240),
+                    curve: Curves.easeOut,
+                    opacity: prayerExpanded ? 0 : 1,
+                    child: IgnorePointer(
+                      ignoring: prayerExpanded,
+                      child: _WeatherHero(
+                        height: heroHeight,
+                        city: PrayerService.instance.selectedCity,
+                        expanded: weatherExpanded,
+                        celestial: celestial,
+                        onToggleMode: _toggleWeatherMode,
+                      ),
+                    ),
                   ),
                 ),
               ],
-            ],
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _prayerSlot({
-    required String name,
-    required String time,
-    required bool active,
+  void _togglePrayerMode() {
+    iosTapBuzz();
+    _setHeroMode(
+      _heroMode == HeroBentoMode.prayer4x2
+          ? HeroBentoMode.split
+          : HeroBentoMode.prayer4x2,
+    );
+  }
+
+  void _toggleWeatherMode() {
+    iosTapBuzz();
+    _setHeroMode(
+      _heroMode == HeroBentoMode.weather4x2
+          ? HeroBentoMode.split
+          : HeroBentoMode.weather4x2,
+    );
+  }
+
+  void _setHeroMode(HeroBentoMode mode) {
+    if (_heroMode == mode) return;
+    setState(() => _heroMode = mode);
+  }
+
+  /// Swipe kiri menarik kartu cuaca (kanan) melebar; swipe kanan menarik
+  /// kartu sholat (kiri) melebar. Saat sudah melebar, swipe apa pun menutup.
+  void _onHeroDragEnd(DragEndDetails details) {
+    final velocity = details.primaryVelocity ?? 0;
+    final dx = _heroDragDx;
+    _heroDragDx = 0;
+    if (_heroMode != HeroBentoMode.split) {
+      if (dx.abs() > 36 || velocity.abs() > 240) {
+        _setHeroMode(HeroBentoMode.split);
+      }
+      return;
+    }
+    if (dx < -56 || velocity < -380) {
+      _setHeroMode(HeroBentoMode.weather4x2);
+    } else if (dx > 56 || velocity > 380) {
+      _setHeroMode(HeroBentoMode.prayer4x2);
+    }
+  }
+
+  /// Posisi 0..1 siklus langit + status malam. Siang 05.00–18.00 dihitung
+  /// linear; malam 18.00–05.00 memakai porsi sisa hari.
+  ({double t, bool night}) _celestialPosition(DateTime now) {
+    final minutes = now.hour * 60 + now.minute;
+    const sunrise = 5 * 60;
+    const sunset = 18 * 60;
+    if (minutes >= sunrise && minutes <= sunset) {
+      return (
+        t: (minutes - sunrise) / (sunset - sunrise),
+        night: false,
+      );
+    }
+    final nightMinutes = minutes > sunset
+        ? minutes - sunset
+        : minutes + 1440 - sunset;
+    return (t: nightMinutes / (1440 - (sunset - sunrise)), night: true);
+  }
+
+  Widget _prayerHero(
+    DateTime now,
+    double height, {
+    required bool expanded,
+    required ({double t, bool night}) celestial,
   }) {
+    final ps = PrayerService.instance;
+    final sched = ps.getTodaySchedule();
+    final current = ps.now;
+    final city = ps.selectedCity.name.split(' (').first.split(' /').first;
+    final next = _nextWajib(sched, current);
+    final prev = _previousWajib(sched, next, current);
+    final totalSec = next.at.difference(prev.at).inSeconds;
+    final elapsedSec = current.difference(prev.at).inSeconds;
+    final progress = totalSec <= 0
+        ? 0.0
+        : (elapsedSec / totalSec).clamp(0.0, 1.0);
+    final rem = next.at.difference(current);
+    final remText = rem.isNegative
+        ? 'sekarang'
+        : rem.inHours > 0
+        ? '${rem.inHours}j ${rem.inMinutes % 60}m'
+        : '${rem.inMinutes} mnt';
+    final wajib = _wajibList(sched);
+    final activeIndex = wajib.indexWhere((p) => p.name == next.name);
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 1.5),
-      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-      decoration: active
-          ? Neu.well(r: 12)
-          : BoxDecoration(borderRadius: BorderRadius.circular(12)),
+      height: height,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0x66FFFFFF)),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF0284C7),
+            Color(0xFF38BDF8),
+            Color(0xFF7DD3FC),
+            Color(0xFFBAE6FD),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0284C7).withValues(alpha: .18),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CustomPaint(
+            painter: _SkyPainter(t: celestial.t, night: celestial.night),
+          ),
+          MediaQuery.withClampedTextScaling(
+            maxScaleFactor: 1.5,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 10, 10, 11),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 220),
+                switchInCurve: Curves.easeOut,
+                switchOutCurve: Curves.easeIn,
+                child: expanded
+                    ? _prayerExpandedBody(
+                        city: city,
+                        sched: sched,
+                        next: next,
+                        progress: progress,
+                        wajib: wajib,
+                      )
+                    : _prayerCompactBody(
+                        city: city,
+                        next: next,
+                        remText: remText,
+                        progress: progress,
+                        wajib: wajib,
+                        activeIndex: activeIndex,
+                      ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _prayerTopBar(String city, {required bool expanded}) {
+    return Row(
+      children: [
+        Expanded(
+          child: InkWell(
+            onTap: () => _showCitySelector(context),
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.location_on_rounded,
+                    size: 11,
+                    color: Color(0xCCFFFFFF),
+                  ),
+                  const SizedBox(width: 3),
+                  Flexible(
+                    child: Text(
+                      city,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xE6FFFFFF),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        _heroCircleButton(
+          Icons.notifications_none_rounded,
+          'Setelan alarm & notifikasi',
+          () {
+            iosTapBuzz();
+            showNotifSettingsSheet(context);
+          },
+        ),
+        const SizedBox(width: 4),
+        _heroCircleButton(
+          expanded ? Icons.close_rounded : Icons.chevron_right_rounded,
+          expanded ? 'Tutup jadwal sholat' : 'Perluas jadwal sholat',
+          _togglePrayerMode,
+          key: const Key('hero-prayer-mode'),
+        ),
+      ],
+    );
+  }
+
+  Widget _prayerCompactBody({
+    required String city,
+    required _PrayerPoint next,
+    required String remText,
+    required double progress,
+    required List<_PrayerPoint> wajib,
+    required int activeIndex,
+  }) {
+    return Column(
+      key: const ValueKey('prayer-compact'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _prayerTopBar(city, expanded: false),
+        const Spacer(),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: _showPrayerScheduleSheet,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  next.name,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 13,
+                    height: 1.05,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.2,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 1),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  next.time,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 27,
+                    height: 1.0,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -1.0,
+                    color: Colors.white,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 7,
+                  vertical: 2,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0x3D0B2A31),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: const Color(0x33FFFFFF)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 4,
+                      decoration: const BoxDecoration(
+                        color: Star.workoutBright,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '$remText lagi',
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 8.5,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        fontFeatures: [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Spacer(),
+        Row(
+          children: [
+            for (var i = 0; i < wajib.length; i++) ...[
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 220),
+                width: i == activeIndex ? 7 : 5,
+                height: i == activeIndex ? 7 : 5,
+                decoration: BoxDecoration(
+                  color: i == activeIndex
+                      ? Star.workoutBright
+                      : const Color(0x66FFFFFF),
+                  shape: BoxShape.circle,
+                  border: i == activeIndex
+                      ? Border.all(
+                          color: const Color(0x99FDE68A),
+                          width: 1.5,
+                        )
+                      : null,
+                ),
+              ),
+              if (i < wajib.length - 1) const SizedBox(width: 5),
+            ],
+            const Spacer(),
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Jadwal Sholat',
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 7.5,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withValues(alpha: .78),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(999),
+          child: LinearProgressIndicator(
+            value: progress,
+            minHeight: 3,
+            backgroundColor: Colors.white.withValues(alpha: .24),
+            valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _prayerExpandedBody({
+    required String city,
+    required PrayerSchedule sched,
+    required _PrayerPoint next,
+    required double progress,
+    required List<_PrayerPoint> wajib,
+  }) {
+    return Column(
+      key: const ValueKey('prayer-expanded'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _prayerTopBar(city, expanded: true),
+        const SizedBox(height: 7),
+        Row(
+          children: [
+            for (var i = 0; i < wajib.length; i++) ...[
+              Expanded(
+                child: _prayerGridCell(
+                  wajib[i],
+                  active: wajib[i].name == next.name,
+                ),
+              ),
+              if (i < wajib.length - 1) const SizedBox(width: 3),
+            ],
+          ],
+        ),
+        const Spacer(),
+        Center(child: _prayerSunnahPill(sched)),
+        const SizedBox(height: 7),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(999),
+          child: LinearProgressIndicator(
+            value: progress,
+            minHeight: 3,
+            backgroundColor: Colors.white.withValues(alpha: .24),
+            valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _prayerGridCell(_PrayerPoint p, {required bool active}) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(2, 5, 2, 5),
+      decoration: BoxDecoration(
+        color: active ? const Color(0x73000000) : const Color(0x33000000),
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(
+          color: active ? const Color(0xCCFBBF24) : const Color(0x1FFFFFFF),
+        ),
+      ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(
-              name,
-              maxLines: 1,
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 10.5,
-                fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-                color: active ? Star.star : Star.mut,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (active) ...[
+                  Container(
+                    width: 3,
+                    height: 3,
+                    decoration: const BoxDecoration(
+                      color: Star.workoutBright,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                ],
+                Text(
+                  p.name,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 8.5,
+                    fontWeight: active ? FontWeight.w800 : FontWeight.w600,
+                    color: active
+                        ? const Color(0xFFFDE68A)
+                        : const Color(0xCCFFFFFF),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 2),
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              time,
+              p.time,
               maxLines: 1,
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontSize: 11.5,
-                fontWeight: FontWeight.w700,
-                color: active ? Star.star : Star.ink,
+                height: 1.0,
+                fontWeight: FontWeight.w800,
+                color: active ? const Color(0xFFFDE68A) : Colors.white,
                 fontFeatures: const [FontFeature.tabularFigures()],
               ),
             ),
@@ -499,27 +783,204 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _extraPrayer(String label, String time) {
-    return Expanded(
+  Widget _prayerSunnahPill(PrayerSchedule sched) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      decoration: BoxDecoration(
+        color: const Color(0x59000000),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: const Color(0x1FFFFFFF)),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _sunnahText('Imsak', sched.imsak, const Color(0xFFE2E8F0)),
+            const Text(
+              '  ·  ',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                color: Color(0x4DFFFFFF),
+              ),
+            ),
+            _sunnahText('Terbit', sched.terbit, const Color(0xFFFDE68A)),
+            const Text(
+              '  ·  ',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                color: Color(0x4DFFFFFF),
+              ),
+            ),
+            _sunnahText('Dhuha', sched.dhuha, const Color(0xFFBAE6FD)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _sunnahText(String label, String time, Color color) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          '$label ',
+          style: const TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 8.5,
+            fontWeight: FontWeight.w500,
+            color: Color(0xB3FFFFFF),
+          ),
+        ),
+        Text(
+          time,
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 8.5,
+            fontWeight: FontWeight.w800,
+            color: color,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _heroCircleButton(
+    IconData icon,
+    String tooltip,
+    VoidCallback onTap, {
+    Key? key,
+    double size = 24,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        key: key,
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(999),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: .16),
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0x33FFFFFF)),
+          ),
+          child: Icon(icon, size: size * .58, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  // ------------------------------------------------------- pilar harian
+  Widget _pilarGrid(DateTime now, AppState st) {
+    return Column(
+      children: [
+        _pilarRow([_workoutCard(now, st), _airCard(now, st)]),
+        const SizedBox(height: 10),
+        _pilarRow([_financeCard(now, st), _studyCard(st)]),
+      ],
+    );
+  }
+
+  Widget _pilarRow(List<Widget> cards) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(child: cards[0]),
+          const SizedBox(width: 10),
+          Expanded(child: cards[1]),
+        ],
+      ),
+    );
+  }
+
+  Widget _workoutCard(DateTime now, AppState st) {
+    final session = switch (now.weekday) {
+      DateTime.monday => SESSIONS[0],
+      DateTime.wednesday => SESSIONS[1],
+      DateTime.friday => SESSIONS[2],
+      _ => null,
+    };
+    final title = switch (now.weekday) {
+      DateTime.monday => 'Pull & Push',
+      DateTime.wednesday => 'Wide & Legs',
+      DateTime.friday => 'Full Body',
+      _ => 'Pemulihan',
+    };
+    final subtitle = switch (now.weekday) {
+      DateTime.monday => 'Pull-up · Push-up · Squat',
+      DateTime.wednesday => 'Pull-up · Dip · Lunges',
+      DateTime.friday => 'Pull-up · Pike · Plank',
+      _ => 'Jalan · Mobilitas · Napas',
+    };
+    final total = session?.ex.length ?? 4;
+    var done = 0;
+    if (session != null) {
+      for (var i = 0; i < session.ex.length; i++) {
+        if (st.workoutDone['${session.id}_$i'] == true) done++;
+      }
+    }
+    return _PilarCard(
+      label: 'Workout',
+      badge: session == null ? 'Rest day' : '$done / $total selesai',
+      badgeBg: Star.workoutSoft,
+      badgeFg: const Color(0xFF92400E),
+      badgeBorder: const Color(0xFFFDE68A),
+      accent: Star.workout,
+      action: session == null ? 'Lihat Jadwal' : 'Catat Sesi',
+      onTap: () {
+        iosTapBuzz();
+        widget.onNavigate('workout');
+      },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            label,
-            style: TextStyle(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
               fontFamily: 'Manrope',
-              fontSize: 10,
-              color: Star.mut,
+              fontSize: 13,
+              height: 1.2,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.2,
+              color: _navy,
             ),
           ),
           const SizedBox(height: 2),
           Text(
-            time,
+            subtitle,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontFamily: 'Manrope',
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: Star.ink,
-              fontFeatures: [FontFeature.tabularFigures()],
+              fontSize: 10.5,
+              height: 1.35,
+              color: _slate,
+            ),
+          ),
+          const Spacer(),
+          SegmentTrack(
+            count: 4,
+            active: done.clamp(0, 4),
+            color: Star.workoutBright,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            session == null ? 'Hari pemulihan' : '$done dari $total gerakan',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 9.5,
+              fontWeight: FontWeight.w600,
+              color: Star.faint,
             ),
           ),
         ],
@@ -527,250 +988,98 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // ------------------------------------------------------------- hari ini
-  Widget _todayCard({
-    required DateTime now,
-    required List<_Habit> habits,
-    required List<SvTask> tasks,
-    required int done,
-    required int total,
-  }) {
-    final ratio = total == 0 ? 0.0 : (done / total).clamp(0.0, 1.0);
-    final nowMin = now.hour * 60 + now.minute;
-    final doneTasks = tasks.where((t) => t.done).length;
-    final visibleTasks = tasks.take(4).toList();
-
-    return Container(
-      decoration: Neu.raised(r: 16, d: 5),
+  Widget _airCard(DateTime now, AppState st) {
+    final waterDone =
+        st.eaten['water_${now.year}_${now.month}_${now.day}'] == true;
+    final targetMl = st.dailyWaterMl;
+    final liters = targetMl / 1000;
+    final galonDays = (19000 / targetMl).round();
+    return _PilarCard(
+      label: 'Air Minum',
+      badge: waterDone ? 'Tercapai' : '${liters.toStringAsFixed(1)} L',
+      badgeBg: Star.waterSoft,
+      badgeFg: const Color(0xFF155E75),
+      badgeBorder: const Color(0xFFA5F3FC),
+      accent: Star.water,
+      action: 'Catat Air',
+      onTap: () {
+        iosTapBuzz();
+        widget.onNavigate('air');
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 6, 8, 0),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
-                const Text(
-                  'HARI INI',
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 12,
-                    letterSpacing: 0.8,
-                    fontWeight: FontWeight.w700,
-                    color: _slate,
-                  ),
-                ),
-                const SizedBox(width: 8),
                 Text(
-                  '$done/$total',
+                  liters.toStringAsFixed(1),
                   style: const TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                    color: _slate,
+                    fontSize: 21,
+                    height: 1.05,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.7,
+                    color: _navy,
                     fontFeatures: [FontFeature.tabularFigures()],
                   ),
                 ),
-                const Spacer(),
-                _textLink('Lihat semua', () {
-                  iosTapBuzz();
-                  widget.onNavigate('todo');
-                }),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 6, 16, 0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(3),
-              child: LinearProgressIndicator(
-                value: ratio,
-                minHeight: 4,
-                backgroundColor: _border,
-                valueColor: const AlwaysStoppedAnimation<Color>(_amber),
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          for (final h in habits)
-            _todayRow(
-              title: h.title,
-              subtitle: h.subtitle,
-              icon: h.icon,
-              done: h.done,
-              onTap: h.onTap,
-            ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 2),
-            child: Row(
-              children: [
+                const SizedBox(width: 2),
                 const Text(
-                  'TUGAS',
+                  'L',
                   style: TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 10.5,
-                    letterSpacing: 0.7,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: _navy,
+                  ),
+                ),
+                const SizedBox(width: 3),
+                const Text(
+                  '/ hari',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 9.5,
                     fontWeight: FontWeight.w600,
-                    color: _slate,
+                    color: Star.faint,
                   ),
                 ),
-                if (tasks.isNotEmpty) ...[
-                  const SizedBox(width: 6),
-                  Text(
-                    '$doneTasks/${tasks.length}',
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                      color: Star.faint,
-                      fontFeatures: [FontFeature.tabularFigures()],
-                    ),
-                  ),
-                ],
               ],
             ),
           ),
-          if (tasks.isEmpty)
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 4, 16, 4),
-              child: Text(
-                'Belum ada tugas hari ini.',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11.5,
-                  height: 1.4,
-                  color: _slate,
-                ),
-              ),
-            )
-          else
-            for (final t in visibleTasks) _taskRow(t, nowMin),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 14),
-            child: DashedSlot(
-              label: 'Tambah tugas',
-              onTap: () {
-                iosTapBuzz();
-                showTodoEditor(context);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _todayRow({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required bool done,
-    required VoidCallback onTap,
-  }) {
-    return MergeSemantics(
-      child: InkWell(
-        onTap: onTap,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 52),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-            child: Row(
-              children: [
-                _habitMark(icon, done),
-                const SizedBox(width: 11),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 13.5,
-                          height: 1.25,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.1,
-                          color: done ? _slate : _navy,
-                        ),
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        subtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 11.5,
-                          height: 1.3,
-                          color: _slate,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                _statusPill(done),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _habitMark(IconData icon, bool done) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: done ? _amber : _canvas,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: done ? _amber : _border),
-      ),
-      child: Icon(
-        done ? Icons.check_rounded : icon,
-        size: 16,
-        color: done ? _navy : _slate,
-      ),
-    );
-  }
-
-  Widget _statusPill(bool done) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: done ? Paper.mintSoft : Colors.transparent,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: done ? Paper.mint.withValues(alpha: 0.35) : Star.overlay,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!done) ...[
-            Container(
-              width: 4,
-              height: 4,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Star.faint,
-              ),
-            ),
-            const SizedBox(width: 4),
-          ],
+          const SizedBox(height: 2),
           Text(
-            done ? 'Selesai' : 'Belum',
-            maxLines: 1,
-            style: TextStyle(
+            'Target hidrasi · galon ~$galonDays hari',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
               fontFamily: 'Manrope',
-              fontSize: 10,
-              height: 1.15,
-              fontWeight: FontWeight.w700,
-              color: done ? Paper.mintDeep : _slate,
+              fontSize: 10.5,
+              height: 1.35,
+              color: _slate,
+            ),
+          ),
+          const Spacer(),
+          SegmentTrack(
+            count: 10,
+            active: waterDone ? 10 : 0,
+            color: Star.waterBright,
+            gap: 2,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            waterDone ? 'Target hari ini tuntas' : 'Belum ada catatan hari ini',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 9.5,
+              fontWeight: FontWeight.w600,
+              color: Star.faint,
             ),
           ),
         ],
@@ -778,146 +1087,501 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _textLink(String label, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: SizedBox(
-        height: 40,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                label,
-                maxLines: 1,
-                style: const TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w700,
-                  color: _navy,
+  Widget _financeCard(DateTime now, AppState st) {
+    final monthKey = '${now.year}-${now.month.toString().padLeft(2, '0')}';
+    final monthOut = st.txns
+        .where((t) => t.bln == monthKey && t.kat != 'masuk')
+        .fold<int>(0, (a, t) => a + t.jml);
+    final budget = st.budget;
+    final sisa = budget - monthOut;
+    final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
+    final daysLeft = (daysInMonth - now.day + 1).clamp(1, 31);
+    final jatah = sisa <= 0 ? 0 : (sisa / daysLeft).floor();
+    final used = budget <= 0 ? 1.0 : (monthOut / budget).clamp(0.0, 1.0);
+    final over = used >= 1.0;
+    return _PilarCard(
+      label: 'Keuangan',
+      badge: over ? 'Lewat budget' : 'Jatah aman',
+      badgeBg: over ? Paper.coralSoft : Star.financeSoft,
+      badgeFg: over ? Paper.coralInk : const Color(0xFF065F46),
+      badgeBorder: over ? const Color(0xFFFECACA) : const Color(0xFFA7F3D0),
+      accent: over ? Star.error : Star.finance,
+      action: 'Catat Uang',
+      onTap: () => _showQuickExpense(context),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  rp(jatah),
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 21,
+                    height: 1.05,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.7,
+                    color: _navy,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 1),
-              const Icon(Icons.chevron_right_rounded, size: 16, color: _navy),
-            ],
+                const SizedBox(width: 3),
+                const Text(
+                  '/ hari',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w600,
+                    color: Star.faint,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+          const SizedBox(height: 2),
+          Text(
+            'Sisa bln ${rp(sisa)}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 10.5,
+              height: 1.35,
+              color: _slate,
+            ),
+          ),
+          const Spacer(),
+          SegmentTrack(
+            count: 10,
+            active: (used * 10).ceil().clamp(0, 10),
+            color: over ? Star.error : Star.financeBright,
+            gap: 2,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Terpakai ${rp(monthOut)}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 9.5,
+              fontWeight: FontWeight.w600,
+              color: Star.faint,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _taskRow(SvTask t, int nowMin) {
-    final overdue = !t.done && t.timeMin >= 0 && t.timeMin < nowMin;
-    final time = t.timeMin < 0 ? '' : timeLabel(t.timeMin);
-    final sub = [
-      t.cat,
-      if (t.repeat.isNotEmpty) _repeatLabel(t.repeat),
-      if (t.note.isNotEmpty) t.note,
-    ].join(' · ');
-    final hasMeta = overdue || sub.isNotEmpty;
-
-    return InkWell(
+  Widget _studyCard(AppState st) {
+    final todayMin = _studyMinutesToday(st);
+    final target = 50;
+    return _PilarCard(
+      label: 'Study & Fokus',
+      badge: '${st.studySessionsToday} sesi',
+      badgeBg: Star.studySoft,
+      badgeFg: const Color(0xFF115E59),
+      badgeBorder: const Color(0xFF99F6E4),
+      accent: Star.study,
+      action: 'Mulai Fokus',
       onTap: () {
         iosTapBuzz();
-        AppState.I.toggleTodo(t.id);
+        widget.onNavigate('study');
       },
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 54),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  '$todayMin',
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 21,
+                    height: 1.05,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.7,
+                    color: _navy,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
+                ),
+                const SizedBox(width: 2),
+                Text(
+                  '/ $target mnt',
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w600,
+                    color: Star.faint,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 2),
+          const Text(
+            'Target fokus harian',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 10.5,
+              height: 1.35,
+              color: _slate,
+            ),
+          ),
+          const Spacer(),
+          Row(
             children: [
-              SizedBox(
-                width: 42,
-                child: time.isEmpty
-                    ? const Text(
-                        '—',
-                        style: TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 11,
-                          color: Star.faint,
+              for (final m in const [15, 25, 50]) ...[
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      iosTapBuzz();
+                      widget.onNavigate('study');
+                    },
+                    borderRadius: BorderRadius.circular(6),
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      decoration: BoxDecoration(
+                        color: m == 25 ? Star.study : Star.fill,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: m == 25 ? Star.study : Star.line,
                         ),
-                      )
-                    : FittedBox(
+                      ),
+                      child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerLeft,
                         child: Text(
-                          time,
-                          maxLines: 1,
+                          '${m}m',
                           style: TextStyle(
                             fontFamily: 'Manrope',
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                            color: overdue
-                                ? Paper.coralInk
-                                : (t.done ? _slate : _amberDark),
-                            fontFeatures: const [FontFeature.tabularFigures()],
+                            fontSize: 9,
+                            fontWeight: FontWeight.w800,
+                            color: m == 25 ? Colors.white : Star.mut,
                           ),
                         ),
                       ),
+                    ),
+                  ),
+                ),
+                if (m != 50) const SizedBox(width: 3),
+              ],
+            ],
+          ),
+          const SizedBox(height: 6),
+          SegmentTrack(
+            count: 10,
+            active: (todayMin / target * 10).round().clamp(0, 10),
+            color: Star.study,
+            gap: 2,
+          ),
+        ],
+      ),
+    );
+  }
+
+  int _studyMinutesToday(AppState st) {
+    final now = DateTime.now();
+    final key =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-'
+        '${now.day.toString().padLeft(2, '0')}';
+    return st.studySessions
+        .where((s) => s.date == key)
+        .fold<int>(0, (a, s) => a + s.minutes);
+  }
+
+  // ------------------------------------------------------------- kebiasaan
+  Widget _habitStrip(List<_Habit> habits) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionLabel('Kebiasaan'),
+        const SizedBox(height: 8),
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (var i = 0; i < habits.length; i++) ...[
+                Expanded(child: _habitChip(habits[i])),
+                if (i < habits.length - 1) const SizedBox(width: 8),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _habitChip(_Habit h) {
+    final color = switch (h.icon) {
+      Icons.restaurant_outlined => Star.workout,
+      Icons.bolt_outlined => Star.finance,
+      _ => Star.water,
+    };
+    return InkWell(
+      onTap: h.onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(10, 9, 9, 9),
+        decoration: Neu.raised(r: 14, d: 3),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 26,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: .12),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(h.icon, size: 15, color: color),
+                ),
+                const Spacer(),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  width: 18,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: h.done ? color : Colors.transparent,
+                    border: Border.all(
+                      color: h.done ? color : Star.overlay,
+                      width: 1.4,
+                    ),
+                  ),
+                  child: h.done
+                      ? const Icon(
+                          Icons.check_rounded,
+                          size: 13,
+                          color: Colors.white,
+                        )
+                      : null,
+                ),
+              ],
+            ),
+            const SizedBox(height: 7),
+            Text(
+              h.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 11,
+                height: 1.25,
+                fontWeight: FontWeight.w700,
+                color: h.done ? _slate : _navy,
               ),
-              const SizedBox(width: 6),
-              _checkCircle(t.done),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+            ),
+            const SizedBox(height: 2),
+            Text(
+              h.done ? 'Selesai' : 'Belum',
+              maxLines: 1,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 9,
+                fontWeight: FontWeight.w600,
+                color: Star.faint,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ----------------------------------------------------------------- tugas
+  Widget _tasksSection(DateTime now, List<SvTask> tasks, int doneTasks) {
+    final nowMin = now.hour * 60 + now.minute;
+    final visible = tasks.take(4).toList();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Wrap, bukan Row: pada skala teks 2.0 judul + badge + tautan tidak
+        // muat satu baris, jadi badge/tautan turun baris tanpa terpotong.
+        Wrap(
+          spacing: 8,
+          runSpacing: 0,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(
+              'Tugas hari ini',
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.4,
+                color: _navy,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+              decoration: BoxDecoration(
+                color: Star.studySoft,
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: const Color(0xFFCCFBF1)),
+              ),
+              child: Text(
+                '$doneTasks / ${tasks.length} selesai',
+                maxLines: 1,
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF115E59),
+                  fontFeatures: [FontFeature.tabularFigures()],
+                ),
+              ),
+            ),
+            _textLink('Lihat semua', () {
+              iosTapBuzz();
+              widget.onNavigate('jadwal');
+            }),
+          ],
+        ),
+        const SizedBox(height: 8),
+        if (tasks.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(14),
+            decoration: Neu.raised(r: 16, d: 4),
+            child: const Text(
+              'Belum ada tugas hari ini.',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 11.5,
+                height: 1.4,
+                color: _slate,
+              ),
+            ),
+          )
+        else
+          for (final t in visible) _taskCard(t, nowMin),
+        const SizedBox(height: 2),
+        DashedSlot(
+          label: 'Tambah tugas',
+          onTap: () {
+            iosTapBuzz();
+            showTodoEditor(context);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _taskCard(SvTask t, int nowMin) {
+    final overdue = !t.done && t.timeMin >= 0 && t.timeMin < nowMin;
+    final time = t.timeMin < 0 ? '' : timeLabel(t.timeMin);
+    final meta = [
+      if (time.isNotEmpty) time,
+      if (t.cat.isNotEmpty) t.cat,
+      if (t.repeat.isNotEmpty) _repeatLabel(t.repeat),
+    ].join(' · ');
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.fromLTRB(11, 9, 4, 9),
+      decoration: BoxDecoration(
+        color: _card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Star.lineSoft),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0F172A).withValues(alpha: .035),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              iosTapBuzz();
+              AppState.I.toggleTodo(t.id);
+            },
+            borderRadius: BorderRadius.circular(999),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: _checkCircle(t.done),
+            ),
+          ),
+          const SizedBox(width: 7),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                iosTapBuzz();
+                AppState.I.toggleTodo(t.id);
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    t.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 13,
+                      height: 1.25,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.1,
+                      color: t.done ? Star.faint : _navy,
+                      decoration: t.done
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      decorationColor: Star.faint,
+                    ),
+                  ),
+                  if (meta.isNotEmpty || overdue) ...[
+                    const SizedBox(height: 2),
                     Text(
-                      t.title,
+                      overdue ? 'Terlewat · $meta' : meta,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: 'Manrope',
-                        fontSize: 13.5,
-                        height: 1.25,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -0.1,
-                        color: t.done ? _slate : _navy,
-                        decoration: t.done
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
-                        decorationColor: _slate,
+                        fontSize: 10.5,
+                        height: 1.3,
+                        fontWeight: overdue ? FontWeight.w700 : FontWeight.w500,
+                        color: overdue ? Paper.coralInk : _slate,
+                        fontFeatures: const [FontFeature.tabularFigures()],
                       ),
                     ),
-                    if (hasMeta)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              if (overdue)
-                                const TextSpan(
-                                  text: 'Terlewat',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: Paper.coralInk,
-                                  ),
-                                ),
-                              if (overdue && sub.isNotEmpty)
-                                const TextSpan(text: ' · '),
-                              if (sub.isNotEmpty) TextSpan(text: sub),
-                            ],
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 11,
-                            height: 1.3,
-                            color: _slate,
-                          ),
-                        ),
-                      ),
                   ],
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          IconButton(
+            onPressed: () {
+              iosTapBuzz();
+              showTodoEditor(context, existing: t);
+            },
+            tooltip: 'Edit tugas',
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              size: 18,
+              color: Star.faint,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -925,161 +1589,20 @@ class _HomePageState extends State<HomePage> {
   Widget _checkCircle(bool done) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
-      width: 24,
-      height: 24,
+      width: 22,
+      height: 22,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: done ? _amber : Colors.transparent,
-        border: Border.all(
-          color: done ? _amber : _navyFill.withValues(alpha: 0.55),
-          width: 1.5,
-        ),
+        color: done ? _navyFill : Colors.transparent,
+        border: Border.all(color: done ? _navyFill : Star.overlay, width: 1.5),
       ),
       child: done
-          ? const Icon(Icons.check_rounded, size: 16, color: _navy)
+          ? const Icon(Icons.check_rounded, size: 14, color: Colors.white)
           : null,
     );
   }
 
-  // --------------------------------------------------------- aksi & menu
-  Widget _quickActions(DateTime now) {
-    final isWorkoutDay = [
-      DateTime.monday,
-      DateTime.wednesday,
-      DateTime.friday,
-    ].contains(now.weekday);
-    final shortcuts = <({String title, IconData icon, String page})>[
-      (title: 'Cari Menu', icon: Icons.restaurant_outlined, page: 'planning'),
-      (title: 'Latihan', icon: Icons.fitness_center_outlined, page: 'workout'),
-      (
-        title: 'Uang',
-        icon: Icons.account_balance_wallet_outlined,
-        page: 'keuangan',
-      ),
-      (title: 'To-Do', icon: Icons.checklist_outlined, page: 'todo'),
-      (title: 'Air', icon: Icons.water_drop_outlined, page: 'air'),
-      (title: 'Booster', icon: Icons.bolt_outlined, page: 'booster'),
-      (title: 'Piano', icon: Icons.piano_outlined, page: 'ingin'),
-      (title: 'Panduan', icon: Icons.menu_book_outlined, page: 'panduan'),
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'AKSI CEPAT',
-          style: TextStyle(
-            fontFamily: 'Manrope',
-            fontSize: 10.5,
-            letterSpacing: 0.8,
-            fontWeight: FontWeight.w600,
-            color: _slate,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: FilledButton.icon(
-                onPressed: () => _showQuickExpense(context),
-                icon: const Icon(Icons.add_rounded, size: 18),
-                label: const Text('Catat uang'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: _navyFill,
-                  foregroundColor: Star.onAccent,
-                  minimumSize: const Size(0, 46),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  textStyle: const TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  iosTapBuzz();
-                  widget.onNavigate('workout');
-                },
-                icon: Icon(
-                  isWorkoutDay
-                      ? Icons.play_arrow_rounded
-                      : Icons.event_available_outlined,
-                  size: 18,
-                ),
-                label: Text(isWorkoutDay ? 'Mulai sesi' : 'Jadwal'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: _navy,
-                  minimumSize: const Size(0, 46),
-                  side: const BorderSide(color: _border, width: 1.2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  textStyle: const TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 70,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            itemCount: shortcuts.length,
-            separatorBuilder: (_, _) => const SizedBox(width: 8),
-            itemBuilder: (_, i) {
-              final s = shortcuts[i];
-              return InkWell(
-                onTap: () {
-                  iosTapBuzz();
-                  widget.onNavigate(s.page);
-                },
-                borderRadius: BorderRadius.circular(10),
-                child: SizedBox(
-                  width: 56,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        alignment: Alignment.center,
-                        decoration: Neu.raised(r: 10, d: 3),
-                        child: Icon(s.icon, size: 19, color: _navy),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        s.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: _slate,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
+  // --------------------------------------------------------------- resep
   Widget _mealCard(DateTime now) {
     final key = switch (_mealCategory) {
       'protein' => 'D',
@@ -1095,218 +1618,283 @@ class _HomePageState extends State<HomePage> {
     final kcal = macro?.k ?? TARGET_KKAL;
     final protein = macro?.p ?? TARGET_P;
     final budget = pola?.b ?? 20000;
-    final image = 'assets/images/paket_${key.toLowerCase()}.png';
 
-    return Container(
-      decoration: Neu.raised(r: 16, d: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 6, 8, 0),
-            child: Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    'MENU MAKANAN',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 12,
-                      letterSpacing: 0.8,
-                      fontWeight: FontWeight.w700,
-                      color: _slate,
-                    ),
-                  ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionLabel(
+          'Resep Makanan Hemat',
+          trailing: _textLink('Lihat semua', () {
+            iosTapBuzz();
+            widget.onNavigate('planning');
+          }),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: Neu.raised(r: 16, d: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: Row(
+                  children: [
+                    for (final c in const {
+                      'semua': 'Hari ini',
+                      'protein': 'Protein',
+                      'hemat': 'Telur & tempe',
+                      'sayur': 'Sayur',
+                      'booster': 'Booster',
+                    }.entries)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6),
+                        child: _mealPill(c.key, c.value),
+                      ),
+                  ],
                 ),
-                _textLink('Lihat semua', () {
-                  iosTapBuzz();
-                  widget.onNavigate('planning');
-                }),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              child: Row(
-                children: [
-                  for (final c in const {
-                    'semua': 'Hari ini',
-                    'protein': 'Protein',
-                    'hemat': 'Telur & tempe',
-                    'sayur': 'Sayur',
-                    'booster': 'Booster',
-                  }.entries)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 6),
-                      child: _mealPill(c.key, c.value),
-                    ),
-                ],
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    width: 104,
-                    height: 104,
-                    color: Star.surface2,
-                    child: Image.asset(
-                      image,
-                      fit: BoxFit.contain,
-                      errorBuilder: (_, _, _) => const Icon(
-                        Icons.restaurant_outlined,
-                        color: _slate,
-                        size: 28,
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: Star.workoutSoft,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: const Color(0xFFFDE68A)),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'PAKET',
+                              style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 8,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.6,
+                                color: Color(0xFF92400E),
+                              ),
+                            ),
+                            Text(
+                              key,
+                              style: const TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 23,
+                                height: 1.0,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFFB45309),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'PAKET $key · MENU HARIAN',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 10.5,
-                          letterSpacing: 0.7,
-                          fontWeight: FontWeight.w700,
-                          color: Star.faint,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 15,
-                          height: 1.22,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.2,
-                          color: _navy,
-                        ),
-                      ),
-                      if (snippet.isNotEmpty) ...[
-                        const SizedBox(height: 3),
+                  const SizedBox(width: 11),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          snippet,
+                          'PAKET $key · MENU HARIAN',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 9.5,
+                            letterSpacing: 0.6,
+                            fontWeight: FontWeight.w700,
+                            color: Star.faint,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontFamily: 'Manrope',
-                            fontSize: 11.5,
-                            height: 1.45,
-                            color: _slate,
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: 5),
-                      Text(
-                        '$kcal kkal · $protein g protein',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: _slate,
-                          fontFeatures: [FontFeature.tabularFigures()],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 1, color: _border),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 2, 8, 2),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: rp(budget),
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                            height: 1.22,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.2,
                             color: _navy,
-                            fontFeatures: [FontFeature.tabularFigures()],
                           ),
                         ),
-                        const TextSpan(
-                          text: ' /hari',
-                          style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                            color: _slate,
+                        if (snippet.isNotEmpty) ...[
+                          const SizedBox(height: 3),
+                          Text(
+                            snippet,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 10.5,
+                              height: 1.4,
+                              color: _slate,
+                            ),
                           ),
-                        ),
+                        ],
                       ],
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    iosTapBuzz();
-                    widget.onNavigate('planning');
-                  },
-                  borderRadius: BorderRadius.circular(8),
-                  child: const SizedBox(
-                    height: 40,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8),
+                ],
+              ),
+              const SizedBox(height: 9),
+              Wrap(
+                spacing: 6,
+                runSpacing: 5,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  _mealTag(
+                    '$kcal kkal',
+                    bg: const Color(0xFFF1F5F9),
+                    fg: _navy,
+                  ),
+                  _mealTag(
+                    '$protein g protein',
+                    bg: Star.workoutSoft,
+                    fg: const Color(0xFF92400E),
+                  ),
+                  Text(
+                    rp(budget),
+                    style: const TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      color: _navy,
+                      fontFeatures: [FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(height: 18, color: Star.lineSoft),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: rp(budget),
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: _navy,
+                              fontFeatures: [FontFeature.tabularFigures()],
+                            ),
+                          ),
+                          const TextSpan(
+                            text: ' /hari',
+                            style: TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 9.5,
+                              fontWeight: FontWeight.w500,
+                              color: _slate,
+                            ),
+                          ),
+                        ],
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      iosTapBuzz();
+                      widget.onNavigate('planning');
+                    },
+                    borderRadius: BorderRadius.circular(8),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 7),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             'Lihat resep',
-                            maxLines: 1,
                             style: TextStyle(
                               fontFamily: 'Manrope',
-                              fontSize: 11.5,
+                              fontSize: 11,
                               fontWeight: FontWeight.w700,
                               color: _navy,
                             ),
                           ),
-                          SizedBox(width: 4),
+                          SizedBox(width: 3),
                           Icon(
                             Icons.arrow_forward_rounded,
-                            size: 14,
+                            size: 13,
                             color: _navy,
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  Widget _mealTag(String text, {required Color bg, required Color fg}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        text,
+        maxLines: 1,
+        style: TextStyle(
+          fontFamily: 'Manrope',
+          fontSize: 9.5,
+          fontWeight: FontWeight.w700,
+          color: fg,
+          fontFeatures: const [FontFeature.tabularFigures()],
+        ),
+      ),
+    );
+  }
+
+  Widget _mealPill(String key, String label) {
+    final selected = _mealCategory == key;
+    return InkWell(
+      onTap: () {
+        iosTapBuzz();
+        setState(() => _mealCategory = key);
+      },
+      borderRadius: BorderRadius.circular(999),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+        decoration: BoxDecoration(
+          color: selected ? _navyFill : _canvas,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: selected ? _navyFill : _border),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 10.5,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+            color: selected ? Star.onAccent : _slate,
+          ),
+        ),
       ),
     );
   }
@@ -1329,60 +1917,32 @@ class _HomePageState extends State<HomePage> {
     return (dot > 0 ? clean.substring(0, dot) : clean).trim();
   }
 
-  Widget _mealPill(String key, String label) {
-    final selected = _mealCategory == key;
-    return InkWell(
-      onTap: () {
-        iosTapBuzz();
-        setState(() => _mealCategory = key);
-      },
-      borderRadius: BorderRadius.circular(999),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: selected ? _navyFill : _card,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: selected ? _navyFill : _border),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontFamily: 'Manrope',
-            fontSize: 11,
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            color: selected ? Star.onAccent : _slate,
-          ),
-        ),
-      ),
-    );
-  }
-
+  // -------------------------------------------------------------- rutinitas
   Widget _routineStrip(int days, String monthKey) {
     return InkWell(
       onTap: () => _showRoutineSheet(context, monthKey),
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
-        decoration: Neu.raised(r: 16, d: 5),
+        padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
+        decoration: Neu.raised(r: 16, d: 4),
         child: Row(
           children: [
             Container(
-              width: 36,
-              height: 36,
+              width: 34,
+              height: 34,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: _canvas,
+                color: Star.surface2,
                 shape: BoxShape.circle,
                 border: Border.all(color: _border),
               ),
               child: const Icon(
                 Icons.calendar_month_outlined,
-                size: 18,
+                size: 17,
                 color: _navy,
               ),
             ),
-            const SizedBox(width: 11),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1391,34 +1951,162 @@ class _HomePageState extends State<HomePage> {
                     'Rutinitas bulan ini',
                     style: TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 13.5,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.2,
                       color: _navy,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 1),
                   Text(
                     days == 0
                         ? 'Belum ada hari yang tercatat.'
                         : '$days hari tuntas · lihat tracker',
                     style: const TextStyle(
                       fontFamily: 'Manrope',
-                      fontSize: 11.5,
+                      fontSize: 11,
                       color: _slate,
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, size: 20, color: _slate),
+            const Icon(Icons.chevron_right_rounded, size: 19, color: _slate),
           ],
         ),
       ),
     );
   }
 
-  // ------------------------------------------------------------- helpers
+  // -------------------------------------------------------------- menu cepat
+  Widget _quickMenu() {
+    final shortcuts = <({String title, IconData icon, String page})>[
+      (title: 'Cari Menu', icon: Icons.restaurant_outlined, page: 'planning'),
+      (title: 'Latihan', icon: Icons.fitness_center_outlined, page: 'workout'),
+      (
+        title: 'Uang',
+        icon: Icons.account_balance_wallet_outlined,
+        page: 'keuangan',
+      ),
+      (title: 'To-Do', icon: Icons.checklist_outlined, page: 'todo'),
+      (title: 'Air', icon: Icons.water_drop_outlined, page: 'air'),
+      (title: 'Booster', icon: Icons.bolt_outlined, page: 'booster'),
+      (title: 'Piano', icon: Icons.piano_outlined, page: 'ingin'),
+      (title: 'Panduan', icon: Icons.menu_book_outlined, page: 'panduan'),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionLabel('Menu Cepat'),
+        const SizedBox(height: 8),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          child: Row(
+            children: [
+              for (final s in shortcuts)
+                Padding(
+                  padding: const EdgeInsets.only(right: 7),
+                  child: InkWell(
+                    onTap: () {
+                      iosTapBuzz();
+                      widget.onNavigate(s.page);
+                    },
+                    borderRadius: BorderRadius.circular(999),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _card,
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(color: _border),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(s.icon, size: 14, color: _navy),
+                          const SizedBox(width: 5),
+                          Text(
+                            s.title,
+                            maxLines: 1,
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w600,
+                              color: _navy,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // --------------------------------------------------------------- helpers
+  Widget _sectionLabel(String text, {Widget? trailing}) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            text.toUpperCase(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 10.5,
+              letterSpacing: 0.9,
+              fontWeight: FontWeight.w800,
+              color: _slate,
+            ),
+          ),
+        ),
+        ?trailing,
+      ],
+    );
+  }
+
+  Widget _textLink(String label, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 36),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                maxLines: 1,
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  color: _slate,
+                ),
+              ),
+              const SizedBox(width: 1),
+              const Icon(
+                Icons.chevron_right_rounded,
+                size: 15,
+                color: Star.faint,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _toggleHabit(String key) {
     iosTapBuzz();
     final next = !(AppState.I.eaten[key] ?? false);
@@ -1438,6 +2126,7 @@ class _HomePageState extends State<HomePage> {
     _ => '',
   };
 
+  // ----------------------------------------------------------- sheet cepat
   void _showQuickExpense(BuildContext context) {
     iosTapBuzz();
     final amount = TextEditingController();
@@ -1624,6 +2313,201 @@ class _HomePageState extends State<HomePage> {
           borderSide: const BorderSide(color: _navyFill, width: 1.5),
         ),
       );
+
+  void _showPrayerScheduleSheet() {
+    iosTapBuzz();
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(18, 14, 18, 20),
+          decoration: const BoxDecoration(
+            color: Star.surface,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+          ),
+          child: SafeArea(
+            top: false,
+            child: ListenableBuilder(
+              listenable: PrayerService.instance,
+              builder: (_, _) {
+                final ps = PrayerService.instance;
+                final sched = ps.getTodaySchedule();
+                final city = ps.selectedCity.name
+                    .split(' (')
+                    .first
+                    .split(' /')
+                    .first;
+                final next = _nextWajib(sched, ps.now);
+                final rows = [
+                  ('Imsak', sched.imsak),
+                  ('Subuh', sched.subuh),
+                  ('Terbit', sched.terbit),
+                  ('Dhuha', sched.dhuha),
+                  ('Dzuhur', sched.dzuhur),
+                  ('Ashar', sched.ashar),
+                  ('Maghrib', sched.maghrib),
+                  ('Isya', sched.isya),
+                ];
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: _border,
+                          borderRadius: BorderRadius.circular(99),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    const Text(
+                      'Jadwal sholat hari ini',
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.3,
+                        color: _navy,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '$city · dihitung astronomis (Kemenag RI)',
+                      style: const TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 11.5,
+                        color: _slate,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Star.waterSoft,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: const Color(0xFFA5F3FC)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.mosque_rounded,
+                            size: 20,
+                            color: Star.water,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'Berikutnya: ${next.name} ${next.time}',
+                              style: const TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF155E75),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    for (var i = 0; i < rows.length; i += 2)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: _prayerSheetCell(
+                                rows[i].$1,
+                                rows[i].$2,
+                                active: rows[i].$1 == next.name,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: i + 1 < rows.length
+                                  ? _prayerSheetCell(
+                                      rows[i + 1].$1,
+                                      rows[i + 1].$2,
+                                      active: rows[i + 1].$1 == next.name,
+                                    )
+                                  : const SizedBox.shrink(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 46,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          iosTapBuzz();
+                          Navigator.pop(ctx);
+                          showNotifSettingsSheet(context);
+                        },
+                        icon: const Icon(
+                          Icons.notifications_active_outlined,
+                          size: 18,
+                        ),
+                        label: const Text('Atur alarm & notifikasi'),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _prayerSheetCell(String label, String time, {required bool active}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
+      decoration: BoxDecoration(
+        color: active ? Star.workoutSoft : Star.fill,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: active ? const Color(0xFFFDE68A) : Star.lineSoft,
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 11,
+                fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                color: active ? const Color(0xFF92400E) : _slate,
+              ),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            time,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              color: active ? const Color(0xFF92400E) : _navy,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   // --------------------------------------------------------------- sheets
   void _showCitySelector(BuildContext context) {
@@ -1965,9 +2849,10 @@ class _RoutineSheetState extends State<_RoutineSheet> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: (firstWeekday - 1) + totalDays,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 7,
-                  mainAxisExtent: 38,
+                  mainAxisExtent:
+                      38 + (MediaQuery.textScalerOf(context).scale(1) - 1) * 12,
                 ),
                 itemBuilder: (_, i) {
                   final day = i - (firstWeekday - 1) + 1;
@@ -2104,4 +2989,974 @@ class _RoutineSheetState extends State<_RoutineSheet> {
       ),
     );
   }
+}
+
+/// Kartu dasar Pilar Harian: label, badge semantik, isi, dan aksi bawah.
+class _PilarCard extends StatelessWidget {
+  final String label;
+  final String badge;
+  final Color badgeBg;
+  final Color badgeFg;
+  final Color badgeBorder;
+  final Color accent;
+  final String action;
+  final VoidCallback onTap;
+  final Widget child;
+
+  const _PilarCard({
+    required this.label,
+    required this.badge,
+    required this.badgeBg,
+    required this.badgeFg,
+    required this.badgeBorder,
+    required this.accent,
+    required this.action,
+    required this.onTap,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 11, 12, 10),
+      decoration: Neu.raised(r: 16, d: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 5,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                label.toUpperCase(),
+                maxLines: 1,
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 9.5,
+                  letterSpacing: 0.7,
+                  fontWeight: FontWeight.w800,
+                  color: Star.mut,
+                ),
+              ),
+              Container(
+                constraints: const BoxConstraints(maxWidth: 66),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: badgeBg,
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: badgeBorder),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    badge,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                      color: badgeFg,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 7),
+          Expanded(child: child),
+          const SizedBox(height: 8),
+          InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(9),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 4),
+              decoration: BoxDecoration(
+                color: Star.fill,
+                borderRadius: BorderRadius.circular(9),
+                border: Border.all(color: Star.line),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        action,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w800,
+                          color: Star.ink,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                  Icon(Icons.arrow_forward_rounded, size: 12, color: accent),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Kartu cuaca hero. Memuat data nyata dari Open-Meteo sesuai kota sholat.
+class _WeatherHero extends StatefulWidget {
+  final double height;
+  final CityLocation city;
+  final bool expanded;
+  final ({double t, bool night}) celestial;
+  final VoidCallback onToggleMode;
+
+  const _WeatherHero({
+    required this.height,
+    required this.city,
+    required this.expanded,
+    required this.celestial,
+    required this.onToggleMode,
+  });
+
+  @override
+  State<_WeatherHero> createState() => _WeatherHeroState();
+}
+
+class _WeatherHeroState extends State<_WeatherHero> {
+  WeatherSnapshot? _data;
+  bool _loading = true;
+  String? _error;
+  String _cityKey = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant _WeatherHero oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.city.name != widget.city.name) _load();
+  }
+
+  Future<void> _load() async {
+    final key = widget.city.name;
+    setState(() {
+      _cityKey = key;
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final data = await WeatherService.fetch(widget.city);
+      if (!mounted || _cityKey != key) return;
+      setState(() {
+        _data = data;
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted || _cityKey != key) return;
+      setState(() {
+        _loading = false;
+        _error = 'Cuaca tidak tersedia';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final city = widget.city.name.split(' (').first.split(' /').first;
+    return Container(
+      height: widget.height,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0x66FFFFFF)),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF075985),
+            Color(0xFF0284C7),
+            Color(0xFF38BDF8),
+            Color(0xFF7DD3FC),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0284C7).withValues(alpha: .16),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CustomPaint(
+            painter: _SkyPainter(
+              t: widget.celestial.t,
+              night: widget.celestial.night,
+            ),
+          ),
+          const ColoredBox(color: Color(0x44123A46)),
+          MediaQuery.withClampedTextScaling(
+            maxScaleFactor: 1.5,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 10, 10, 11),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _weatherTopBar(city),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 220),
+                      switchInCurve: Curves.easeOut,
+                      switchOutCurve: Curves.easeIn,
+                      child: widget.expanded
+                          ? _weatherExpandedBody()
+                          : _weatherCompactBody(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _weatherTopBar(String city) {
+    return Row(
+      children: [
+        const Icon(
+          Icons.wb_sunny_outlined,
+          size: 12,
+          color: Color(0xFFFFE08A),
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Text(
+            widget.expanded ? 'CUACA · ${city.toUpperCase()}' : 'CUACA',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 8,
+              letterSpacing: 1.2,
+              fontWeight: FontWeight.w800,
+              color: Color(0xCCFFFFFF),
+            ),
+          ),
+        ),
+        if (!_loading)
+          Tooltip(
+            message: 'Muat ulang cuaca',
+            child: InkWell(
+              onTap: _load,
+              borderRadius: BorderRadius.circular(999),
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: Icon(
+                  Icons.refresh_rounded,
+                  size: 13,
+                  color: Colors.white.withValues(alpha: .78),
+                ),
+              ),
+            ),
+          ),
+        const SizedBox(width: 3),
+        Tooltip(
+          message: widget.expanded ? 'Tutup cuaca' : 'Perluas cuaca',
+          child: InkWell(
+            key: const Key('hero-weather-mode'),
+            onTap: widget.onToggleMode,
+            borderRadius: BorderRadius.circular(999),
+            child: Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: .16),
+                shape: BoxShape.circle,
+                border: Border.all(color: const Color(0x33FFFFFF)),
+              ),
+              child: Icon(
+                widget.expanded
+                    ? Icons.close_rounded
+                    : Icons.chevron_left_rounded,
+                size: 14,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _weatherCompactBody() {
+    return Column(
+      key: const ValueKey('weather-compact'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Spacer(),
+        if (_loading)
+          _weatherLoading()
+        else if (_error != null)
+          _weatherError()
+        else
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  '${_data!.temperatureC.round()}°C',
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 26,
+                    height: 1.0,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -1.0,
+                    color: Colors.white,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  WeatherService.label(_data!.code),
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 8.5,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white.withValues(alpha: .82),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        const Spacer(),
+        if (_data != null) ...[
+          Row(
+            children: [
+              Expanded(
+                child: _weatherMetric('Lembap', '${_data!.humidity}%'),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: _weatherMetric('Hujan', '${_data!.rainChance}%'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Expanded(
+                child: _weatherMetric(
+                  'Angin',
+                  '${_data!.windKph.round()} km/j',
+                ),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: _weatherMetric('UV', '${_data!.uvIndex.round()}'),
+              ),
+            ],
+          ),
+          if (_data!.hours.isNotEmpty) ...[
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                for (final h in _data!.hours.take(2)) ...[
+                  Flexible(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '${h.at.hour.toString().padLeft(2, '0')}.'
+                        '00  ${h.temperatureC.round()}°',
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 8.5,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xCCFFFFFF),
+                          fontFeatures: [FontFeature.tabularFigures()],
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (h != _data!.hours.take(2).last)
+                    const SizedBox(width: 8),
+                ],
+              ],
+            ),
+          ],
+        ],
+      ],
+    );
+  }
+
+  Widget _weatherExpandedBody() {
+    return Column(
+      key: const ValueKey('weather-expanded'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Spacer(),
+        if (_loading)
+          _weatherLoading()
+        else if (_error != null)
+          _weatherError()
+        else ...[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        '${_data!.temperatureC.round()}°',
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 24,
+                          height: 1.0,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.8,
+                          color: Colors.white,
+                          fontFeatures: [FontFeature.tabularFigures()],
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        WeatherService.label(_data!.code),
+                        style: TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 8.5,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white.withValues(alpha: .84),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6,
+                  vertical: 2,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0x26FFFFFF),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: const Color(0x1FFFFFFF)),
+                ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    'Terasa ${_data!.feelsLikeC.round()}°C',
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 8,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xE6FFFFFF),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Expanded(
+                child: _weatherMetric(
+                  'Lembap',
+                  '${_data!.humidity}%',
+                  dense: true,
+                ),
+              ),
+              const SizedBox(width: 3),
+              Expanded(
+                child: _weatherMetric(
+                  'Hujan',
+                  '${_data!.rainChance}%',
+                  dense: true,
+                ),
+              ),
+              const SizedBox(width: 3),
+              Expanded(
+                child: _weatherMetric(
+                  'Angin',
+                  '${_data!.windKph.round()} km/j',
+                  dense: true,
+                ),
+              ),
+              const SizedBox(width: 3),
+              Expanded(
+                child: _weatherMetric(
+                  'UV',
+                  '${_data!.uvIndex.round()}',
+                  dense: true,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 7),
+          if (_data!.hours.isNotEmpty)
+            Row(
+              children: [
+                for (var i = 0; i < _data!.hours.take(6).length; i++) ...[
+                  Expanded(
+                    child: _weatherHourCell(
+                      _data!.hours[i],
+                      highlighted: i == 0,
+                    ),
+                  ),
+                  if (i < _data!.hours.take(6).length - 1)
+                    const SizedBox(width: 2),
+                ],
+              ],
+            ),
+          const Spacer(),
+          Center(child: _weatherExtraPill()),
+        ],
+      ],
+    );
+  }
+
+  Widget _weatherLoading() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Memuat cuaca…',
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: Colors.white.withValues(alpha: .9),
+          ),
+        ),
+        const SizedBox(height: 3),
+        Text(
+          'Mengikuti kota sholat',
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 8.5,
+            color: Colors.white.withValues(alpha: .65),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _weatherError() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            _error!,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 3),
+        Text(
+          'Ketuk ikon segarkan untuk coba lagi',
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 8.5,
+            color: Colors.white.withValues(alpha: .7),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _weatherHourCell(WeatherHour h, {required bool highlighted}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 4),
+      decoration: BoxDecoration(
+        color: highlighted ? const Color(0x6622D3EE) : const Color(0x1FFFFFFF),
+        borderRadius: BorderRadius.circular(8),
+        border: highlighted
+            ? Border.all(color: const Color(0x6638BDF8))
+            : null,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              '${h.at.hour.toString().padLeft(2, '0')}.00',
+              maxLines: 1,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 7.5,
+                fontWeight: FontWeight.w600,
+                color: Color(0xB3FFFFFF),
+                fontFeatures: [FontFeature.tabularFigures()],
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Icon(_weatherIcon(h.code), size: 12, color: _weatherIconColor(h.code)),
+          const SizedBox(height: 1),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              '${h.temperatureC.round()}°',
+              maxLines: 1,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 9.5,
+                height: 1.0,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFFFDE68A),
+                fontFeatures: [FontFeature.tabularFigures()],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _weatherExtraPill() {
+    final data = _data!;
+    final aqi = data.aqi;
+    final pressure = data.pressureHpa > 0
+        ? '${data.pressureHpa.round()} hPa'
+        : '—';
+    final aqiText = aqi == null
+        ? '—'
+        : '$aqi ${WeatherService.aqiLabel(aqi)}';
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+      decoration: BoxDecoration(
+        color: const Color(0x59000000),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: const Color(0x1FFFFFFF)),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Tekanan ',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                fontWeight: FontWeight.w500,
+                color: Color(0xB3FFFFFF),
+              ),
+            ),
+            Text(
+              pressure,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+                fontFeatures: [FontFeature.tabularFigures()],
+              ),
+            ),
+            const Text(
+              '  ·  ',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                color: Color(0x4DFFFFFF),
+              ),
+            ),
+            const Text(
+              'AQI ',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                fontWeight: FontWeight.w500,
+                color: Color(0xB3FFFFFF),
+              ),
+            ),
+            Text(
+              aqiText,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                fontWeight: FontWeight.w800,
+                color: _aqiColor(aqi),
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _aqiColor(int? aqi) {
+    if (aqi == null) return const Color(0xB3FFFFFF);
+    if (aqi <= 50) return const Color(0xFF6EE7B7);
+    if (aqi <= 100) return const Color(0xFFFDE68A);
+    if (aqi <= 150) return const Color(0xFFFDBA74);
+    return const Color(0xFFFCA5A5);
+  }
+
+  IconData _weatherIcon(int code) => switch (code) {
+    0 || 1 => Icons.wb_sunny_rounded,
+    2 => Icons.wb_cloudy_rounded,
+    3 => Icons.cloud_rounded,
+    45 || 48 => Icons.foggy,
+    51 || 53 || 55 || 56 || 57 => Icons.grain_rounded,
+    61 || 63 || 65 || 66 || 67 => Icons.water_drop_rounded,
+    71 || 73 || 75 || 77 || 85 || 86 => Icons.ac_unit_rounded,
+    80 || 81 || 82 => Icons.umbrella_rounded,
+    95 || 96 || 99 => Icons.thunderstorm_rounded,
+    _ => Icons.cloud_rounded,
+  };
+
+  Color _weatherIconColor(int code) => switch (code) {
+    0 || 1 => const Color(0xFFFFE08A),
+    51 || 53 || 55 || 56 || 57 || 61 || 63 || 65 ||
+    80 || 81 || 82 =>
+      const Color(0xFFA5F3FC),
+    71 || 73 || 75 || 77 || 85 || 86 => const Color(0xFFE0F2FE),
+    95 || 96 || 99 => const Color(0xFFFDE68A),
+    _ => const Color(0xE6FFFFFF),
+  };
+
+  Widget _weatherMetric(String label, String value, {bool dense = false}) {
+    if (dense) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0x33000000),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: const Color(0x1FFFFFFF)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                label,
+                maxLines: 1,
+                style: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 7,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white.withValues(alpha: .65),
+                ),
+              ),
+            ),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                value,
+                maxLines: 1,
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                  fontFeatures: [FontFeature.tabularFigures()],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+      decoration: BoxDecoration(
+        color: const Color(0x33000000),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: const Color(0x1FFFFFFF)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 7,
+              fontWeight: FontWeight.w600,
+              color: Colors.white.withValues(alpha: .65),
+            ),
+          ),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              maxLines: 1,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 9,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+                fontFeatures: [FontFeature.tabularFigures()],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Latar hero: busur orbit putus-putus, matahari/bulan sesuai jam, bintang
+/// saat malam, lalu dua lapis bukit. Digambar, bukan emoji.
+class _SkyPainter extends CustomPainter {
+  final double t;
+  final bool night;
+
+  const _SkyPainter({this.t = .5, this.night = false});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final startX = w * .08;
+    final endX = w * .92;
+    final baseY = h * .60;
+    final arcHeight = h * .40;
+
+    if (night) {
+      for (final (fx, fy, r) in const [
+        (.16, .18, 1.1),
+        (.34, .11, .8),
+        (.58, .20, 1.0),
+        (.78, .12, .8),
+        (.90, .26, 1.0),
+        (.47, .30, .7),
+        (.24, .32, .7),
+      ]) {
+        canvas.drawCircle(
+          Offset(w * fx, h * fy),
+          r,
+          Paint()..color = Colors.white.withValues(alpha: .55),
+        );
+      }
+    }
+
+    // Busur orbit mengikuti y = baseY - sin(t·π)·arcHeight, jadi orb selalu
+    // duduk tepat di atas garis putus-putus.
+    final arc = Path()..moveTo(startX, baseY);
+    const steps = 56;
+    for (var i = 1; i <= steps; i++) {
+      final u = i / steps;
+      arc.lineTo(
+        startX + (endX - startX) * u,
+        baseY - math.sin(u * math.pi) * arcHeight,
+      );
+    }
+    final dashPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1
+      ..strokeCap = StrokeCap.round
+      ..color = Colors.white.withValues(alpha: .30);
+    for (final metric in arc.computeMetrics()) {
+      var distance = 0.0;
+      while (distance < metric.length) {
+        final end = math.min(distance + 3.0, metric.length);
+        canvas.drawPath(metric.extractPath(distance, end), dashPaint);
+        distance = end + 3.0;
+      }
+    }
+
+    final u = t.clamp(0.0, 1.0);
+    final orb = Offset(
+      startX + (endX - startX) * u,
+      baseY - math.sin(u * math.pi) * arcHeight,
+    );
+    if (night) {
+      canvas.drawCircle(
+        orb,
+        13,
+        Paint()..color = const Color(0x1FFFFFFF),
+      );
+      canvas.drawCircle(
+        orb,
+        8,
+        Paint()..color = const Color(0x33E2E8F0),
+      );
+      canvas.drawCircle(orb, 4.6, Paint()..color = const Color(0xFFE2E8F0));
+      canvas.drawCircle(
+        orb.translate(1.3, -1.1),
+        1.1,
+        Paint()..color = const Color(0x5594A3B8),
+      );
+    } else {
+      canvas.drawCircle(
+        orb,
+        18,
+        Paint()..color = const Color(0x22FFE08A),
+      );
+      canvas.drawCircle(
+        orb,
+        12,
+        Paint()..color = const Color(0x44FBBF24),
+      );
+      canvas.drawCircle(
+        orb,
+        7,
+        Paint()..color = const Color(0x66F59E0B),
+      );
+      canvas.drawCircle(orb, 4.8, Paint()..color = const Color(0xFFFFF3C4));
+    }
+
+    final back = Path()
+      ..moveTo(0, h * 0.74)
+      ..quadraticBezierTo(w * .32, h * .58, w * .62, h * .71)
+      ..quadraticBezierTo(w * .84, h * .79, w, h * .68)
+      ..lineTo(w, h)
+      ..lineTo(0, h)
+      ..close();
+    canvas.drawPath(back, Paint()..color = const Color(0x33115E6E));
+
+    final front = Path()
+      ..moveTo(0, h * 0.84)
+      ..quadraticBezierTo(w * .36, h * .72, w * .68, h * .83)
+      ..quadraticBezierTo(w * .88, h * .90, w, h * .80)
+      ..lineTo(w, h)
+      ..lineTo(0, h)
+      ..close();
+    canvas.drawPath(front, Paint()..color = const Color(0x5521505B));
+  }
+
+  @override
+  bool shouldRepaint(covariant _SkyPainter oldDelegate) =>
+      oldDelegate.t != t || oldDelegate.night != night;
 }

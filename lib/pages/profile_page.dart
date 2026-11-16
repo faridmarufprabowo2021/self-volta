@@ -145,13 +145,17 @@ class ProfilePage extends StatelessWidget {
                           color: Star.warning,
                         ),
                         const SizedBox(width: 4),
-                        Text(
-                          '${st.streak} hari beruntun',
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w500,
-                            color: Star.mut,
+                        Flexible(
+                          child: Text(
+                            '${st.streak} hari beruntun',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w500,
+                              color: Star.mut,
+                            ),
                           ),
                         ),
                       ],
@@ -168,24 +172,31 @@ class ProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Menuju Level ${currentLvl + 1}',
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w400,
-                      color: Star.mut,
+                  Expanded(
+                    child: Text(
+                      'Menuju Level ${currentLvl + 1}',
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w400,
+                        color: Star.mut,
+                      ),
                     ),
                   ),
-                  Text(
-                    '$xpInLvl / ${st.targetXpInLevel} XP',
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600,
-                      color: Star.ink,
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      '$xpInLvl / ${st.targetXpInLevel} XP',
+                      maxLines: 2,
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: Star.ink,
+                      ),
                     ),
                   ),
                 ],
@@ -305,24 +316,29 @@ class ProfilePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
             children: [
-              Row(
-                children: [
-                  Icon(Icons.bar_chart_rounded, color: Star.nebula, size: 20),
-                  SizedBox(width: 8),
-                  Text(
-                    'Aktivitas 7 Hari Terakhir',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Star.ink,
+              const Expanded(
+                child: Row(
+                  children: [
+                    Icon(Icons.bar_chart_rounded, color: Star.nebula, size: 20),
+                    SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'Aktivitas 7 Hari Terakhir',
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Star.ink,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 'Target 100%',
                 style: TextStyle(
@@ -526,50 +542,62 @@ class ProfilePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
-                children: [
-                  Icon(Icons.military_tech_rounded, color: Star.star, size: 20),
-                  SizedBox(width: 8),
-                  Text(
-                    'Pencapaian',
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Star.ink,
+              const Expanded(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.military_tech_rounded,
+                      color: Star.star,
+                      size: 20,
                     ),
-                  ),
-                ],
+                    SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'Pencapaian',
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Star.ink,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Text(
-                '$unlockedCount/${achievements.length} terbuka',
-                style: const TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w600,
-                  color: Star.faint,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  '$unlockedCount/${achievements.length} terbuka',
+                  maxLines: 2,
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w600,
+                    color: Star.faint,
+                  ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 14),
 
-          // Grid 2 Kolom untuk Badge
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: achievements.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 1.15,
-            ),
-            itemBuilder: (context, idx) {
-              final ach = achievements[idx];
-              return _badgeCard(context, ach);
+          // Grid 2 Kolom untuk Badge: tinggi kartu mengikuti isi, bukan rasio
+          // tetap, supaya font besar tidak memotong teks di bagian bawah.
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final cardW = (constraints.maxWidth - 10) / 2;
+              return Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  for (final ach in achievements)
+                    SizedBox(width: cardW, child: _badgeCard(context, ach)),
+                ],
+              );
             },
           ),
         ],
@@ -612,22 +640,29 @@ class ProfilePage extends StatelessWidget {
                 if (!ach.isUnlocked)
                   const Icon(Icons.lock_rounded, size: 14, color: Star.faint)
                 else
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Star.star.withValues(alpha: 0.09),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      ach.xp,
-                      style: const TextStyle(
-                        fontFamily: 'Manrope',
-                        fontSize: 8.5,
-                        fontWeight: FontWeight.w700,
-                        color: Star.star,
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Star.star.withValues(alpha: 0.09),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          ach.xp,
+                          maxLines: 1,
+                          style: const TextStyle(
+                            fontFamily: 'Manrope',
+                            fontSize: 8.5,
+                            fontWeight: FontWeight.w700,
+                            color: Star.star,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -1342,29 +1377,31 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    '${st.weightKg.toStringAsFixed(0)} kg · ${st.heightCm.toStringAsFixed(0)} cm',
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 12.5,
-                      fontWeight: FontWeight.w600,
-                      color: Star.ink,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${st.weightKg.toStringAsFixed(0)} kg · ${st.heightCm.toStringAsFixed(0)} cm',
+                      style: const TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: Star.ink,
+                      ),
                     ),
-                  ),
-                  Text(
-                    cat,
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: catColor,
+                    Text(
+                      cat,
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: catColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -1887,8 +1924,10 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                Wrap(
+                  alignment: WrapAlignment.spaceAround,
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
                     _buildPorsiChip(
                       'Protein',

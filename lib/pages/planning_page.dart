@@ -2989,7 +2989,7 @@ class _PlanningPageState extends State<PlanningPage> {
         ),
         const SizedBox(height: 10),
         SizedBox(
-          height: 68,
+          height: 68 + (MediaQuery.textScalerOf(context).scale(1) - 1) * 24,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
@@ -3037,6 +3037,8 @@ class _PlanningPageState extends State<PlanningPage> {
                       children: [
                         Text(
                           item.dayName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: 'Manrope',
                             fontSize: 11,
@@ -3132,45 +3134,49 @@ class _PlanningPageState extends State<PlanningPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Star.star.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.soup_kitchen_rounded,
-                      color: Star.star,
-                      size: 18,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Resep ${dayInfo.dayName} (${activePola.k})',
-                        style: const TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w700,
-                          color: Star.ink,
-                        ),
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Star.star.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      Text(
-                        'Estimasi Biaya: Rp ${activePola.b ~/ 1000}rb/hari',
-                        style: const TextStyle(
-                          fontFamily: 'Manrope',
-                          fontSize: 10,
-                          color: Star.mut,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      child: const Icon(
+                        Icons.soup_kitchen_rounded,
+                        color: Star.star,
+                        size: 18,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Resep ${dayInfo.dayName} (${activePola.k})',
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w700,
+                              color: Star.ink,
+                            ),
+                          ),
+                          Text(
+                            'Estimasi Biaya: Rp ${activePola.b ~/ 1000}rb/hari',
+                            style: const TextStyle(
+                              fontFamily: 'Manrope',
+                              fontSize: 10,
+                              color: Star.mut,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               if (isToday)
                 Container(

@@ -65,7 +65,7 @@ Sesuai referensi visual user (`media_1794542093241_cb5b3274.png` dan `media_1794
 > ⚠️ Jangan pecah sholat jadi 3 kartu berbeda! Satukan SEMUA informasi sholat ke dalam **SATU KARTU JANGKAR GELAP**.
 - **Warna Kartu:** Solid Deep Petrol Navy `#143E48` (Radius 16, tanpa gradien).
 - **Baris Atas:** 
-  - Kiri: Teks label `BERIKUTNYA` (huruf kapital, putih 70%).
+  - Kiri: Lokasi kota sholat (ikon pin + nama kota, misal: `📍 Surakarta`).
   - Kanan: Teks cuaca/lokasi ringkas: `Solo · 29° Cerah` (teks biasa putih 70%).
   - 🔔 **ALARM SHOLAT:** Ikon lonceng (`Icons.notifications_active_outlined`, warna putih 70%). Tap membuka sheet pengaturan notifikasi (`showNotifSettingsSheet(context)`).
 - **Hero Sholat:** 

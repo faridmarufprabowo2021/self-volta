@@ -1172,13 +1172,15 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
             children: [
               Icon(Icons.category_rounded, size: 18, color: Star.star),
               SizedBox(width: 8),
-              Text(
-                'Pilih Fokus Rencana Latihan',
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Star.ink,
+              Expanded(
+                child: Text(
+                  'Pilih Fokus Rencana Latihan',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Star.ink,
+                  ),
                 ),
               ),
             ],
@@ -1518,15 +1520,18 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                               color: Star.star,
                             ),
                             const SizedBox(width: 4),
-                            Text(
-                              ex.workSeconds == 0
-                                  ? 'Bebas Reps'
-                                  : '${ex.workSeconds} Detik',
-                              style: const TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w700,
-                                color: Star.ink,
+                            Flexible(
+                              child: Text(
+                                ex.workSeconds == 0
+                                    ? 'Bebas Reps'
+                                    : '${ex.workSeconds} Detik',
+                                maxLines: 2,
+                                style: const TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Star.ink,
+                                ),
                               ),
                             ),
                           ],
@@ -1570,13 +1575,16 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                               color: Star.star,
                             ),
                             const SizedBox(width: 4),
-                            Text(
-                              '${ex.restSeconds} Detik',
-                              style: const TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w700,
-                                color: Star.star,
+                            Flexible(
+                              child: Text(
+                                '${ex.restSeconds} Detik',
+                                maxLines: 2,
+                                style: const TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Star.star,
+                                ),
                               ),
                             ),
                           ],
@@ -1637,13 +1645,19 @@ class _ChoicePlanPageState extends State<ChoicePlanPage> {
                   ),
                 ),
               ),
-              Text(
-                valueText,
-                style: const TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: Star.ink,
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    valueText,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Star.ink,
+                    ),
+                  ),
                 ),
               ),
               InkWell(
