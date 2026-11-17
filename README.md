@@ -160,3 +160,19 @@ Instruksi memasak pada SELF VOLTA dirancang khusus untuk mitigasi ini:
    - Timer hitung mundur terintegrasi (preset 5m, 10m, 15m) dengan indikator circular progress.
    - Checklist bahan belanjaan yang bisa dicentang saat proses racik.
    - Langkah kerja terurut nomor `01`, `02`, `03` dengan label alat yang jelas.
+
+---
+
+## 7. Checklist Belanja Pasar & Manajemen Bahan Basah
+
+Belanja bahan makanan di supermarket modern sering membebani kantong anak kos karena kemasan minimal yang terlalu besar (misal wortel 1 kg atau brokoli besar) yang akhirnya membusuk sebelum sempat dimasak.
+
+Tab **Belanja Pasar** di Planning memfasilitasi belanja eceran di pasar tradisional atau warung sayur terdekat:
+
+### Alur Belanja Efisien:
+1. **Porsi Eceran Terukur**: Menghitung kuantitas harian riil (misal: "Telur 3 butir Rp6.000", "Tempe setengah papan Rp2.500", "Bayam 1 ikat Rp3.000").
+2. **Interactive Checklist**: Kotak centang yang dapat ditandai satu per satu saat berdiri di depan pedagang pasar, mencegah pembelian impulsif jajanan pasar yang menguras anggaran.
+3. **Penyimpanan Bahan Kamar Kos**:
+   - **Tahu**: Rendam dalam wadah air matang bersih yang diganti setiap 24 jam agar tidak berlendir meski tanpa lemari es besar.
+   - **Sayuran Hijau (Bayam/Sawi)**: Bungkus pangkal batang dengan kertas bersih atau tisu kering sebelum disimpan di area berventilasi baik.
+   - **Telur**: Simpan di tempat sejuk dengan posisi bagian tumpul di atas agar kantung udara telur tetap terjaga stabil.
