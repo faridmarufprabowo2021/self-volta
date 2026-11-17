@@ -19,6 +19,7 @@ import '../store.dart';
 import '../theme.dart';
 import '../widgets.dart';
 import 'notif_settings_sheet.dart';
+import 'recipe_detail_sheet.dart';
 import 'todo_page.dart';
 
 const Color _canvas = Star.bg;
@@ -44,15 +45,28 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   String _mealCategory = 'semua';
   HeroBentoMode _heroMode = HeroBentoMode.split;
   double _heroDragDx = 0;
   Timer? _clockTimer;
+  late final AnimationController _wushhhController;
+  late final Animation<double> _wushhhAnimation;
 
   @override
   void initState() {
     super.initState();
+    _wushhhController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 850),
+    );
+    _wushhhAnimation = CurvedAnimation(
+      parent: _wushhhController,
+      curve: Curves.easeOutCubic,
+    );
+    _wushhhController.forward(from: 0.0);
+
     // Orbit matahari/bulan dan hitung mundur sholat ikut berjalan tanpa
     // menunggu interaksi lain.
     _clockTimer = Timer.periodic(const Duration(minutes: 1), (_) {
@@ -62,6 +76,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _wushhhController.dispose();
     _clockTimer?.cancel();
     super.dispose();
   }
@@ -130,31 +145,36 @@ class _HomePageState extends State<HomePage> {
 
         return ColoredBox(
           color: _canvas,
-          child: ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 36),
-            children: [
-              _header(now, st),
-              const SizedBox(height: 14),
-              ListenableBuilder(
-                listenable: PrayerService.instance,
-                builder: (_, _) => _heroBento(now),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 440),
+              child: ListView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 36),
+                children: [
+                  _header(now, st),
+                  const SizedBox(height: 14),
+                  ListenableBuilder(
+                    listenable: PrayerService.instance,
+                    builder: (_, _) => _heroBento(now),
+                  ),
+                  const SizedBox(height: 18),
+                  _sectionLabel('Pilar Harian'),
+                  const SizedBox(height: 10),
+                  _pilarGrid(now, st),
+                  const SizedBox(height: 16),
+                  _habitStrip(habits),
+                  const SizedBox(height: 18),
+                  _tasksSection(now, todayTasks, doneTasks),
+                  const SizedBox(height: 18),
+                  _mealCard(now),
+                  const SizedBox(height: 12),
+                  _routineStrip(routineDays, monthKey),
+                  const SizedBox(height: 16),
+                  _quickMenu(),
+                ],
               ),
-              const SizedBox(height: 18),
-              _sectionLabel('Pilar Harian'),
-              const SizedBox(height: 10),
-              _pilarGrid(now, st),
-              const SizedBox(height: 16),
-              _habitStrip(habits),
-              const SizedBox(height: 18),
-              _tasksSection(now, todayTasks, doneTasks),
-              const SizedBox(height: 18),
-              _mealCard(now),
-              const SizedBox(height: 12),
-              _routineStrip(routineDays, monthKey),
-              const SizedBox(height: 16),
-              _quickMenu(),
-            ],
+            ),
           ),
         );
       },
@@ -243,82 +263,95 @@ class _HomePageState extends State<HomePage> {
   Widget _heroBento(DateTime now) {
     final scale = MediaQuery.textScalerOf(context).scale(1);
     final heroHeight = 195 + (scale - 1).clamp(0.0, 1.0) * 51;
+    final atmosphere = SkyAtmosphere.forTime(now);
     final celestial = _celestialPosition(now);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final totalWidth = constraints.maxWidth;
-        final halfWidth = (totalWidth - 10) / 2;
-        final prayerExpanded = _heroMode == HeroBentoMode.prayer4x2;
-        final weatherExpanded = _heroMode == HeroBentoMode.weather4x2;
-        final prayerLeft = weatherExpanded ? -totalWidth - 30.0 : 0.0;
-        final weatherLeft = prayerExpanded
-            ? totalWidth + 30.0
-            : weatherExpanded
-            ? 0.0
-            : halfWidth + 10;
-        final prayerWidth = prayerExpanded ? totalWidth : halfWidth;
-        final weatherWidth = weatherExpanded ? totalWidth : halfWidth;
+    return AnimatedBuilder(
+      animation: _wushhhAnimation,
+      builder: (context, _) {
+        final animatedCelestial = (
+          t: _wushhhAnimation.value * celestial.t,
+          night: celestial.night,
+        );
 
-        return GestureDetector(
-          key: const Key('hero-bento'),
-          behavior: HitTestBehavior.translucent,
-          onHorizontalDragStart: (_) => _heroDragDx = 0,
-          onHorizontalDragUpdate: (d) => _heroDragDx += d.delta.dx,
-          onHorizontalDragEnd: _onHeroDragEnd,
-          child: SizedBox(
-            height: heroHeight,
-            child: Stack(
-              clipBehavior: Clip.hardEdge,
-              children: [
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 430),
-                  curve: Curves.easeOutCubic,
-                  left: prayerLeft,
-                  top: 0,
-                  width: prayerWidth,
-                  height: heroHeight,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 240),
-                    curve: Curves.easeOut,
-                    opacity: weatherExpanded ? 0 : 1,
-                    child: IgnorePointer(
-                      ignoring: weatherExpanded,
-                      child: _prayerHero(
-                        now,
-                        heroHeight,
-                        expanded: prayerExpanded,
-                        celestial: celestial,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final totalWidth = constraints.maxWidth;
+            final halfWidth = (totalWidth - 10) / 2;
+            final prayerExpanded = _heroMode == HeroBentoMode.prayer4x2;
+            final weatherExpanded = _heroMode == HeroBentoMode.weather4x2;
+            final prayerLeft = weatherExpanded ? -totalWidth - 30.0 : 0.0;
+            final weatherLeft = prayerExpanded
+                ? totalWidth + 30.0
+                : weatherExpanded
+                ? 0.0
+                : halfWidth + 10;
+            final prayerWidth = prayerExpanded ? totalWidth : halfWidth;
+            final weatherWidth = weatherExpanded ? totalWidth : halfWidth;
+
+            return GestureDetector(
+              key: const Key('hero-bento'),
+              behavior: HitTestBehavior.translucent,
+              onHorizontalDragStart: (_) => _heroDragDx = 0,
+              onHorizontalDragUpdate: (d) => _heroDragDx += d.delta.dx,
+              onHorizontalDragEnd: _onHeroDragEnd,
+              child: SizedBox(
+                height: heroHeight,
+                child: Stack(
+                  clipBehavior: Clip.hardEdge,
+                  children: [
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 430),
+                      curve: Curves.easeOutCubic,
+                      left: prayerLeft,
+                      top: 0,
+                      width: prayerWidth,
+                      height: heroHeight,
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 240),
+                        curve: Curves.easeOut,
+                        opacity: weatherExpanded ? 0 : 1,
+                        child: IgnorePointer(
+                          ignoring: weatherExpanded,
+                          child: _prayerHero(
+                            now,
+                            heroHeight,
+                            expanded: prayerExpanded,
+                            celestial: animatedCelestial,
+                            atmosphere: atmosphere,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 430),
-                  curve: Curves.easeOutCubic,
-                  left: weatherLeft,
-                  top: 0,
-                  width: weatherWidth,
-                  height: heroHeight,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 240),
-                    curve: Curves.easeOut,
-                    opacity: prayerExpanded ? 0 : 1,
-                    child: IgnorePointer(
-                      ignoring: prayerExpanded,
-                      child: _WeatherHero(
-                        height: heroHeight,
-                        city: PrayerService.instance.selectedCity,
-                        expanded: weatherExpanded,
-                        celestial: celestial,
-                        onToggleMode: _toggleWeatherMode,
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 430),
+                      curve: Curves.easeOutCubic,
+                      left: weatherLeft,
+                      top: 0,
+                      width: weatherWidth,
+                      height: heroHeight,
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 240),
+                        curve: Curves.easeOut,
+                        opacity: prayerExpanded ? 0 : 1,
+                        child: IgnorePointer(
+                          ignoring: prayerExpanded,
+                          child: _WeatherHero(
+                            height: heroHeight,
+                            city: PrayerService.instance.selectedCity,
+                            expanded: weatherExpanded,
+                            celestial: animatedCelestial,
+                            atmosphere: atmosphere,
+                            onToggleMode: _toggleWeatherMode,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -345,6 +378,7 @@ class _HomePageState extends State<HomePage> {
   void _setHeroMode(HeroBentoMode mode) {
     if (_heroMode == mode) return;
     setState(() => _heroMode = mode);
+    _wushhhController.forward(from: 0.0);
   }
 
   /// Swipe kiri menarik kartu cuaca (kanan) melebar; swipe kanan menarik
@@ -366,22 +400,28 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /// Posisi 0..1 siklus langit + status malam. Siang 05.00–18.00 dihitung
-  /// linear; malam 18.00–05.00 memakai porsi sisa hari.
+  /// Posisi 0..1 siklus langit + status malam mengikuti siklus astronomis presisi
+  /// dari mockup_beranda.html (Terbit ~05.07, Terbenam ~17.37, Isya ~18.51).
   ({double t, bool night}) _celestialPosition(DateTime now) {
     final minutes = now.hour * 60 + now.minute;
-    const sunrise = 5 * 60;
-    const sunset = 18 * 60;
+    const sunrise = 307; // 05:07
+    const sunset = 1057; // 17:37
+    const isya = 1131; // 18:51
+
     if (minutes >= sunrise && minutes <= sunset) {
       return (
-        t: (minutes - sunrise) / (sunset - sunrise),
+        t: ((minutes - sunrise) / (sunset - sunrise)).clamp(0.0, 1.0),
         night: false,
       );
+    } else {
+      final nightMinutes = minutes >= isya
+          ? minutes - isya
+          : 1440 - isya + minutes;
+      return (
+        t: (nightMinutes / 616.0).clamp(0.0, 1.0),
+        night: true,
+      );
     }
-    final nightMinutes = minutes > sunset
-        ? minutes - sunset
-        : minutes + 1440 - sunset;
-    return (t: nightMinutes / (1440 - (sunset - sunrise)), night: true);
   }
 
   Widget _prayerHero(
@@ -389,6 +429,7 @@ class _HomePageState extends State<HomePage> {
     double height, {
     required bool expanded,
     required ({double t, bool night}) celestial,
+    required SkyAtmosphere atmosphere,
   }) {
     final ps = PrayerService.instance;
     final sched = ps.getTodaySchedule();
@@ -415,20 +456,11 @@ class _HomePageState extends State<HomePage> {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0x66FFFFFF)),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFF0284C7),
-            Color(0xFF38BDF8),
-            Color(0xFF7DD3FC),
-            Color(0xFFBAE6FD),
-          ],
-        ),
+        border: Border.all(color: atmosphere.borderColor),
+        gradient: atmosphere.gradient,
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0284C7).withValues(alpha: .18),
+            color: atmosphere.gradient.colors.first.withValues(alpha: .25),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -438,7 +470,7 @@ class _HomePageState extends State<HomePage> {
         fit: StackFit.expand,
         children: [
           CustomPaint(
-            painter: _SkyPainter(t: celestial.t, night: celestial.night),
+            painter: _SkyPainter(t: celestial.t, atmosphere: atmosphere),
           ),
           MediaQuery.withClampedTextScaling(
             maxScaleFactor: 1.5,
@@ -543,67 +575,65 @@ class _HomePageState extends State<HomePage> {
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: _showPrayerScheduleSheet,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  next.name,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 13,
-                    height: 1.05,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.2,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 1),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  next.time,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 27,
-                    height: 1.0,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -1.0,
-                    color: Colors.white,
-                    fontFeatures: [FontFeature.tabularFigures()],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 7,
-                  vertical: 2,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0x3D0B2A31),
-                  borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: const Color(0x33FFFFFF)),
-                ),
-                child: Row(
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 4,
-                      height: 4,
-                      decoration: const BoxDecoration(
-                        color: Star.workoutBright,
-                        shape: BoxShape.circle,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        next.name,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 15,
+                          height: 1.1,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: -0.3,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    Text(
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        next.time,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 25,
+                          height: 1.0,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: -0.8,
+                          color: Colors.white,
+                          fontFeatures: [FontFeature.tabularFigures()],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.45),
+                      borderRadius: BorderRadius.circular(999),
+                      border:
+                          Border.all(color: Colors.white.withValues(alpha: 0.22)),
+                    ),
+                    child: Text(
                       '$remText lagi',
                       maxLines: 1,
                       style: const TextStyle(
@@ -611,65 +641,70 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 8.5,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
-                        fontFeatures: [FontFeature.tabularFigures()],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
         ),
         const Spacer(),
-        Row(
-          children: [
-            for (var i = 0; i < wajib.length; i++) ...[
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
-                width: i == activeIndex ? 7 : 5,
-                height: i == activeIndex ? 7 : 5,
-                decoration: BoxDecoration(
-                  color: i == activeIndex
-                      ? Star.workoutBright
-                      : const Color(0x66FFFFFF),
-                  shape: BoxShape.circle,
-                  border: i == activeIndex
-                      ? Border.all(
-                          color: const Color(0x99FDE68A),
-                          width: 1.5,
-                        )
-                      : null,
+        Container(
+          padding: const EdgeInsets.only(top: 4),
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+            ),
+          ),
+          child: Row(
+            children: [
+              for (var i = 0; i < wajib.length; i++) ...[
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  width: i == activeIndex ? 7.5 : 5,
+                  height: i == activeIndex ? 7.5 : 5,
+                  decoration: BoxDecoration(
+                    color: i == activeIndex
+                        ? const Color(0xFFFBBF24)
+                        : Colors.white.withValues(alpha: 0.4),
+                    shape: BoxShape.circle,
+                    border: i == activeIndex
+                        ? Border.all(
+                            color: const Color(0xFFFDE68A),
+                            width: 1.5,
+                          )
+                        : null,
+                    boxShadow: i == activeIndex
+                        ? [
+                            BoxShadow(
+                              color: const Color(0xFFFBBF24)
+                                  .withValues(alpha: 0.6),
+                              blurRadius: 4,
+                            ),
+                          ]
+                        : null,
+                  ),
                 ),
-              ),
-              if (i < wajib.length - 1) const SizedBox(width: 5),
-            ],
-            const Spacer(),
-            Flexible(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Jadwal Sholat',
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 7.5,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: .78),
+                if (i < wajib.length - 1) const SizedBox(width: 4),
+              ],
+              const Spacer(),
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Jadwal Sholat',
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      fontSize: 8,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white.withValues(alpha: 0.75),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 5),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(999),
-          child: LinearProgressIndicator(
-            value: progress,
-            minHeight: 3,
-            backgroundColor: Colors.white.withValues(alpha: .24),
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            ],
           ),
         ),
       ],
@@ -1656,99 +1691,116 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: Star.workoutSoft,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: const Color(0xFFFDE68A)),
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'PAKET',
-                              style: TextStyle(
-                                fontFamily: 'Manrope',
-                                fontSize: 8,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 0.6,
-                                color: Color(0xFF92400E),
+              InkWell(
+                onTap: () => _showRecipeDetail(key, pola, macro),
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            color: Star.workoutSoft,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: const Color(0xFFFDE68A)),
+                          ),
+                          child: Image.asset(
+                            'assets/images/paket_${key.toLowerCase()}.png',
+                            width: 64,
+                            height: 64,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'PAKET',
+                                      style: TextStyle(
+                                        fontFamily: 'Manrope',
+                                        fontSize: 8,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: 0.6,
+                                        color: Color(0xFF92400E),
+                                      ),
+                                    ),
+                                    Text(
+                                      key,
+                                      style: const TextStyle(
+                                        fontFamily: 'Manrope',
+                                        fontSize: 23,
+                                        height: 1.0,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color(0xFFB45309),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 11),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              key,
+                              'PAKET $key · MENU HARIAN',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontFamily: 'Manrope',
-                                fontSize: 23,
-                                height: 1.0,
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xFFB45309),
+                                fontSize: 9.5,
+                                letterSpacing: 0.6,
+                                fontWeight: FontWeight.w700,
+                                color: Star.faint,
                               ),
                             ),
+                            const SizedBox(height: 2),
+                            Text(
+                              title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 14,
+                                height: 1.22,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: -0.2,
+                                color: _navy,
+                              ),
+                            ),
+                            if (snippet.isNotEmpty) ...[
+                              const SizedBox(height: 3),
+                              Text(
+                                snippet,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 10.5,
+                                  height: 1.4,
+                                  color: _slate,
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  const SizedBox(width: 11),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'PAKET $key · MENU HARIAN',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 9.5,
-                            letterSpacing: 0.6,
-                            fontWeight: FontWeight.w700,
-                            color: Star.faint,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 14,
-                            height: 1.22,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.2,
-                            color: _navy,
-                          ),
-                        ),
-                        if (snippet.isNotEmpty) ...[
-                          const SizedBox(height: 3),
-                          Text(
-                            snippet,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 10.5,
-                              height: 1.4,
-                              color: _slate,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 9),
               Wrap(
@@ -1811,10 +1863,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
-                      iosTapBuzz();
-                      widget.onNavigate('planning');
-                    },
+                    onTap: () => _showRecipeDetail(key, pola, macro),
                     borderRadius: BorderRadius.circular(8),
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 7),
@@ -1846,6 +1895,21 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showRecipeDetail(String key, Pola? pola, Macro? macro) {
+    if (pola == null) return;
+    iosTapBuzz();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => RecipeDetailSheet(
+        polaKey: key,
+        pola: pola,
+        macro: macro,
+      ),
     );
   }
 
@@ -2109,14 +2173,19 @@ class _HomePageState extends State<HomePage> {
 
   void _toggleHabit(String key) {
     iosTapBuzz();
+    final now = DateTime.now();
     final next = !(AppState.I.eaten[key] ?? false);
     AppState.I.eaten[key] = next;
-    unawaited(AppState.I.save());
     if (next) {
+      final todayStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+      AppState.I.routineMarks.add(RoutineMark(date: todayStr, taskId: 0, title: key));
       AppState.I.addXp(25);
+      AppState.I.recalculateStreak();
     } else {
       AppState.I.removeXp(25);
+      AppState.I.recalculateStreak();
     }
+    unawaited(AppState.I.save());
   }
 
   String _repeatLabel(String r) => switch (r) {
@@ -3113,6 +3182,7 @@ class _WeatherHero extends StatefulWidget {
   final CityLocation city;
   final bool expanded;
   final ({double t, bool night}) celestial;
+  final SkyAtmosphere atmosphere;
   final VoidCallback onToggleMode;
 
   const _WeatherHero({
@@ -3120,6 +3190,7 @@ class _WeatherHero extends StatefulWidget {
     required this.city,
     required this.expanded,
     required this.celestial,
+    required this.atmosphere,
     required this.onToggleMode,
   });
 
@@ -3176,20 +3247,11 @@ class _WeatherHeroState extends State<_WeatherHero> {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0x66FFFFFF)),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFF075985),
-            Color(0xFF0284C7),
-            Color(0xFF38BDF8),
-            Color(0xFF7DD3FC),
-          ],
-        ),
+        border: Border.all(color: widget.atmosphere.borderColor),
+        gradient: widget.atmosphere.gradient,
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0284C7).withValues(alpha: .16),
+            color: widget.atmosphere.gradient.colors.first.withValues(alpha: .25),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
@@ -3201,10 +3263,10 @@ class _WeatherHeroState extends State<_WeatherHero> {
           CustomPaint(
             painter: _SkyPainter(
               t: widget.celestial.t,
-              night: widget.celestial.night,
+              atmosphere: widget.atmosphere,
             ),
           ),
-          const ColoredBox(color: Color(0x44123A46)),
+          const ColoredBox(color: Color(0x73020617)),
           MediaQuery.withClampedTextScaling(
             maxScaleFactor: 1.5,
             child: Padding(
@@ -3311,48 +3373,58 @@ class _WeatherHeroState extends State<_WeatherHero> {
         else if (_error != null)
           _weatherError()
         else
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerLeft,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                Text(
-                  '${_data!.temperatureC.round()}°C',
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(
+                '${_data!.temperatureC.round()}°C',
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 26,
+                  height: 1.0,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -1.0,
+                  color: Colors.white,
+                  fontFeatures: [FontFeature.tabularFigures()],
+                ),
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  WeatherService.label(_data!.code, rainChance: _data!.rainChance),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 26,
-                    height: 1.0,
+                    fontSize: 9.5,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: -1.0,
-                    color: Colors.white,
-                    fontFeatures: [FontFeature.tabularFigures()],
+                    color: Color(0xFFBAE6FD),
                   ),
                 ),
-                const SizedBox(width: 5),
-                Text(
-                  WeatherService.label(_data!.code),
-                  style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 8.5,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white.withValues(alpha: .82),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         const Spacer(),
         if (_data != null) ...[
           Row(
             children: [
               Expanded(
-                child: _weatherMetric('Lembap', '${_data!.humidity}%'),
+                child: _weatherPill(
+                  'Lembap',
+                  '${_data!.humidity}%',
+                  emoji: '💧',
+                ),
               ),
               const SizedBox(width: 4),
               Expanded(
-                child: _weatherMetric('Hujan', '${_data!.rainChance}%'),
+                child: _weatherPill(
+                  'Hujan',
+                  '${_data!.rainChance}%',
+                  emoji: '🌧️',
+                  labelColor: const Color(0xFF67E8F9),
+                  valueColor: const Color(0xFFA5F3FC),
+                ),
               ),
             ],
           ),
@@ -3360,48 +3432,151 @@ class _WeatherHeroState extends State<_WeatherHero> {
           Row(
             children: [
               Expanded(
-                child: _weatherMetric(
+                child: _weatherPill(
                   'Angin',
-                  '${_data!.windKph.round()} km/j',
+                  '${_data!.windKph.round()}km/j',
+                  emoji: '💨',
+                  labelColor: const Color(0xFF6EE7B7),
                 ),
               ),
               const SizedBox(width: 4),
               Expanded(
-                child: _weatherMetric('UV', '${_data!.uvIndex.round()}'),
+                child: _weatherPill(
+                  'UV',
+                  '${_data!.uvIndex.round()}',
+                  emoji: '☀️',
+                  labelColor: const Color(0xFFFCD34D),
+                  valueColor: const Color(0xFFFCD34D),
+                ),
               ),
             ],
           ),
-          if (_data!.hours.isNotEmpty) ...[
-            const SizedBox(height: 5),
-            Row(
+          const SizedBox(height: 5),
+          Container(
+            padding: const EdgeInsets.only(top: 4),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+              ),
+            ),
+            child: Row(
               children: [
-                for (final h in _data!.hours.take(2)) ...[
-                  Flexible(
+                if (_data!.hours.length >= 2) ...[
+                  Expanded(
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${h.at.hour.toString().padLeft(2, '0')}.'
-                        '00  ${h.temperatureC.round()}°',
-                        maxLines: 1,
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text:
+                                  '${_data!.hours[0].at.hour.toString().padLeft(2, '0')}:00 ',
+                            ),
+                            TextSpan(
+                              text: '${_data!.hours[0].temperatureC.round()}°',
+                              style: const TextStyle(
+                                color: Color(0xFFFDE68A),
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const TextSpan(text: ' · '),
+                            TextSpan(
+                              text:
+                                  '${_data!.hours[1].at.hour.toString().padLeft(2, '0')}:00 ',
+                            ),
+                            TextSpan(
+                              text: '${_data!.hours[1].temperatureC.round()}°',
+                              style: const TextStyle(
+                                color: Color(0xFFFDBA74),
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ],
+                        ),
                         style: const TextStyle(
                           fontFamily: 'Manrope',
                           fontSize: 8.5,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xCCFFFFFF),
-                          fontFeatures: [FontFeature.tabularFigures()],
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  if (h != _data!.hours.take(2).last)
-                    const SizedBox(width: 8),
+                  const SizedBox(width: 4),
                 ],
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      'Perkiraan Cuaca',
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 8,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-          ],
+          ),
         ],
       ],
+    );
+  }
+
+  Widget _weatherPill(
+    String label,
+    String value, {
+    String? emoji,
+    Color? labelColor,
+    Color? valueColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.32),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (emoji != null) ...[
+              Text(
+                emoji,
+                style: const TextStyle(fontSize: 8.5),
+              ),
+              const SizedBox(width: 3),
+            ],
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                fontWeight: FontWeight.w700,
+                color: labelColor ?? Colors.white.withValues(alpha: 0.75),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Text(
+              value,
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                fontWeight: FontWeight.w800,
+                color: valueColor ?? Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -3441,7 +3616,7 @@ class _WeatherHeroState extends State<_WeatherHero> {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        WeatherService.label(_data!.code),
+                        WeatherService.label(_data!.code, rainChance: _data!.rainChance),
                         style: TextStyle(
                           fontFamily: 'Manrope',
                           fontSize: 8.5,
@@ -3836,13 +4011,168 @@ class _WeatherHeroState extends State<_WeatherHero> {
   }
 }
 
-/// Latar hero: busur orbit putus-putus, matahari/bulan sesuai jam, bintang
-/// saat malam, lalu dua lapis bukit. Digambar, bukan emoji.
+/// Model atmosfer siklus langit 24 jam (Fajar, Siang, Sore, Malam)
+/// diselaraskan 100% dengan mockup_beranda.html.
+class SkyAtmosphere {
+  final LinearGradient gradient;
+  final Color borderColor;
+  final Color backHill;
+  final Color frontHill;
+  final double starsOpacity;
+  final bool isNight;
+  final List<Color> celestialColors;
+  final Color celestialHalo;
+  final String conditionName;
+  final String iconEmoji;
+
+  const SkyAtmosphere({
+    required this.gradient,
+    required this.borderColor,
+    required this.backHill,
+    required this.frontHill,
+    required this.starsOpacity,
+    required this.isNight,
+    required this.celestialColors,
+    required this.celestialHalo,
+    required this.conditionName,
+    required this.iconEmoji,
+  });
+
+  static SkyAtmosphere forTime(DateTime now) {
+    final minutes = now.hour * 60 + now.minute;
+    // Fajar / Subuh (04.00–06.00, 240–360 min)
+    if (minutes >= 240 && minutes < 360) {
+      return const SkyAtmosphere(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF1E1B4B),
+            Color(0xFF312E81),
+            Color(0xFF4C1D95),
+            Color(0xFF701A75),
+          ],
+        ),
+        borderColor: Color(0x66A78BFA),
+        backHill: Color(0x99312E81),
+        frontHill: Color(0xD91E1B4B),
+        starsOpacity: 0.6,
+        isNight: false,
+        celestialColors: [
+          Color(0xFFFDE047),
+          Color(0xFFF59E0B),
+          Color(0xFFD97706),
+        ],
+        celestialHalo: Color(0x66F59E0B),
+        conditionName: 'Udara Sejuk',
+        iconEmoji: '🌅',
+      );
+    }
+    // Pagi & Siang (06.00–15.00, 360–900 min)
+    else if (minutes >= 360 && minutes < 900) {
+      return const SkyAtmosphere(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF0284C7),
+            Color(0xFF38BDF8),
+            Color(0xFF7DD3FC),
+            Color(0xFFBAE6FD),
+          ],
+        ),
+        borderColor: Color(0x8CBAE6FD),
+        backHill: Color(0x8C0E7490),
+        frontHill: Color(0xC70F5064),
+        starsOpacity: 0.0,
+        isNight: false,
+        celestialColors: [
+          Color(0xFFFFF7ED),
+          Color(0xFFFEF08A),
+          Color(0xFFFBBF24),
+          Color(0xFFF59E0B),
+          Color(0xFFD97706),
+        ],
+        celestialHalo: Color(0x8CFBBF24),
+        conditionName: 'Cerah Hangat',
+        iconEmoji: '☀️',
+      );
+    }
+    // Sore (15.00–18.00, 900–1080 min)
+    else if (minutes >= 900 && minutes < 1080) {
+      return const SkyAtmosphere(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF7C2D12),
+            Color(0xFFC2410C),
+            Color(0xFFEA580C),
+            Color(0xFFFB923C),
+          ],
+        ),
+        borderColor: Color(0x80FB923C),
+        backHill: Color(0xA6431407),
+        frontHill: Color(0xE0260A03),
+        starsOpacity: 0.2,
+        isNight: false,
+        celestialColors: [
+          Color(0xFFFFFBEB),
+          Color(0xFFFEF08A),
+          Color(0xFFFB923C),
+          Color(0xFFEA580C),
+          Color(0xFFC2410C),
+        ],
+        celestialHalo: Color(0x99FB923C),
+        conditionName: 'Sore Hangat',
+        iconEmoji: '🌤️',
+      );
+    }
+    // Malam (18.00–04.00, >= 1080 atau < 240 min)
+    else {
+      return const SkyAtmosphere(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF090D16),
+            Color(0xFF0F172A),
+            Color(0xFF1E293B),
+            Color(0xFF0B1120),
+          ],
+        ),
+        borderColor: Color(0x4794A3B8),
+        backHill: Color(0xCC0F172A),
+        frontHill: Color(0xF2020617),
+        starsOpacity: 0.9,
+        isNight: true,
+        celestialColors: [
+          Color(0xFFFFFFFF),
+          Color(0xFFF1F5F9),
+          Color(0xFFE2E8F0),
+          Color(0xFF94A3B8),
+        ],
+        celestialHalo: Color(0x66E2E8F0),
+        conditionName: 'Malam Tenang',
+        iconEmoji: '🌙',
+      );
+    }
+  }
+}
+
+/// Latar hero: busur orbit putus-putus, matahari/bulan dinamis, bintang berkerlip
+/// saat malam, lalu dua lapis bukit.
+/// ZERO GEPENG: Semua lingkaran matahari/bulan digambar memakai canvas.drawCircle
+/// dengan radius piksel tetap, sehingga bentuknya selalu 100% bulat sempurna baik
+/// saat bento berukuran 2x2 maupun melebar 4x2.
 class _SkyPainter extends CustomPainter {
   final double t;
-  final bool night;
+  final SkyAtmosphere atmosphere;
 
-  const _SkyPainter({this.t = .5, this.night = false});
+  const _SkyPainter({
+    required this.t,
+    required this.atmosphere,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -3853,28 +4183,31 @@ class _SkyPainter extends CustomPainter {
     final baseY = h * .60;
     final arcHeight = h * .40;
 
-    if (night) {
-      for (final (fx, fy, r) in const [
-        (.16, .18, 1.1),
-        (.34, .11, .8),
-        (.58, .20, 1.0),
-        (.78, .12, .8),
-        (.90, .26, 1.0),
-        (.47, .30, .7),
-        (.24, .32, .7),
+    // 1. Stars (Malam / Fajar)
+    if (atmosphere.starsOpacity > 0.05) {
+      final starPaint = Paint()
+        ..color = Colors.white.withValues(alpha: atmosphere.starsOpacity * .85);
+      final warmStarPaint = Paint()
+        ..color = const Color(0xFFFFFBEB).withValues(alpha: atmosphere.starsOpacity);
+      for (final (fx, fy, r, warm) in const [
+        (.09, .17, 1.2, false),
+        (.22, .32, 1.4, true),
+        (.35, .15, 1.3, false),
+        (.48, .26, 1.5, true),
+        (.63, .18, 1.2, false),
+        (.77, .33, 1.4, true),
+        (.89, .17, 1.3, false),
+        (.52, .38, 1.0, false),
+        (.15, .42, 1.1, true),
+        (.84, .45, 1.0, false),
       ]) {
-        canvas.drawCircle(
-          Offset(w * fx, h * fy),
-          r,
-          Paint()..color = Colors.white.withValues(alpha: .55),
-        );
+        canvas.drawCircle(Offset(w * fx, h * fy), r, warm ? warmStarPaint : starPaint);
       }
     }
 
-    // Busur orbit mengikuti y = baseY - sin(t·π)·arcHeight, jadi orb selalu
-    // duduk tepat di atas garis putus-putus.
+    // 2. Busur Orbit Kurva Putus-putus
     final arc = Path()..moveTo(startX, baseY);
-    const steps = 56;
+    const steps = 48;
     for (var i = 1; i <= steps; i++) {
       final u = i / steps;
       arc.lineTo(
@@ -3884,9 +4217,9 @@ class _SkyPainter extends CustomPainter {
     }
     final dashPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
+      ..strokeWidth = 1.0
       ..strokeCap = StrokeCap.round
-      ..color = Colors.white.withValues(alpha: .30);
+      ..color = Colors.white.withValues(alpha: .28);
     for (final metric in arc.computeMetrics()) {
       var distance = 0.0;
       while (distance < metric.length) {
@@ -3896,67 +4229,91 @@ class _SkyPainter extends CustomPainter {
       }
     }
 
+    // 3. Siluet Bukit (Belakang & Depan dengan warna adaptif)
+    final back = Path()
+      ..moveTo(0, h * 0.72)
+      ..quadraticBezierTo(w * .30, h * .56, w * .60, h * .68)
+      ..quadraticBezierTo(w * .82, h * .76, w, h * .66)
+      ..lineTo(w, h)
+      ..lineTo(0, h)
+      ..close();
+    canvas.drawPath(back, Paint()..color = atmosphere.backHill);
+
+    final front = Path()
+      ..moveTo(0, h * 0.82)
+      ..quadraticBezierTo(w * .34, h * .70, w * .66, h * .80)
+      ..quadraticBezierTo(w * .86, h * .88, w, h * .78)
+      ..lineTo(w, h)
+      ..lineTo(0, h)
+      ..close();
+    canvas.drawPath(front, Paint()..color = atmosphere.frontHill);
+
+    // 4. CELESTIAL ORB (Matahari / Bulan) - ZERO GEPENG
+    // Semua digambar dengan canvas.drawCircle memakai radius piksel murni
     final u = t.clamp(0.0, 1.0);
     final orb = Offset(
       startX + (endX - startX) * u,
       baseY - math.sin(u * math.pi) * arcHeight,
     );
-    if (night) {
+
+    // Outer Ambient Bloom (w-12 h-12 halo)
+    final bloomRect = Rect.fromCircle(center: orb, radius: 32.0);
+    canvas.drawCircle(
+      orb,
+      32.0,
+      Paint()
+        ..shader = RadialGradient(
+          colors: [
+            atmosphere.celestialHalo.withValues(alpha: .75),
+            atmosphere.celestialHalo.withValues(alpha: .28),
+            atmosphere.celestialHalo.withValues(alpha: .0),
+          ],
+          stops: const [0.0, 0.55, 1.0],
+        ).createShader(bloomRect),
+    );
+
+    // Mid Glow Halo
+    final midRect = Rect.fromCircle(center: orb, radius: 18.0);
+    canvas.drawCircle(
+      orb,
+      18.0,
+      Paint()
+        ..shader = RadialGradient(
+          colors: [
+            atmosphere.celestialColors.first.withValues(alpha: .90),
+            atmosphere.celestialColors.last.withValues(alpha: .0),
+          ],
+        ).createShader(midRect),
+    );
+
+    // Core Disc (100% Round Pure Circle - w-6 h-6 disc)
+    final coreRect = Rect.fromCircle(center: orb, radius: 12.0);
+    canvas.drawCircle(
+      orb,
+      12.0,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.35, -0.35),
+          colors: atmosphere.celestialColors,
+        ).createShader(coreRect),
+    );
+
+    // Ciri khas Bulan (Bercak kawah halus saat malam)
+    if (atmosphere.isNight) {
       canvas.drawCircle(
-        orb,
-        13,
-        Paint()..color = const Color(0x1FFFFFFF),
+        orb.translate(1.9, -1.6),
+        1.5,
+        Paint()..color = const Color(0x3894A3B8),
       );
       canvas.drawCircle(
-        orb,
-        8,
-        Paint()..color = const Color(0x33E2E8F0),
+        orb.translate(-1.1, 2.1),
+        1.2,
+        Paint()..color = const Color(0x2894A3B8),
       );
-      canvas.drawCircle(orb, 4.6, Paint()..color = const Color(0xFFE2E8F0));
-      canvas.drawCircle(
-        orb.translate(1.3, -1.1),
-        1.1,
-        Paint()..color = const Color(0x5594A3B8),
-      );
-    } else {
-      canvas.drawCircle(
-        orb,
-        18,
-        Paint()..color = const Color(0x22FFE08A),
-      );
-      canvas.drawCircle(
-        orb,
-        12,
-        Paint()..color = const Color(0x44FBBF24),
-      );
-      canvas.drawCircle(
-        orb,
-        7,
-        Paint()..color = const Color(0x66F59E0B),
-      );
-      canvas.drawCircle(orb, 4.8, Paint()..color = const Color(0xFFFFF3C4));
     }
-
-    final back = Path()
-      ..moveTo(0, h * 0.74)
-      ..quadraticBezierTo(w * .32, h * .58, w * .62, h * .71)
-      ..quadraticBezierTo(w * .84, h * .79, w, h * .68)
-      ..lineTo(w, h)
-      ..lineTo(0, h)
-      ..close();
-    canvas.drawPath(back, Paint()..color = const Color(0x33115E6E));
-
-    final front = Path()
-      ..moveTo(0, h * 0.84)
-      ..quadraticBezierTo(w * .36, h * .72, w * .68, h * .83)
-      ..quadraticBezierTo(w * .88, h * .90, w, h * .80)
-      ..lineTo(w, h)
-      ..lineTo(0, h)
-      ..close();
-    canvas.drawPath(front, Paint()..color = const Color(0x5521505B));
   }
 
   @override
   bool shouldRepaint(covariant _SkyPainter oldDelegate) =>
-      oldDelegate.t != t || oldDelegate.night != night;
+      oldDelegate.t != t || oldDelegate.atmosphere != atmosphere;
 }

@@ -411,77 +411,91 @@ class _HomeShellState extends State<HomeShell> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(
-          backgroundColor: isPaperPage ? Paper.canvas : null,
-          leading: IconButton(
-            icon: const Icon(Icons.menu_rounded),
-            tooltip: 'Menu Utama',
-            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-          ),
-          // Gaya iOS: judul kecil di tengah, aksi berupa ikon tanpa pil warna.
-          title: const Text(
-            'SELF VOLTA',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          actions: [
-            IconButton(
-              tooltip: 'Panduan',
-              icon: const Icon(Icons.menu_book_outlined),
-              onPressed: () {
-                iosTapBuzz();
-                _set('panduan');
-              },
-            ),
-            ListenableBuilder(
-              listenable: AppState.I,
-              builder: (context, _) {
-                final isProfile = _page == 'profile';
-                return IconButton(
-                  tooltip: 'Profil · Level ${AppState.I.level}',
-                  onPressed: () {
-                    iosTapBuzz();
-                    _set('profile');
-                  },
-                  icon: Icon(
-                    isProfile
-                        ? Icons.person_rounded
-                        : Icons.person_outline_rounded,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 440),
+              child: AppBar(
+                backgroundColor: isPaperPage ? Paper.canvas : null,
+                leading: IconButton(
+                  icon: const Icon(Icons.menu_rounded),
+                  tooltip: 'Menu Utama',
+                  onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                ),
+                // Gaya iOS: judul kecil di tengah, aksi berupa ikon tanpa pil warna.
+                title: const Text(
+                  'SELF VOLTA',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                actions: [
+                  IconButton(
+                    tooltip: 'Panduan',
+                    icon: const Icon(Icons.menu_book_outlined),
+                    onPressed: () {
+                      iosTapBuzz();
+                      _set('panduan');
+                    },
                   ),
-                );
-              },
+                  ListenableBuilder(
+                    listenable: AppState.I,
+                    builder: (context, _) {
+                      final isProfile = _page == 'profile';
+                      return IconButton(
+                        tooltip: 'Profil · Level ${AppState.I.level}',
+                        onPressed: () {
+                          iosTapBuzz();
+                          _set('profile');
+                        },
+                        icon: Icon(
+                          isProfile
+                              ? Icons.person_rounded
+                              : Icons.person_outline_rounded,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 4),
+                ],
+              ),
             ),
-            const SizedBox(width: 4),
-          ],
+          ),
         ),
         drawer: _drawer(theme),
         body: _buildBody(),
-        bottomNavigationBar: SharpVBottomNavBar(
-          selectedIndex: _lastNav,
-          onItemSelected: (i) {
-            if (i == 4) {
-              _scaffoldKey.currentState?.openDrawer();
-            } else {
-              const map = [
-                'workout',
-                'planning',
-                'home',
-                'keuangan',
-                'profile',
-              ];
-              if (i < map.length) {
-                _set(map[i]);
-                _scaffoldKey.currentState?.closeDrawer();
-              }
-            }
-          },
-          items: const [
-            SharpVNavItem(icon: Icons.fitness_center_rounded, label: 'Latihan'),
-            SharpVNavItem(icon: Icons.soup_kitchen_rounded, label: 'Makan'),
-            SharpVNavItem(icon: Icons.home_rounded, label: 'Beranda'),
-            SharpVNavItem(icon: Icons.savings_rounded, label: 'Uang'),
-            SharpVNavItem(icon: Icons.menu_rounded, label: 'Menu'),
-          ],
+        bottomNavigationBar: Center(
+          heightFactor: 1.0,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 440),
+            child: SharpVBottomNavBar(
+              selectedIndex: _lastNav,
+              onItemSelected: (i) {
+                if (i == 4) {
+                  _scaffoldKey.currentState?.openDrawer();
+                } else {
+                  const map = [
+                    'workout',
+                    'planning',
+                    'home',
+                    'keuangan',
+                    'profile',
+                  ];
+                  if (i < map.length) {
+                    _set(map[i]);
+                    _scaffoldKey.currentState?.closeDrawer();
+                  }
+                }
+              },
+              items: const [
+                SharpVNavItem(icon: Icons.fitness_center_rounded, label: 'Latihan'),
+                SharpVNavItem(icon: Icons.soup_kitchen_rounded, label: 'Makan'),
+                SharpVNavItem(icon: Icons.home_rounded, label: 'Beranda'),
+                SharpVNavItem(icon: Icons.savings_rounded, label: 'Uang'),
+                SharpVNavItem(icon: Icons.menu_rounded, label: 'Menu'),
+              ],
+            ),
+          ),
         ),
       ),
     );

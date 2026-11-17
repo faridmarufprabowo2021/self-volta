@@ -201,23 +201,32 @@ class WeatherService {
     _ => 'Ekstrem',
   };
 
-  static String label(int code) => switch (code) {
-    0 => 'Cerah',
-    1 => 'Cerah Berawan',
-    2 => 'Berawan',
-    3 => 'Mendung',
-    45 || 48 => 'Berkabut',
-    51 || 53 || 55 => 'Gerimis',
-    56 || 57 => 'Gerimis Beku',
-    61 || 63 || 65 => 'Hujan',
-    66 || 67 => 'Hujan Beku',
-    71 || 73 || 75 || 77 => 'Salju',
-    80 || 81 || 82 => 'Hujan Lokal',
-    85 || 86 => 'Hujan Salju',
-    95 => 'Badai Petir',
-    96 || 99 => 'Badai Es',
-    _ => 'Berawan',
-  };
+  static String label(int code, {int? rainChance}) {
+    if (rainChance != null && rainChance >= 65 && (code == 2 || code == 3)) {
+      return '🌧️ Mendung Hujan ($rainChance%)';
+    }
+    return switch (code) {
+      0 => '☀️ Cerah',
+      1 => '⛅ Cerah Berawan',
+      2 => '⛅ Sebagian Berawan',
+      3 => '☁️ Mendung',
+      45 || 48 => '🌫️ Berkabut',
+      51 || 53 || 55 => '🌦️ Gerimis',
+      56 || 57 => '🌧️ Gerimis Dingin',
+      61 => '🌧️ Hujan Ringan',
+      63 => '🌧️ Hujan',
+      65 => '🌧️ Hujan Lebat',
+      66 || 67 => '🌧️ Hujan Dingin',
+      71 || 73 || 75 || 77 => '❄️ Salju',
+      80 => '🌦️ Hujan Ringan',
+      81 => '🌧️ Hujan Guyur',
+      82 => '🌧️ Hujan Lebat',
+      85 || 86 => '🌨️ Hujan Salju',
+      95 => '⛈️ Badai Petir',
+      96 || 99 => '⛈️ Badai Petir & Es',
+      _ => (rainChance != null && rainChance >= 50) ? '🌦️ Potensi Hujan' : '⛅ Berawan',
+    };
+  }
 }
 
 class WeatherUnavailable implements Exception {

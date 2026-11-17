@@ -760,6 +760,7 @@ class AppState extends ChangeNotifier {
 
   void addXp(int amount) {
     xp = (xp + amount).clamp(0, 999999);
+    recalculateStreak();
     notifyListeners();
     unawaited(save());
   }
@@ -768,6 +769,75 @@ class AppState extends ChangeNotifier {
     xp = (xp - amount).clamp(0, 999999);
     notifyListeners();
     unawaited(save());
+  }
+
+  /// Hitung ulang streak harian aktif secara dinamis dari aktivitas nyata.
+  /// Memeriksa hari-hari berturut-turut di mana user aktif (tuntas tugas,
+  /// rutin, makan, air, latihan, atau transaksi).
+  int recalculateStreak() {
+    final activeDates = <String>{};
+
+    for (final m in routineMarks) {
+      if (m.date.length >= 10) activeDates.add(m.date.substring(0, 10));
+    }
+
+    eaten.forEach((k, v) {
+      if (v == true) {
+        final parts = k.split('_');
+        if (parts.length >= 4) {
+          final y = int.tryParse(parts[1]);
+          final m = int.tryParse(parts[2]);
+          final d = int.tryParse(parts[3]);
+          if (y != null && m != null && d != null) {
+            activeDates.add(
+              '${y.toString().padLeft(4, '0')}-${m.toString().padLeft(2, '0')}-${d.toString().padLeft(2, '0')}',
+            );
+          }
+        }
+      }
+    });
+
+    workoutDone.forEach((k, v) {
+      if (v == true) {
+        final dStr = k.split('_').first;
+        if (dStr.length >= 10) activeDates.add(dStr.substring(0, 10));
+      }
+    });
+
+    final now = DateTime.now();
+    final todayStr = '${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    final yesterday = now.subtract(const Duration(days: 1));
+    final yestStr = '${yesterday.year.toString().padLeft(4, '0')}-${yesterday.month.toString().padLeft(2, '0')}-${yesterday.day.toString().padLeft(2, '0')}';
+
+    int currentStreak = 0;
+    DateTime checkDate;
+
+    if (activeDates.contains(todayStr)) {
+      currentStreak++;
+      checkDate = yesterday;
+    } else if (activeDates.contains(yestStr)) {
+      currentStreak++;
+      checkDate = yesterday.subtract(const Duration(days: 1));
+    } else {
+      return streak > 0 ? streak : 1;
+    }
+
+    while (true) {
+      final dateStr = '${checkDate.year.toString().padLeft(4, '0')}-${checkDate.month.toString().padLeft(2, '0')}-${checkDate.day.toString().padLeft(2, '0')}';
+      if (activeDates.contains(dateStr)) {
+        currentStreak++;
+        checkDate = checkDate.subtract(const Duration(days: 1));
+      } else {
+        break;
+      }
+    }
+
+    if (currentStreak != streak && currentStreak > 0) {
+      streak = currentStreak;
+      notifyListeners();
+      unawaited(save());
+    }
+    return streak;
   }
 
   // ---- Buku besar XP harian (anti grinding) ----

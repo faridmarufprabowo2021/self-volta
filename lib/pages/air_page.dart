@@ -40,17 +40,22 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
 
   void _addWater(int ml, {String? label}) {
     iosTapBuzz();
+    final prevMl = _dailyWaterMl;
     setState(() {
       _dailyWaterMl = (_dailyWaterMl + ml).clamp(0, 5000);
     });
+    final delta = _dailyWaterMl - prevMl;
+    if (delta == 0 && ml != 0) return;
     final now = DateTime.now();
     final waterKey = 'water_${now.year}_${now.month}_${now.day}';
+
     if (_dailyWaterMl >= _targetWaterMl &&
         !(AppState.I.eaten[waterKey] ?? false)) {
       AppState.I.eaten[waterKey] = true;
       AppState.I.addXp(25);
       unawaited(AppState.I.save());
       triumphBuzz();
+      ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Row(
@@ -69,23 +74,46 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          action: SnackBarAction(
+            label: 'BATALKAN',
+            textColor: Colors.white,
+            onPressed: () => _addWater(-delta, label: 'Batal'),
+          ),
         ),
       );
     } else {
+      if (_dailyWaterMl < _targetWaterMl &&
+          (AppState.I.eaten[waterKey] ?? false)) {
+        AppState.I.eaten[waterKey] = false;
+        unawaited(AppState.I.save());
+      }
       ScaffoldMessenger.of(context).clearSnackBars();
+      final isAdd = delta > 0;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Ditambahkan +$ml ml${label != null ? ' ($label)' : ''}!',
+            isAdd
+                ? 'Ditambahkan +$delta ml${label != null ? ' ($label)' : ''}!'
+                : 'Dikurangi ${delta.abs()} ml${label != null ? ' ($label)' : ''}!',
           ),
-          duration: const Duration(milliseconds: 900),
+          duration: const Duration(milliseconds: 2200),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          action: SnackBarAction(
+            label: 'BATALKAN',
+            textColor: Star.star,
+            onPressed: () => _addWater(-delta, label: 'Batal'),
+          ),
         ),
       );
     }
+  }
+
+  void _setWater(int exactMl) {
+    final diff = exactMl - _dailyWaterMl;
+    _addWater(diff, label: 'Atur Total');
   }
 
   void _resetWater() {
@@ -500,7 +528,7 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                     ),
                     const SizedBox(height: 18),
 
-                    // 4 Quick Log Buttons
+                    // Quick Log Buttons (Baris 1: Tambah)
                     Row(
                       children: [
                         Expanded(
@@ -531,6 +559,34 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
                             icon: Icons.bolt_rounded,
                             accentColor: Star.water,
                           ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Quick Log Buttons (Baris 2: Kurangi / Undo & Kustom)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _quickSubBtn(
+                            ml: 250,
+                            label: '-250ml',
+                            sub: 'Undo Gelas',
+                            icon: Icons.remove_circle_outline_rounded,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: _quickSubBtn(
+                            ml: 600,
+                            label: '-600ml',
+                            sub: 'Undo Tumbler',
+                            icon: Icons.remove_circle_outline_rounded,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: _customWaterBtn(),
                         ),
                       ],
                     ),
@@ -865,6 +921,105 @@ class _AirPageState extends State<AirPage> with SingleTickerProviderStateMixin {
     );
   }
 
+  Widget _quickSubBtn({
+    required int ml,
+    required String label,
+    required String sub,
+    required IconData icon,
+  }) {
+    return InkWell(
+      onTap: () => _addWater(-ml, label: sub),
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFEE2E2).withValues(alpha: 0.45),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: const Color(0xFFFECACA)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: const Color(0xFFDC2626), size: 18),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF991B1B),
+              ),
+            ),
+            Text(
+              sub,
+              style: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                color: Color(0xFFB91C1C),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _customWaterBtn() {
+    return InkWell(
+      onTap: _showCustomWaterSheet,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        decoration: BoxDecoration(
+          color: Star.water.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Star.water.withValues(alpha: 0.35)),
+        ),
+        child: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.tune_rounded, color: Star.water, size: 18),
+            SizedBox(height: 4),
+            Text(
+              'Kustom ±',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                color: Star.water,
+              ),
+            ),
+            Text(
+              'Atur Sendiri',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 8.5,
+                fontWeight: FontWeight.w600,
+                color: Star.water,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showCustomWaterSheet() {
+    iosTapBuzz();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => _CustomWaterSheet(
+        currentMl: _dailyWaterMl,
+        targetMl: _targetWaterMl,
+        onApplyDelta: (delta, label) => _addWater(delta, label: label),
+        onApplyExact: (exact) => _setWater(exact),
+      ),
+    );
+  }
+
   Widget _costComparisonRow({
     required String type,
     required String formula,
@@ -1114,5 +1269,450 @@ class _LiquidWavePainter extends CustomPainter {
   bool shouldRepaint(covariant _LiquidWavePainter oldDelegate) {
     return oldDelegate.progress != progress ||
         oldDelegate.wavePhase != wavePhase;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// CUSTOM WATER ADJUSTMENT SHEET
+// -----------------------------------------------------------------------------
+class _CustomWaterSheet extends StatefulWidget {
+  final int currentMl;
+  final int targetMl;
+  final void Function(int delta, String label) onApplyDelta;
+  final void Function(int exact) onApplyExact;
+
+  const _CustomWaterSheet({
+    required this.currentMl,
+    required this.targetMl,
+    required this.onApplyDelta,
+    required this.onApplyExact,
+  });
+
+  @override
+  State<_CustomWaterSheet> createState() => _CustomWaterSheetState();
+}
+
+class _CustomWaterSheetState extends State<_CustomWaterSheet> {
+  int _mode = 0; // 0: Tambah (+), 1: Kurangi (-), 2: Set Total (=)
+  late final TextEditingController _inputController;
+  int _amount = 250;
+
+  @override
+  void initState() {
+    super.initState();
+    _inputController = TextEditingController(text: '250');
+  }
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    super.dispose();
+  }
+
+  void _onAmountChanged(String val) {
+    final parsed = int.tryParse(val.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+    setState(() => _amount = parsed);
+  }
+
+  void _selectPreset(int val) {
+    iosTapBuzz();
+    setState(() {
+      _amount = val;
+      _inputController.text = val.toString();
+    });
+  }
+
+  int get _calculatedNewTotal {
+    switch (_mode) {
+      case 0:
+        return (widget.currentMl + _amount).clamp(0, 5000);
+      case 1:
+        return (widget.currentMl - _amount).clamp(0, 5000);
+      case 2:
+        return _amount.clamp(0, 5000);
+      default:
+        return widget.currentMl;
+    }
+  }
+
+  void _submit() {
+    iosTapBuzz();
+    Navigator.of(context).pop();
+    if (_mode == 0) {
+      widget.onApplyDelta(_amount, 'Kustom +${_amount}ml');
+    } else if (_mode == 1) {
+      widget.onApplyDelta(-_amount, 'Kustom -${_amount}ml');
+    } else {
+      widget.onApplyExact(_amount);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final newTotal = _calculatedNewTotal;
+
+    return Container(
+      margin: EdgeInsets.only(bottom: bottomInset),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+      decoration: const BoxDecoration(
+        color: Star.surface,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Drag handle
+          Center(
+            child: Container(
+              width: 44,
+              height: 4.5,
+              decoration: BoxDecoration(
+                color: Star.sunken,
+                borderRadius: BorderRadius.circular(2.5),
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Header
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Star.water.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.water_drop_rounded,
+                  color: Star.water,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 10),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Atur Catatan Hidrasi',
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: Star.ink,
+                      ),
+                    ),
+                    Text(
+                      'Tambah, kurangi, atau ubah total jika salah pencet.',
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 10.5,
+                        color: Star.mut,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.close_rounded, size: 20, color: Star.mut),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          // Current Water Badge
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: Star.sunken,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Catatan saat ini:',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 12,
+                    color: Star.mut,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  '${widget.currentMl} ml / ${widget.targetMl} ml',
+                  style: const TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: Star.water,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Mode Selector (Tambah, Kurangi, Set Total)
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Star.sunken,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _modePill(
+                    index: 0,
+                    label: '+ Tambah',
+                    activeColor: Star.water,
+                  ),
+                ),
+                Expanded(
+                  child: _modePill(
+                    index: 1,
+                    label: '- Kurangi',
+                    activeColor: const Color(0xFFDC2626),
+                  ),
+                ),
+                Expanded(
+                  child: _modePill(
+                    index: 2,
+                    label: '= Set Total',
+                    activeColor: Star.star,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Input field
+          TextField(
+            controller: _inputController,
+            keyboardType: TextInputType.number,
+            onChanged: _onAmountChanged,
+            style: const TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+              color: Star.ink,
+            ),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Star.surface,
+              labelText: _mode == 2 ? 'Total Hidrasi Hari Ini' : 'Jumlah Air',
+              suffixText: 'ml',
+              suffixStyle: const TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Star.mut,
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: const BorderSide(color: Star.lineSoft),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: const BorderSide(color: Star.lineSoft),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(
+                  color: _mode == 1 ? const Color(0xFFDC2626) : Star.water,
+                  width: 1.5,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // Quick Preset Chips
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              if (_mode == 0) ...[
+                _presetChip(100, '+100 ml'),
+                _presetChip(200, '+200 ml'),
+                _presetChip(300, '+300 ml'),
+                _presetChip(500, '+500 ml'),
+              ] else if (_mode == 1) ...[
+                _presetChip(100, '-100 ml'),
+                _presetChip(200, '-200 ml'),
+                _presetChip(250, '-250 ml'),
+                _presetChip(500, '-500 ml'),
+              ] else ...[
+                _presetChip(1000, '1.000 ml'),
+                _presetChip(1500, '1.500 ml'),
+                _presetChip(2000, '2.000 ml'),
+                _presetChip(2500, '2.500 ml'),
+              ],
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Live Result Box
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: _mode == 1
+                  ? const Color(0xFFFEF2F2)
+                  : const Color(0xFFF0FDF4),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: _mode == 1
+                    ? const Color(0xFFFECACA)
+                    : const Color(0xFFBBF7D0),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Hasil setelah perubahan:',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: _mode == 1
+                        ? const Color(0xFF991B1B)
+                        : const Color(0xFF166534),
+                  ),
+                ),
+                Text(
+                  '$newTotal ml',
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: _mode == 1
+                        ? const Color(0xFFDC2626)
+                        : const Color(0xFF15803D),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Action Button
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: FilledButton(
+              onPressed: _amount > 0 || _mode == 2 ? _submit : null,
+              style: FilledButton.styleFrom(
+                backgroundColor:
+                    _mode == 1 ? const Color(0xFFDC2626) : Star.water,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text(
+                _mode == 0
+                    ? 'Tambahkan $_amount ml'
+                    : (_mode == 1
+                        ? 'Kurangi $_amount ml'
+                        : 'Set Total Menjadi $_amount ml'),
+                style: const TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _modePill({
+    required int index,
+    required String label,
+    required Color activeColor,
+  }) {
+    final active = _mode == index;
+    return InkWell(
+      onTap: () {
+        iosTapBuzz();
+        setState(() {
+          _mode = index;
+          if (index == 2) {
+            _amount = widget.currentMl;
+            _inputController.text = _amount.toString();
+          } else if (_amount == 0 || _amount > 1000) {
+            _amount = 250;
+            _inputController.text = '250';
+          }
+        });
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: active ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: active
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Manrope',
+              fontSize: 11.5,
+              fontWeight: active ? FontWeight.w800 : FontWeight.w600,
+              color: active ? activeColor : Star.mut,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _presetChip(int val, String label) {
+    final selected = _amount == val;
+    return InkWell(
+      onTap: () => _selectPreset(val),
+      borderRadius: BorderRadius.circular(999),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: selected ? Star.water.withValues(alpha: 0.15) : Star.sunken,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(
+            color: selected ? Star.water : Colors.transparent,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 11,
+            fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
+            color: selected ? Star.water : Star.ink,
+          ),
+        ),
+      ),
+    );
   }
 }
