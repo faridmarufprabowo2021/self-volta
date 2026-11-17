@@ -115,3 +115,25 @@ Di samping biaya bertahan hidup, anak kos membutuhkan motivasi untuk menabung. S
 - **Konsep**: Target tabungan khusus (seperti upgrade laptop tugas akhir, sertifikasi profesi, atau instrumen musik).
 - **Mekanisme**: Setiap hari pengguna berhasil membelanjakan uang di bawah limit harian, surplus kas dapat disisihkan ke target tabungan impian (`PIANO_TARGET`).
 - **Indikator**: Menampilkan visualisasi persentase capaian progresif, mengubah sisa uang belanja menjadi aset masa depan yang produktif.
+
+---
+
+## 5. Modul Planning Makanan: Filosofi Dapur 48:9 & Paket A–G
+
+Makan di luar atau memesan makanan online setiap hari dapat menghabiskan Rp40.000 – Rp60.000 per hari, memicu krisis finansial di akhir bulan. Sebaliknya, makan mi instan setiap hari menurunkan daya tahan tubuh dan fokus belajar.
+
+Modul Planning Makanan [lib/pages/planning_page.dart](file:///C:/Users/Asus/self_volta/lib/pages/planning_page.dart) dirancang dengan konsep **Dapur 48:9**:
+- **48 (Siklus Bahan 48 Jam)**: Bahan basah (tahu, tempe, bayam, sawi, telur) dibeli dalam porsi kecil yang habis dikonsumsi dalam 48 jam sehingga tidak membutuhkan kulkas besar dan tidak membusuk di kamar kos.
+- **9 (Sembilan Bumbu Dasar Kos)**: Bawang merah, bawang putih, garam, gula pasir, merica bubuk, kecap manis, saus tiram, minyak goreng, dan kaldu jamur. Bumbu ini dibeli satu kali di awal bulan sehingga biaya bumbu per porsi masak dihitung Rp0 (dari stok).
+
+### Katalog 7 Paket Menu Mingguan (Paket A – G):
+
+| Paket | Nama Menu & Komposisi | Estimasi Biaya | Kalori & Protein | Target Nutrisi |
+| :--- | :--- | :--- | :--- | :--- |
+| **A** | Telur + Tempe + Bening Bayam | Rp22.500 / hari | 650 kcal · 48g Protein | Massa Otot & Serat |
+| **B** | Tahu + Telur + Sawi Putih | Rp21.000 / hari | 630 kcal · 58g Protein | Tinggi Protein Nabati & Hewani |
+| **C** | Ayam Suwir + Tempe Orek + Buncis | Rp24.000 / hari | 710 kcal · 52g Protein | Stamina Padat Kuliah/Kerja |
+| **D** | Telur Dadar + Tahu + Sayur Sop | Rp19.500 / hari | 590 kcal · 42g Protein | Pemulihan & Rehidrasi Hangat |
+| **E** | Tongkol / Kembung + Tempe + Kangkung | Rp23.500 / hari | 680 kcal · 55g Protein | Omega-3 & Mineral Alami |
+| **F** | Telur Mata Sapi + Tahu + Tumis Toge | Rp18.000 / hari | 560 kcal · 40g Protein | Ekstra Cepat (Di Bawah 10 Menit) |
+| **G** | Bakso Sapi + Telur + Sayur Kuah | Rp22.000 / hari | 640 kcal · 45g Protein | Variasi Akhir Pekan Terukur |
