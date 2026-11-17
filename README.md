@@ -137,3 +137,26 @@ Modul Planning Makanan [lib/pages/planning_page.dart](file:///C:/Users/Asus/self
 | **E** | Tongkol / Kembung + Tempe + Kangkung | Rp23.500 / hari | 680 kcal · 55g Protein | Omega-3 & Mineral Alami |
 | **F** | Telur Mata Sapi + Tahu + Tumis Toge | Rp18.000 / hari | 560 kcal · 40g Protein | Ekstra Cepat (Di Bawah 10 Menit) |
 | **G** | Bakso Sapi + Telur + Sayur Kuah | Rp22.000 / hari | 640 kcal · 45g Protein | Variasi Akhir Pekan Terukur |
+
+---
+
+## 6. Eksekusi Resep: Panci Listrik ([PL]) & Magic Com ([MC])
+
+Kamar kos umumnya memiliki batas daya listrik 450 VA hingga 900 VA. Menyalakan dua alat pemanas secara sembarangan berisiko memicu MCB listrik kamar anjlok (*jeglek*).
+
+Instruksi memasak pada SELF VOLTA dirancang khusus untuk mitigasi ini:
+
+```
+[MC] = Magic Com / Rice Cooker (Daya ~300 Watt)
+[PL] = Panci Listrik Serbaguna (Daya ~400-600 Watt)
+```
+
+### Strategi Memasak Paralel Hemat Daya:
+1. **Pemanfaatan Rak Kukus Rice Cooker `[MC]`**: Saat menanak beras, telur utuh atau potongan tempe diletakkan di wadah kukusan atas. Telur dan tempe matang bersamaan dengan nasi pulen tanpa menggunakan alat tambahan.
+2. **Penggunaan Air Bertingkat `[PL]`**: Merebus tahu selama 8 menit terlebih dahulu. Tahu diangkat, kemudian air rebusan yang sama langsung digunakan untuk merebus sayur wortel dan sawi. Ini menghemat waktu pemanasan air dan mempertahankan sari nutrisi.
+3. **Timer Memasak Interaktif ([RecipeDetailSheet](file:///C:/Users/Asus/self_volta/lib/pages/recipe_detail_sheet.dart))**:  
+   Ketika pengguna mengetuk "Lihat resep" di kartu Beranda, modal langsung terbuka dengan:
+   - Header visual hidangan paket hari ini.
+   - Timer hitung mundur terintegrasi (preset 5m, 10m, 15m) dengan indikator circular progress.
+   - Checklist bahan belanjaan yang bisa dicentang saat proses racik.
+   - Langkah kerja terurut nomor `01`, `02`, `03` dengan label alat yang jelas.
