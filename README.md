@@ -373,3 +373,24 @@ Desain antarmuka SELF VOLTA dirancang dengan standar editorial profesional, meno
 2. **Proporsi Bento Grid 2×2**: Kartu Sholat dan Cuaca diletakkan berdampingan secara seimbang di bagian atas Beranda, memanfaatkan ruang secara vertikal tanpa menenggelamkan kartu pilar lainnya.
 3. **Dark Glass Scrim (`Color(0x73020617)`)**: Menambahkan lapisan kaca gelap di atas kanvas cuaca dinamis untuk menjamin teks suhu dan indikator metrik tetap terbaca jelas (*high-contrast*) di bawah terik matahari maupun malam hari.
 4. **Adaptive Desktop Scaffolding**: Saat dibuka pada layar monitor desktop lebar (1920px), tata letak otomatis dikunci pada frame `maxWidth: 440` di tengah layar, menjaga proporsi genggaman ponsel tanpa distorsi horizontal.
+
+---
+
+## 19. Standar Pengujian: 313 Tes Otomatis & Audit Responsif
+
+Kualitas perangkat lunak dijamin melalui rangkaian pengujian komprehensif pada folder [test/](file:///C:/Users/Asus/self_volta/test/):
+
+```
+Test Files Suite:
+├── test/home_hero_test.dart       # Pengujian interaksi bento, swipe gesture, data nyata
+├── test/layout_audit_test.dart    # Audit overflow layar 320px–412px, scale 1.0–1.3
+├── test/layout_stress_test.dart   # Uji batas ekstrem teks raksasa (scale 2.0)
+├── test/data_safety_test.dart     # Uji integritas backup, fail-safe recovery, stress save
+├── test/android_manifest_test.dart# Verifikasi deklarasi alarm dan izin sistem
+└── test/widget_test.dart          # Integrasi alur navigasi antar-halaman
+```
+
+### Metrik Pengujian:
+- **Total Pengujian**: **313 tes aktif**, 100% lulus (*Zero Test Failure*).
+- **Audit Tanpa Overflow**: Memastikan nol *RenderFlex overflow* bahkan di layar ponsel entry-level 320px dengan pembesaran teks sistem hingga 200%.
+- **Analisis Statis**: `flutter analyze` menghasilkan `No issues found!`.
