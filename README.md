@@ -291,3 +291,21 @@ Modul Study [lib/pages/study_page.dart](file:///C:/Users/Asus/self_volta/lib/pag
 1. **Timer Pomodoro Terstruktur**: Pilihan interval kerja mendalam (*Deep Work*) 25 menit belajar intensif + 5 menit jeda mata, atau blok 50 menit untuk penulisan skripsi/tugas besar.
 2. **Logging Topik Pelajaran**: Setiap sesi selesai, pengguna dapat menyematkan nama mata kuliah atau topik (misal: "Struktur Data", "Akuntansi Biaya", "Desain UI").
 3. **Statistik Jam Belajar Mingguan**: Grafik batang ringkas yang memetakan total menit belajar harian, memberikan visualisasi objektif apakah waktu digunakan secara produktif atau terbuang sia-sia.
+
+---
+
+## 14. Modul To-Do & Kebiasaan: Daily Discipline & XP Leveling
+
+Tinggal sendiri berarti bertanggung jawab penuh atas kebersihan dan keteraturan ruang hidup tanpa ada yang memantau.
+
+Modul To-Do [lib/pages/todo_page.dart](file:///C:/Users/Asus/self_volta/lib/pages/todo_page.dart) dipadukan dengan kartu Agenda di Beranda:
+
+### Fitur Manajemen Tugas:
+1. **Agenda Berbasis Jam (*Time Gutter*)**: Menampilkan tugas terurut waktu di kartu Beranda, dilengkapi lingkaran centang haptik dan pill penanda kategori.
+2. **Checklist Kebiasaan Dasar Kos**:
+   - Merapikan seprei ranjang setelah bangun tidur.
+   - Segera mencuci piring/mangkok setelah makan (mencegah semut dan bau di kamar).
+   - Menyapu lantai kamar kos selama 2 menit.
+   - Membuang sampah basah keluar kamar setiap sore.
+3. **Gamifikasi Disiplin (Streak & Level XP)**:  
+   Menyelesaikan tugas dan pilar harian menyumbang poin pengalaman (*XP*) ke dalam `AppState`. Header Beranda memajang status `🔥 X Hari Aktif` dan `⚡ Level X · XXXX XP` sebagai bentuk kepuasan psikologis atas konsistensi hidup sehat.
