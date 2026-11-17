@@ -241,3 +241,21 @@ Setiap latihan pada modul Workout dilengkapi lembar panduan eksekusi teknik (*fo
 ### Timer Istirahat Antar-Set:
 - Dilengkapi countdown interval otomatis 60 detik hingga 90 detik.
 - Menggunakan getaran haptik (*haptic feedback*) dan nada audio pendek saat set berikutnya harus dimulai, sehingga pengguna tidak perlu menatap layar handphone terus-menerus selama jeda istirahat.
+
+---
+
+## 11. Modul Waktu & Sholat: Sinkronisasi Astronomis Lokal
+
+Bagi anak kos, waktu sholat adalah jangkar disiplin harian: patokan bangun subuh sebelum aktivitas kampus, jeda istirahat siang, dan penanda penutupan hari.
+
+Fitur Jadwal Sholat pada SELF VOLTA beroperasi **100% offline tanpa API eksternal**:
+
+### 1. Mesin Astronomis Offline:
+- Menggunakan kalkulasi koordinat lintang (*latitude*) dan bujur (*longitude*) kota-kota besar di Indonesia (Surakarta, Jakarta, Bandung, Yogyakarta, Surabaya, Semarang, Malang, Medan, Makassar, dll).
+- Menghitung waktu sholat wajib (Subuh, Dzuhur, Ashar, Maghrib, Isya) serta waktu sunnah (Imsak, Terbit/Syuruq, dan Dhuha) secara presisi dengan koreksi ketinggian matahari dan *Equation of Time*.
+
+### 2. Antarmuka Kartu Bento Beranda:
+- **Orb Langit Dinamis (`_SkyPainter`)**: Melukis lintasan orbit matahari dan bulan secara matematis sesuai jam berjalan hari ini.
+- **Indikator Waktu Terdekat**: Menampilkan nama waktu sholat berikutnya, jam tepat, dan sisa waktu hitung mundur (misal: `Dzuhur 11:23` bersanding dengan pill `3 mnt lagi`).
+- **5 Indikator Titik Wajib**: Titik aktif berkedip amber lembut (*amber glow*), memberikan ikhtisar cepat posisi waktu saat ini tanpa memadati tampilan.
+- **Ekspansi 4×2**: Geser (*swipe*) atau ketuk tombol panah untuk membuka rincian 5 waktu sholat lengkap beserta kapsul sunnah Imsak, Terbit, dan Dhuha.
