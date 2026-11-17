@@ -176,3 +176,28 @@ Tab **Belanja Pasar** di Planning memfasilitasi belanja eceran di pasar tradisio
    - **Tahu**: Rendam dalam wadah air matang bersih yang diganti setiap 24 jam agar tidak berlendir meski tanpa lemari es besar.
    - **Sayuran Hijau (Bayam/Sawi)**: Bungkus pangkal batang dengan kertas bersih atau tisu kering sebelum disimpan di area berventilasi baik.
    - **Telur**: Simpan di tempat sejuk dengan posisi bagian tumpul di atas agar kantung udara telur tetap terjaga stabil.
+
+---
+
+## 8. Modul Hidrasi: Siklus Galon 19L & Target Air Harian
+
+Dehidrasi adalah penyebab utama kelelahan mental, sakit kepala saat belajar, dan nyeri sendi saat berolahraga. Bagi anak kos, sumber hidrasi utama adalah galon isi ulang 19 Liter.
+
+Modul Hidrasi [lib/pages/air_page.dart](file:///C:/Users/Asus/self_volta/lib/pages/air_page.dart) memadukan pelacakan asupan harian dengan siklus logistik galon:
+
+### 1. Pelacakan Asupan Harian (Target 2.5L / Hari):
+- **Tombol Tambah Cepat**:
+  - `+250ml`: Satu gelas kos standar.
+  - `+600ml`: Satu tumbler minum kuliah/kerja.
+  - `+1.000ml`: Satu botol air olahraga penuh.
+- **Koreksi & Kontrol Kustom**:
+  - Tombol `-250ml` dan `-600ml` untuk koreksi cepat jika tidak sengaja tertekan.
+  - Tombol **Kustom ±**: Bottom sheet untuk menambah, mengurangi, atau langsung memasukkan angka asupan custom.
+  - SnackBar Undo: Tombol `BATALKAN` muncul setiap kali ada penambahan atau pengurangan untuk mengembalikan nilai asupan sebelumnya secara instan.
+
+### 2. Metrik Siklus Galon Kos:
+Satu galon air isi ulang berkapasitas 19 Liter (biaya Rp5.000 – Rp8.000 di depo terdekat):
+
+$$\text{Daya Tahan Galon} = \frac{19.000\text{ ml}}{2.500\text{ ml/hari}} \approx 7{,}6\text{ hari (7–8 hari penuh)}$$
+
+Sistem menampilkan status sisa hari masa pakai galon, sehingga anak kos tahu kapan harus memesan isi ulang sebelum kehabisan air minum di tengah malam.
