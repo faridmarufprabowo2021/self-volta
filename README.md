@@ -201,3 +201,26 @@ Satu galon air isi ulang berkapasitas 19 Liter (biaya Rp5.000 – Rp8.000 di dep
 $$\text{Daya Tahan Galon} = \frac{19.000\text{ ml}}{2.500\text{ ml/hari}} \approx 7{,}6\text{ hari (7–8 hari penuh)}$$
 
 Sistem menampilkan status sisa hari masa pakai galon, sehingga anak kos tahu kapan harus memesan isi ulang sebelum kehabisan air minum di tengah malam.
+
+---
+
+## 9. Modul Latihan Fisik: Calisthenics Kamar Kos Tanpa Alat
+
+Menjaga massa otot dan postur tubuh penting untuk mencegah *nerd-neck* dan nyeri punggung akibat duduk seharian di depan laptop. Biaya kebugaran komersial seringkali di luar kemampuan finansial mahasiswa atau *fresh graduate*.
+
+Modul Latihan [lib/pages/workout_page.dart](file:///C:/Users/Asus/self_volta/lib/pages/workout_page.dart) menyusun program **Calisthenics 3 Hari Terprogram** yang hanya membutuhkan lantai seluas 1×2 meter:
+
+```
+Senin  : Sesi 1 - Pull & Push (Fokus: Sayap, Dada, Paha Depan, Core)
+Selasa : Pemulihan Aktif (Jalan kaki, mobilitas sendi, peregangan)
+Rabu   : Sesi 2 - Wide & Legs (Fokus: Punggung atas, Triceps kursi kos, Glutes, Betis)
+Kamis  : Pemulihan Aktif
+Jumat  : Sesi 3 - Full Body (Fokus: Bahu Pike, Kekuatan tarik, Keseimbangan statis)
+Sabtu  : Pemulihan Total
+Minggu : Evaluasi & Peregangan Santai
+```
+
+### Karakteristik Latihan Kamar Kos:
+- **Zero Equipment**: Memanfaatkan bobot tubuh sendiri (*bodyweight*), lantai kamar, kusen pintu/tiang gantung, atau tepi dipan kasur/kursi belajar kos untuk gerakan dip.
+- **Progressive Overload Berbasis Repetisi & Tempo**: Kemajuan fisik dicapai dengan menambah repetisi bersih, memperlambat fase eksentrik (turun lambat 3 detik), atau memvariasikan sudut tuas tubuh (*leverage*).
+- **Audit Keselamatan Sendi**: Gerakan dipilih yang aman dari risiko cedera sendi pergelangan tangan dan pinggang tanpa pengawasan spotter.
