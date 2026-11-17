@@ -44,3 +44,25 @@ Kehidupan anak kos di kota perantauan memiliki dinamika yang sangat spesifik dan
 - **Aplikasi jadwal harian** menuntut koneksi internet terus-menerus dan pendaftaran akun berbasis email/password yang rentan pelacakan data, padahal sinyal di dalam kamar kos sering tidak stabil dan kuota internet seluler terbatas.
 
 **SELF VOLTA** hadir sebagai solusi terpadu, 100% offline-first, tanpa iklan, dan tanpa tracking. Fokus utamanya adalah mempertahankan ritme hidup sehat, menjaga keuangan tetap aman hingga akhir bulan, dan memaksimalkan efisiensi energi seorang anak kos.
+
+---
+
+## 2. Arsitektur Teknis & Prinsip Offline-First
+
+SELF VOLTA dibangun dengan prinsip kedaulatan data lokal (*local-first software*). Semua kalkulasi, penyimpanan catatan transaksi, checklist belanja, riwayat latihan, dan penjadwalan sholat dihitung langsung di perangkat (*on-device execution*).
+
+```mermaid
+flowchart TD
+    UI["Flutter UI Layer (Shell & 10 Halaman Modular)"] --> Store["AppState (ChangeNotifier / Single Source of Truth)"]
+    Store --> Serializer["JSON Serializer & Deserializer"]
+    Serializer --> Disk["SharedPreferences (sv_v1 & sv_v1_bak)"]
+    Store --> AlarmService["Android AlarmManager (Audio & Notifikasi Lokal)"]
+    Store --> WeatherEngine["WeatherService (Open-Meteo REST API + Cache Offline)"]
+    Store --> PrayerEngine["PrayerService (Perhitungan Astronomis Lokal)"]
+```
+
+### Karakteristik Arsitektur:
+1. **Single Source of Truth (`AppState`)**: Seluruh state aplikasi diatur dalam satu objek `AppState` terpusat di [lib/store.dart](file:///C:/Users/Asus/self_volta/lib/store.dart). Setiap mutasi memicu `notifyListeners()` yang merefresh widget secara reaktif.
+2. **Penyimpanan Dua Lapis (`sv_v1` & `sv_v1_bak`)**: Setiap kali `save()` dieksekusi, data aktif disimpan ke key `sv_v1`. Sebelum data baru menimpa, salinan data sebelumnya diamankan ke key `sv_v1_bak`. Jika terjadi force-close atau kegagalan penulisan disk, sistem otomatis melakukan pemulihan tanpa kehilangan catatan penting.
+3. **Shell Navigasi Persisten (`lib/pages/shell.dart`)**: Menggunakan `IndexedStack` / page builder terintegrasi sehingga navigasi antar pilar (Beranda, Keuangan, Planning, Latihan, Profil) mempertahankan posisi scroll dan input form tanpa reload ulang.
+4. **Independensi Jaringan**: Aplikasi tetap berfungsi 100% normal saat koneksi internet mati atau mode pesawat aktif. Koneksi data hanya dipakai secara opsional untuk menarik prakiraan cuaca Open-Meteo terkini.
