@@ -338,3 +338,26 @@ SELF VOLTA menerapkan arsitektur alarm level sistem pada modul Android:
 1. **Izin Sistem `SCHEDULE_EXACT_ALARM` & `USE_EXACT_ALARM`**: Terdaftar di `AndroidManifest.xml` untuk menjamin pemicuan timer pada detik yang tepat tanpa penundaan *battery-saver*.
 2. **Fullscreen Intent Receiver (`lib/pages/alarm_page.dart`)**: Saat waktu alarm tiba, aplikasi dapat membuka tampilan alarm penuh di atas layar terkunci (*lockscreen/keyguard*), menampilkan tombol interaktif geser untuk mematikan dering.
 3. **Asset Nada Dering Terkunci (`res/raw`)**: File audio alarm dilindungi dari *resource shrinker* saat build release (melalui `keep.xml`), memastikan alarm tetap berbunyi nyaring secara offline tanpa ketergantungan koneksi internet.
+
+---
+
+## 17. Integritas Data: Fail-Safe Recovery & Cadangan sv_v1_bak
+
+Data keuangan, catatan tugas, dan rekor kebiasaan adalah riwayat hidup berharga. Kehilangan data akibat baterai HP habis mendadak di kamar kos adalah skenario kegagalan yang wajib dicegah.
+
+Mekanisme keamanan data pada [lib/store.dart](file:///C:/Users/Asus/self_volta/lib/store.dart):
+
+```
+[Proses Simpan]
+Data Baru -> Simpan Salinan ke `sv_v1_bak` -> Timpa Data Utama `sv_v1`
+
+[Proses Muat / Booting]
+Periksa `sv_v1`
+  ├── Valid -> Muat ke AppState
+  └── Rusak/Korup (Baterai drop mendadak) -> Pulihkan Otomatis dari `sv_v1_bak`
+```
+
+### Ekspor & Impor Cadangan Independen:
+- **Format JSON Terbuka**: Pengguna dapat mengekspor seluruh basis data menjadi file teks `.json` melalui menu Profil.
+- **Migrasi Tanpa Akun**: Saat ganti handphone, file cadangan cukup dipindahkan via USB atau Bluetooth, lalu diimpor kembali ke aplikasi SELF VOLTA di HP baru.
+- **Rollback Protektif**: Jika file yang diimpor bukan format valid SELF VOLTA, sistem membatalkan proses (*rollback*) dan mempertahankan data lama 100% utuh.
