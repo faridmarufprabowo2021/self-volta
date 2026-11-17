@@ -91,3 +91,27 @@ Dengan variabel perhitungan:
    Sistem secara otomatis menurunkan limit harian secara transparan:  
    $\text{Jatah Harian} = \left\lfloor \frac{700.000}{21} \right\rfloor = \text{Rp33.333 / hari}$.
 3. **Hasil untuk Pengguna**: Anak kos tidak perlu panik di akhir bulan. Indikator visual langsung memberitahukan nominal maksimal yang boleh dikeluarkan hari ini agar uang kas bertahan utuh sampai tanggal 30.
+
+---
+
+## 4. Buku Kas & Alokasi Target Impian (Piano Fund)
+
+Pencatatan keuangan di SELF VOLTA tidak menuntut entri data yang melelahkan. Didesain dengan aksi cepat (*one-tap transaction modal*), anak kos dapat langsung mencatat transaksi setelah membayar makan warteg atau membeli sabun cuci.
+
+### Struktur Transaksi (`Txn` di [lib/store.dart](file:///C:/Users/Asus/self_volta/lib/store.dart)):
+```dart
+class Txn {
+  final String id;
+  final String desc;   // Misal: "Makan siang warteg", "Isi ulang galon"
+  final int amt;       // Nominal integer rupiah murni tanpa float
+  final DateTime date;
+  final bool isExpense;// true = pengeluaran, false = pemasukan tambahan
+  final String tag;    // Kategori: Makan, Kos, Transport, Belajar, Lainnya
+}
+```
+
+### Fitur Target Impian (Piano Fund):
+Di samping biaya bertahan hidup, anak kos membutuhkan motivasi untuk menabung. SELF VOLTA mengintegrasikan kartu **Target Impian (Piano Fund)**:
+- **Konsep**: Target tabungan khusus (seperti upgrade laptop tugas akhir, sertifikasi profesi, atau instrumen musik).
+- **Mekanisme**: Setiap hari pengguna berhasil membelanjakan uang di bawah limit harian, surplus kas dapat disisihkan ke target tabungan impian (`PIANO_TARGET`).
+- **Indikator**: Menampilkan visualisasi persentase capaian progresif, mengubah sisa uang belanja menjadi aset masa depan yang produktif.
