@@ -66,3 +66,28 @@ flowchart TD
 2. **Penyimpanan Dua Lapis (`sv_v1` & `sv_v1_bak`)**: Setiap kali `save()` dieksekusi, data aktif disimpan ke key `sv_v1`. Sebelum data baru menimpa, salinan data sebelumnya diamankan ke key `sv_v1_bak`. Jika terjadi force-close atau kegagalan penulisan disk, sistem otomatis melakukan pemulihan tanpa kehilangan catatan penting.
 3. **Shell Navigasi Persisten (`lib/pages/shell.dart`)**: Menggunakan `IndexedStack` / page builder terintegrasi sehingga navigasi antar pilar (Beranda, Keuangan, Planning, Latihan, Profil) mempertahankan posisi scroll dan input form tanpa reload ulang.
 4. **Independensi Jaringan**: Aplikasi tetap berfungsi 100% normal saat koneksi internet mati atau mode pesawat aktif. Koneksi data hanya dipakai secara opsional untuk menarik prakiraan cuaca Open-Meteo terkini.
+
+---
+
+## 3. Modul Keuangan: Manajemen Kas & Limit Harian Dinamis
+
+Problem terbesar anak kos adalah jebakan awal bulan: merasa memiliki banyak uang saat kiriman baru masuk, namun kehabisan dana di minggu ketiga karena pengeluaran tidak terkendali.
+
+Modul Keuangan [lib/pages/keuangan_page.dart](file:///C:/Users/Asus/self_volta/lib/pages/keuangan_page.dart) menerapkan pendekatan **Realtime Dynamic Limit Tracker**.
+
+### Rumus Jatah Harian Dinamis:
+Setiap kali ada transaksi yang dicatat atau tanggal berganti, sistem menghitung ulang batas aman belanja harian:
+
+$$\text{Jatah Harian} = \begin{cases} 0, & \text{jika } \text{Sisa Budget} \le 0 \\ \left\lfloor \frac{\text{Sisa Budget}}{\text{Sisa Hari Bulan Berjalan}} \right\rfloor, & \text{jika } \text{Sisa Budget} > 0 \end{cases}$$
+
+Dengan variabel perhitungan:
+- $\text{Sisa Budget} = \text{Budget Bulanan} - \text{Total Pengeluaran Bulan Ini}$
+- $\text{Sisa Hari} = (\text{Jumlah Hari Kalender Bulan Ini} - \text{Tanggal Hari Ini}) + 1$
+
+### Contoh Kasus Riil:
+1. **Tanggal 1 November** (30 hari): Budget Rp1.500.000.  
+   $\text{Jatah Harian} = \frac{1.500.000}{30} = \text{Rp50.000 / hari}$.
+2. **Tanggal 10 November** (tersisa 21 hari): Ternyata pengeluaran sudah mencapai Rp800.000 karena membeli perlengkapan kos. Sisa budget menjadi Rp700.000.  
+   Sistem secara otomatis menurunkan limit harian secara transparan:  
+   $\text{Jatah Harian} = \left\lfloor \frac{700.000}{21} \right\rfloor = \text{Rp33.333 / hari}$.
+3. **Hasil untuk Pengguna**: Anak kos tidak perlu panik di akhir bulan. Indikator visual langsung memberitahukan nominal maksimal yang boleh dikeluarkan hari ini agar uang kas bertahan utuh sampai tanggal 30.
