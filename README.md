@@ -325,3 +325,16 @@ Modul Booster [lib/pages/booster_page.dart](file:///C:/Users/Asus/self_volta/lib
 | **Madu Sachet Murni** | Warung kelontong (Rp2.500) | Tenggorokan gatal / batuk kering | Enzim antimikroba alami & energi glukosa murni |
 | **Telur Setengah Matang** | Dapur kos (Rp2.000) | Otot lemas / pemulihan stamina | Asam amino esensial tinggi untuk regenerasi jaringan |
 | **Seduhan Jahe Geprek** | Pasar / warung sayur (Rp1.000) | Masuk angin / kedinginan saat hujan | Gingerol untuk vasodilatasi pembuluh darah |
+
+---
+
+## 16. Sistem Alarm & Notifikasi: Background Scheduler Offline
+
+Banyak aplikasi alarm gagal berbunyi di Android modern karena sistem *Doze Mode* (optimasi baterai) mematikan proses background saat HP terkunci. Akibatnya, anak kos terlambat bangun untuk kuliah pagi atau sholat subuh.
+
+SELF VOLTA menerapkan arsitektur alarm level sistem pada modul Android:
+
+### Spesifikasi Teknis Alarm:
+1. **Izin Sistem `SCHEDULE_EXACT_ALARM` & `USE_EXACT_ALARM`**: Terdaftar di `AndroidManifest.xml` untuk menjamin pemicuan timer pada detik yang tepat tanpa penundaan *battery-saver*.
+2. **Fullscreen Intent Receiver (`lib/pages/alarm_page.dart`)**: Saat waktu alarm tiba, aplikasi dapat membuka tampilan alarm penuh di atas layar terkunci (*lockscreen/keyguard*), menampilkan tombol interaktif geser untuk mematikan dering.
+3. **Asset Nada Dering Terkunci (`res/raw`)**: File audio alarm dilindungi dari *resource shrinker* saat build release (melalui `keep.xml`), memastikan alarm tetap berbunyi nyaring secara offline tanpa ketergantungan koneksi internet.
