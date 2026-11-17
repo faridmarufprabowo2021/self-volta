@@ -278,3 +278,16 @@ Kartu Cuaca berdampingan dengan Sholat di Beranda dalam format Bento 2×2:
 - **Kecepatan Angin (`windKph`)**: Memperkirakan risiko jemuran terhempas angin kencang.
 - **Indeks UV (`uvIndex`)**: Peringatan sengatan matahari saat berjalan kaki atau mengendarai motor ke kampus.
 - **Prakiraan 6 Jam Mendatang**: Runtutan suhu per jam (`12:00 32° · 15:00 30°`) untuk antisipasi cuaca sebelum berangkat keluar kos.
+
+---
+
+## 13. Modul Study & Produktivitas: Siklus Fokus Pomodoro
+
+Sendirian di kamar kos membuat godaan rebahan di kasur atau menatap media sosial berjam-jam menjadi tantangan terbesar mahasiswa dan pembelajar mandiri.
+
+Modul Study [lib/pages/study_page.dart](file:///C:/Users/Asus/self_volta/lib/pages/study_page.dart) menyediakan lingkungan kerja fokus:
+
+### Fitur Produktivitas Belajar:
+1. **Timer Pomodoro Terstruktur**: Pilihan interval kerja mendalam (*Deep Work*) 25 menit belajar intensif + 5 menit jeda mata, atau blok 50 menit untuk penulisan skripsi/tugas besar.
+2. **Logging Topik Pelajaran**: Setiap sesi selesai, pengguna dapat menyematkan nama mata kuliah atau topik (misal: "Struktur Data", "Akuntansi Biaya", "Desain UI").
+3. **Statistik Jam Belajar Mingguan**: Grafik batang ringkas yang memetakan total menit belajar harian, memberikan visualisasi objektif apakah waktu digunakan secara produktif atau terbuang sia-sia.
