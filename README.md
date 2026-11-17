@@ -361,3 +361,15 @@ Periksa `sv_v1`
 - **Format JSON Terbuka**: Pengguna dapat mengekspor seluruh basis data menjadi file teks `.json` melalui menu Profil.
 - **Migrasi Tanpa Akun**: Saat ganti handphone, file cadangan cukup dipindahkan via USB atau Bluetooth, lalu diimpor kembali ke aplikasi SELF VOLTA di HP baru.
 - **Rollback Protektif**: Jika file yang diimpor bukan format valid SELF VOLTA, sistem membatalkan proses (*rollback*) dan mempertahankan data lama 100% utuh.
+
+---
+
+## 18. Desain Visual Editorial: Tipografi Manrope & Bento Surface
+
+Desain antarmuka SELF VOLTA dirancang dengan standar editorial profesional, menolak pola visual generik (*anti-slop*):
+
+### Karakteristik Visual:
+1. **Tipografi Manrope Bersih**: Menggunakan font geometris modern dengan dukungan angka tabular (`tabularFigures`), memastikan angka rupiah, waktu sholat, dan persentase gizi tersusun sejajar rapi tanpa bergeser.
+2. **Proporsi Bento Grid 2×2**: Kartu Sholat dan Cuaca diletakkan berdampingan secara seimbang di bagian atas Beranda, memanfaatkan ruang secara vertikal tanpa menenggelamkan kartu pilar lainnya.
+3. **Dark Glass Scrim (`Color(0x73020617)`)**: Menambahkan lapisan kaca gelap di atas kanvas cuaca dinamis untuk menjamin teks suhu dan indikator metrik tetap terbaca jelas (*high-contrast*) di bawah terik matahari maupun malam hari.
+4. **Adaptive Desktop Scaffolding**: Saat dibuka pada layar monitor desktop lebar (1920px), tata letak otomatis dikunci pada frame `maxWidth: 440` di tengah layar, menjaga proporsi genggaman ponsel tanpa distorsi horizontal.
