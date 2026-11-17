@@ -259,3 +259,22 @@ Fitur Jadwal Sholat pada SELF VOLTA beroperasi **100% offline tanpa API eksterna
 - **Indikator Waktu Terdekat**: Menampilkan nama waktu sholat berikutnya, jam tepat, dan sisa waktu hitung mundur (misal: `Dzuhur 11:23` bersanding dengan pill `3 mnt lagi`).
 - **5 Indikator Titik Wajib**: Titik aktif berkedip amber lembut (*amber glow*), memberikan ikhtisar cepat posisi waktu saat ini tanpa memadati tampilan.
 - **Ekspansi 4×2**: Geser (*swipe*) atau ketuk tombol panah untuk membuka rincian 5 waktu sholat lengkap beserta kapsul sunnah Imsak, Terbit, dan Dhuha.
+
+---
+
+## 12. Modul Cuaca: Integrasi Open-Meteo & Indeks Jemuran Kos
+
+Menjemur pakaian di lorong atau balkon kos adalah rutinitas kritis. Hujan tiba-tiba saat ditinggal kuliah dapat membuat pakaian bau apek dan membuang waktu cuci ulang.
+
+Kartu Cuaca berdampingan dengan Sholat di Beranda dalam format Bento 2×2:
+
+### 1. Integrasi Open-Meteo REST API ([lib/services/weather_service.dart](file:///C:/Users/Asus/self_volta/lib/services/weather_service.dart)):
+- Mengambil data meteorologi resmi dari satelit Open-Meteo berbasis koordinat kota sholat.
+- **Transparansi Tanpa Mock Palsu**: Jika offline atau server cuaca gagal dihubungi, sistem tidak pernah mengarang angka palsu. Aplikasi menampilkan status "Ketuk ikon segarkan untuk coba lagi" secara jujur.
+
+### 2. Parameter Praktis Anak Kos:
+- **Peluang Hujan (`rainChance` %)**: Penentu utama apakah pakaian aman dijemur di luar atau harus ditaruh di dalam ruangan.
+- **Kelembapan Udara (`humidity` %)**: Menilai kecepatan keringnya cucian baju dan kenyamanan sirkulasi udara kamar kos.
+- **Kecepatan Angin (`windKph`)**: Memperkirakan risiko jemuran terhempas angin kencang.
+- **Indeks UV (`uvIndex`)**: Peringatan sengatan matahari saat berjalan kaki atau mengendarai motor ke kampus.
+- **Prakiraan 6 Jam Mendatang**: Runtutan suhu per jam (`12:00 32° · 15:00 30°`) untuk antisipasi cuaca sebelum berangkat keluar kos.
