@@ -309,3 +309,19 @@ Modul To-Do [lib/pages/todo_page.dart](file:///C:/Users/Asus/self_volta/lib/page
    - Membuang sampah basah keluar kamar setiap sore.
 3. **Gamifikasi Disiplin (Streak & Level XP)**:  
    Menyelesaikan tugas dan pilar harian menyumbang poin pengalaman (*XP*) ke dalam `AppState`. Header Beranda memajang status `🔥 X Hari Aktif` dan `⚡ Level X · XXXX XP` sebagai bentuk kepuasan psikologis atas konsistensi hidup sehat.
+
+---
+
+## 15. Modul Booster: Recovery Nutrisi Murah & Pertolongan Pertama
+
+Sakit saat tinggal sendirian di perantauan adalah momen paling rentan bagi anak kos.
+
+Modul Booster [lib/pages/booster_page.dart](file:///C:/Users/Asus/self_volta/lib/pages/booster_page.dart) mendokumentasikan asupan darurat alami bernilai gizi tinggi yang murah dan mudah dibeli di warung atau pasar kaget sekitar kos:
+
+| Item Booster | Ketersediaan & Biaya | Indikasi Penggunaan | Manfaat Klinis Ringkas |
+| :--- | :--- | :--- | :--- |
+| **Pisang Ambon / Cavendish** | Warung buah (Rp3.000 – Rp5.000) | Perut kembung / asam lambung naik | Sumber kalium tinggi & pelindung mukosa lambung |
+| **Air Kelapa Murni** | Pedagang kelapa (Rp8.000 – Rp10.000) | Gejala dehidrasi berat / demam | Sumber elektrolit isotonik alami |
+| **Madu Sachet Murni** | Warung kelontong (Rp2.500) | Tenggorokan gatal / batuk kering | Enzim antimikroba alami & energi glukosa murni |
+| **Telur Setengah Matang** | Dapur kos (Rp2.000) | Otot lemas / pemulihan stamina | Asam amino esensial tinggi untuk regenerasi jaringan |
+| **Seduhan Jahe Geprek** | Pasar / warung sayur (Rp1.000) | Masuk angin / kedinginan saat hujan | Gingerol untuk vasodilatasi pembuluh darah |
