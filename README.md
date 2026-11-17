@@ -394,3 +394,43 @@ Test Files Suite:
 - **Total Pengujian**: **313 tes aktif**, 100% lulus (*Zero Test Failure*).
 - **Audit Tanpa Overflow**: Memastikan nol *RenderFlex overflow* bahkan di layar ponsel entry-level 320px dengan pembesaran teks sistem hingga 200%.
 - **Analisis Statis**: `flutter analyze` menghasilkan `No issues found!`.
+
+---
+
+## 20. Panduan Instalasi, Build APK, & Kontribusi
+
+### 📥 Unduh Langsung Aplikasi (Android APK):
+Pengguna Android dapat langsung mengunduh file APK siap pakai tanpa perlu instalasi lingkungan developer:
+- **Tautan Rilis Resmi**: [GitHub Releases v1.3.1](https://github.com/voltakyy/self-volta/releases/tag/v1.3.1)
+- **Direct Download APK**: [app-release.apk (63.3 MB)](https://github.com/voltakyy/self-volta/releases/download/v1.3.1/app-release.apk)
+
+### 💻 Menjalankan dari Kode Sumber (Local Development):
+1. **Prasyarat**:
+   - Flutter SDK (versi 3.24.x atau yang lebih baru)
+   - Dart SDK (versi 3.5.x atau yang lebih baru)
+   - Android Studio / VS Code dengan ekstensi Flutter
+
+2. **Langkah Instalasi**:
+   ```bash
+   # Clone repositori
+   git clone https://github.com/voltakyy/self-volta.git
+   cd self-volta
+
+   # Pasang dependensi
+   flutter pub get
+
+   # Jalankan seluruh rangkaian pengujian
+   flutter test
+
+   # Jalankan aplikasi di perangkat Android atau Web Chrome
+   flutter run
+   ```
+
+3. **Kompilasi APK Rilis**:
+   ```bash
+   flutter build apk --release
+   # File APK akan dibuat di: build/app/outputs/flutter-apk/app-release.apk
+   ```
+
+### 🤝 Kontribusi & Lisensi
+Proyek ini bersifat open-source di bawah lisensi [MIT License](LICENSE). Masukan, pelaporan bug, dan pull request sangat diterima untuk terus meningkatkan taraf hidup mandiri anak kos di seluruh Indonesia.
