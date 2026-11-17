@@ -224,3 +224,20 @@ Minggu : Evaluasi & Peregangan Santai
 - **Zero Equipment**: Memanfaatkan bobot tubuh sendiri (*bodyweight*), lantai kamar, kusen pintu/tiang gantung, atau tepi dipan kasur/kursi belajar kos untuk gerakan dip.
 - **Progressive Overload Berbasis Repetisi & Tempo**: Kemajuan fisik dicapai dengan menambah repetisi bersih, memperlambat fase eksentrik (turun lambat 3 detik), atau memvariasikan sudut tuas tubuh (*leverage*).
 - **Audit Keselamatan Sendi**: Gerakan dipilih yang aman dari risiko cedera sendi pergelangan tangan dan pinggang tanpa pengawasan spotter.
+
+---
+
+## 10. Form Panduan Gerakan & Interval Pemulihan Otot
+
+Setiap latihan pada modul Workout dilengkapi lembar panduan eksekusi teknik (*form cueing*) untuk memastikan repetisi yang dilakukan berkualitas dan aman:
+
+### Form Cueing Inti:
+1. **Push-up**: Posisi lengan membentuk sudut 45° terhadap badan (bukan melebar 90° yang membebani sendi bahu). Otot perut dan bokong dikunci kencang (*plank alignment*).
+2. **Pull-up / Chin-up**: Dimulai dari posisi gantung penuh (*dead hang*), awali gerakan dengan menarik tulang belikat ke bawah (*scapular depression*), lalu tarik dada mendekati palang.
+3. **Dip Kursi Kos**: Punggung dan pinggul tetap dekat dengan tepi kursi atau ranjang; tekuk siku hingga sudut 90° dengan kontrol penuh.
+4. **Pike Push-up**: Punggung lurus membentuk huruf V terbalik, pandangan ke arah jempol kaki, mendorong fokus beban ke otot bahu anterior dan lateral.
+5. **Air Squat**: Tumit tidak boleh terangkat, dada tegap, dan kedalaman paha minimal sejajar dengan lantai (*parallel depth*).
+
+### Timer Istirahat Antar-Set:
+- Dilengkapi countdown interval otomatis 60 detik hingga 90 detik.
+- Menggunakan getaran haptik (*haptic feedback*) dan nada audio pendek saat set berikutnya harus dimulai, sehingga pengguna tidak perlu menatap layar handphone terus-menerus selama jeda istirahat.
